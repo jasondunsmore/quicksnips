@@ -1,0 +1,1 @@
+( cat /var/log/httpd/access_log{,.[0-9]} && if [ -e /var/log/httpd/access_log.*.gz ]; then zcat /var/log/httpd/access_log.*.gz; fi ) | awk '{print $4}' | awk -F [ '{print $2}' | awk -F : '{print $1}'| sort | uniq -c | sort -nr

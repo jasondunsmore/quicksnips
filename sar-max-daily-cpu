@@ -1,0 +1,10 @@
+START=( $(ls /var/log/sa/sa[0-9][0-9]) )
+for FILE in ${START[@]}; do
+    if [ "${FILE}" == "${START[0]}" ]; then
+        echo -en "Max Daily Processor
+Utilization\n===============================\n"
+    fi
+    printf "%s\n%11s%10s%10s%10s%10s%10s%10s\n" "${FILE}" Time CPU '%user' '%nice' '%system' '%iowait' '%idle'
+    sar -f ${FILE} | sort -rnk8 | egrep -v '^(.*CPU.*)$' | egrep '^[0-9]{2}\:[0-9]{2}\:[0-9]{2}.*' | tail -n5 | sort -nk8
+    echo
+done
