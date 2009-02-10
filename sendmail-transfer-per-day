@@ -1,0 +1,4 @@
+for day in `seq 01 31`; do echo -n "January $day: "; egrep \
+   "Jan[[:space:]]{1,2}$day " maillog* | grep 'relay=localhost' | \
+   awk ' $8 ~ /size=/ {print $8}' |awk -F= '{SUM += $2} END \
+   {print SUM/1024,"K"}'; done

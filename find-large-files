@@ -1,0 +1,2 @@
+find / \( -path '/proc' -o -path '/sys' -o -path '/dev' \) -prune -o \
+  -type f -size +1024k -printf "%s %h/%f\n" |sort -rn |more

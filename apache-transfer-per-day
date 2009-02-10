@@ -1,0 +1,3 @@
+#calculates bandwidth used per day 
+for day in `seq -w 01 31`; do echo -n "January $day: "; egrep "$day/Jan" \
+access_log* |awk '{ SUM += $10 } END {print SUM/1024/1024, "M"}' ;done

@@ -1,0 +1,3 @@
+for day in `seq 01 31`; do echo -n "January $day: "; egrep \
+   " Jan[[:space:]]{1,2}$day " xferlog* | awk '  $12 ~ /o/  { SUM +=$8 } \
+   END {print SUM/1024/1024, "M"}'; done
