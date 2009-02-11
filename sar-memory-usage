@@ -1,0 +1,21 @@
+# Prints out memory usage history (minus the disk cache).
+#
+# Example output:
+# 
+# 16:50:01 180.684 MB used
+# 17:00:01 181.051 MB used
+# 17:10:01 181.273 MB used
+# 17:20:01 181.586 MB used
+# 17:30:01 181.895 MB used
+# 17:40:01 181.656 MB used
+# 17:50:01 181.828 MB used
+# 18:00:01 179.578 MB used
+# 18:10:01 173.742 MB used
+# 18:20:01 173.961 MB used
+# 18:30:01 174.125 MB used
+# 18:40:01 174.242 MB used
+# 18:50:02 174.473 MB used
+# 19:00:02 174.707 MB used
+
+if [ -e /usr/bin/sadf ]; then exe='sadf -d -- -r'; else exe='sar -r -H'; fi && \
+eval $exe | cut -d";" -f3,5,8 | sed 's/;/ /g' | awk '{print $2 " " ($4 - $5) / 1024 " MB used"}'
