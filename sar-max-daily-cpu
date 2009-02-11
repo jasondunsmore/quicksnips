@@ -1,3 +1,27 @@
+# Prints the max daily processor utilization based on sar logs
+#
+# Example output:
+# 
+# Max Daily Processor
+# Utilization
+# ===============================
+# /var/log/sa/sa01
+#        Time       CPU     %user     %nice   %system   %iowait     %idle
+# 02:20:02 PM       all     15.95      0.00      2.24      0.21     81.60
+# 11:50:01 AM       all     16.72      0.00      1.44      0.15     81.68
+# 03:30:01 PM       all     15.72      0.00      2.03      0.22     82.03
+# 03:40:01 PM       all     14.51      0.00      1.90      0.33     83.26
+# 09:10:01 PM       all     11.50      0.00      2.37      0.96     85.18
+# 
+# /var/log/sa/sa02
+#        Time       CPU     %user     %nice   %system   %iowait     %idle
+# 03:00:01 PM       all     32.27      0.00      5.52      0.49     61.73
+# 09:50:02 AM       all     31.04      0.00      5.00      0.28     63.69
+# 02:50:02 PM       all     29.06      0.00      4.47      0.45     66.03
+# 03:10:01 PM       all     28.29      0.00      5.18      0.49     66.04
+# 09:40:01 AM       all     26.72      0.00      4.19      0.59     68.50
+# [...]
+
 START=( $(ls /var/log/sa/sa[0-9][0-9]) )
 for FILE in ${START[@]}; do
     if [ "${FILE}" == "${START[0]}" ]; then
