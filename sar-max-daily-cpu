@@ -22,7 +22,7 @@
 # 09:40:01 AM       all     26.72      0.00      4.19      0.59     68.50
 # [...]
 
-START=( $(ls /var/log/sa/sa[0-9][0-9]) )
+START=( $(ls /var/log/sa/sa[0-9][0-9]) ) \
 for FILE in ${START[@]}; do
     if [ "${FILE}" == "${START[0]}" ]; then
         echo -en "Max Daily Processor
