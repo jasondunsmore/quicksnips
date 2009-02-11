@@ -17,5 +17,7 @@
 # 18:50:02 174.473 MB used
 # 19:00:02 174.707 MB used
 
-if [ -e /usr/bin/sadf ]; then exe='sadf -d -- -r'; else exe='sar -r -H'; fi && \
+memavail=`free -m | grep "Mem:" | awk '{print $2 " MB"}'` &&
+printf "Memory usage by hour (total memory $memavail)\n===========================================\n" &&
+if [ -e "/usr/bin/sadf" ]; then exe="sadf -d -- -r"; else exe="sar -r -H"; fi &&
 eval $exe | cut -d";" -f3,5,8 | sed 's/;/ /g' | awk '{print $2 " " ($4 - $5) / 1024 " MB used"}'

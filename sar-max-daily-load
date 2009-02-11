@@ -22,7 +22,7 @@
 # 06:30:01 PM         1       186      1.32      0.79      0.51
 # [...]
 
-START=( $(ls /var/log/sa/sa[0-9][0-9]) ) \
+START=( $(ls /var/log/sa/sa[0-9][0-9]) ) &&
 for FILE in ${START[@]}; do
     if [ "${FILE}" == "${START[0]}" ]; then
         echo -en "Max Daily Load
