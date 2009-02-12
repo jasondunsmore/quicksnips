@@ -1,0 +1,2 @@
+#replace $ea with your preferred value
+echo "test message" |mail -s "test message" $ea
