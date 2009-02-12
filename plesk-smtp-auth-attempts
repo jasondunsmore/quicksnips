@@ -1,0 +1,19 @@
+# Looks in the Plesk maillog to see where the most smtp authentication
+# attempts came from.
+#
+# Example output:
+#
+#     9 user11@example.com
+#     9 user10@example.com
+#    10 user9@example.com
+#    11 user8@example.com
+#    13 user7@example.com
+#    13 user6@example.com
+#    13 user5@example.com
+#    17 user4@example.com
+#    43 user3@example.com
+#  4292 user2@example.com
+#  6309 user1@example.com
+# 10595 user0@example.com
+
+gzip -dc /usr/local/psa/var/log/maillog.processed.*|grep -i smtp_auth|awk '{print $9}'|sort|uniq -c|sort -n

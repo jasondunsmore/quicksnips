@@ -1,4 +1,28 @@
-START=( $(ls /var/log/sa/sa[0-9][0-9]) )
+# Prints the max daily load based on sar logs
+#
+# Example output:
+#
+# Max Daily Load
+# Averages
+# ===============================
+# /var/log/sa/sa01
+#        Time   runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15
+# 02:10:01 PM         1       181      0.75      0.36      0.25
+# 10:30:01 AM         2       181      0.65      0.28      0.17
+# 11:40:01 AM         0       171      0.63      0.28      0.14
+# 05:40:01 AM         0       170      0.62      0.29      0.15
+# 02:40:01 PM         0       175      0.56      0.30      0.25
+# 
+# /var/log/sa/sa02
+#        Time   runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15
+# 04:10:01 PM         0       198      1.82      0.93      0.76
+# 04:00:01 PM         1       216      1.72      0.98      0.74
+# 02:50:02 PM         1       195      1.66      1.09      0.80
+# 09:40:01 AM         1       205      1.42      1.16      0.75
+# 06:30:01 PM         1       186      1.32      0.79      0.51
+# [...]
+
+START=( $(ls /var/log/sa/sa[0-9][0-9]) ) &&
 for FILE in ${START[@]}; do
     if [ "${FILE}" == "${START[0]}" ]; then
         echo -en "Max Daily Load

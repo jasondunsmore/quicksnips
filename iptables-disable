@@ -1,0 +1,6 @@
+# Disable iptables firewall without getting locked out
+
+iptables -P INPUT ACCEPT &&
+iptables -P OUTPUT ACCEPT &&
+iptables -P FORWARD ACCEPT &&
+iptables -F
