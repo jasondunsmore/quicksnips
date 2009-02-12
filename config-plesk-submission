@@ -1,6 +1,6 @@
-# To enable the submission port, put this in
-# /etc/xinetd.d/submission_psa and restart xinetd
+# Enables the submission port on Plesk boxes
 
+file='/etc/xinetd.d/submission_psa'; if [ ! -e $file ]; then cat > $file <<EOF && /etc/init.d/xinetd restart; fi
 service submission
 {
         socket_type     = stream
@@ -12,3 +12,4 @@ service submission
         server          = /var/qmail/bin/tcp-env
         server_args     = -Rt0 /var/qmail/bin/relaylock /var/qmail/bin/qmail-smtpd /var/qmail/bin/smtp_auth /var/qmail/bin/true /var/qmail/bin/cmd5checkpw /var/qmail/bin/true
 }
+EOF
