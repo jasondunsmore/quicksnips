@@ -7,8 +7,4 @@
 # [Apache MaxClients (256) * PHP memory_limit (16 MB)] / 2 = 2048 MB
 # Available memory: 249 MB
 
-php=`grep memory_limit /etc/php.ini|cut -d" " -f3|sed 's/M//'` \
-httpd=`egrep "^MaxClients" /etc/httpd/conf/httpd.conf | head -n1 | awk '{print $2}'` \
-let memused=(php*httpd)/2 \
-memavail=`free -m|grep "Mem:"|awk '{print $2}'` \
-printf "Approximate configured max memory usage for Apache + PHP:\n[Apache MaxClients ($httpd) * PHP memory_limit ($php MB)] / 2 = $memused MB\nAvailable memory: $memavail MB\n"
+php=`grep memory_limit /etc/php.ini|cut -d" " -f3|sed 's/M//'` && httpd=`egrep "^MaxClients" /etc/httpd/conf/httpd.conf | head -n1 | awk '{print $2}'` && let memused=(php*httpd)/2 && memavail=`free -m|grep "Mem:"|awk '{print $2}'` && printf "Approximate configured max memory usage for Apache + PHP:\n[Apache MaxClients ($httpd) * PHP memory_limit ($php MB)] / 2 = $memused MB\nAvailable memory: $memavail MB\n"
