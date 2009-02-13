@@ -1,0 +1,5 @@
+#Creates a phpinfo() file called test.php if one does not exist.
+
+file='test.php'; if [ ! -e $file ]; then cat > $file <<EOF; fi
+<?php phpinfo(); ?>
+EOF
