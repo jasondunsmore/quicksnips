@@ -1,0 +1,8 @@
+# Checks a list of IPs and reports if they are up or down.
+echo "Enter IPs, one per line. Exit with CTRL-D:" &&\
+cat > /tmp/ips.txt &&\
+ips=`cat /tmp/ips.txt` &&\
+for i in $ips; do echo -n "$i ";\
+ping -c 1 -q -W 1 $i |grep received |awk '{ if ($4 == 1) print "is online"; else print "NOT RESPONDING" }';\
+done;\
+rm /tmp/ips.txt
