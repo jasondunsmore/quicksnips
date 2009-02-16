@@ -2,19 +2,30 @@
 #
 # Example output:
 # 
-# 16:50:01 180.684 MB used
-# 17:00:01 181.051 MB used
-# 17:10:01 181.273 MB used
-# 17:20:01 181.586 MB used
-# 17:30:01 181.895 MB used
-# 17:40:01 181.656 MB used
-# 17:50:01 181.828 MB used
-# 18:00:01 179.578 MB used
-# 18:10:01 173.742 MB used
-# 18:20:01 173.961 MB used
-# 18:30:01 174.125 MB used
-# 18:40:01 174.242 MB used
-# 18:50:02 174.473 MB used
-# 19:00:02 174.707 MB used
+# Max Daily Memory Usage
+# (total memory 2026 MB)
+# ===============================
+# 
+# /var/log/sa/sa08
+#     Time RAM used
+# 06:30:01 1099.78 MB
+# 06:10:01 1098.70 MB
+# 06:20:01 1093.96 MB
+# 01:10:01 1069.83 MB
+# 04:30:01 1067.81 MB
+# 19:30:01 1067.22 MB
+# 04:20:01 1066.01 MB
+# 05:30:02 1065.98 MB
+# 23:00:01 1065.48 MB
+# 04:40:01 1065.20 MB
+# 
+# /var/log/sa/sa09
+#     Time RAM used
+# 06:10:02 1081.86 MB
+# 06:30:01 1081.68 MB
+# 06:20:01 1080.54 MB
+# 00:30:01 1018.30 MB
+# 02:10:01 1017.07 MB
+# [...]
 
-memavail=`free -m | grep "Mem:" | awk '{print $2 " MB"}'` && printf "Memory usage by hour (total memory $memavail)\n===========================================\n" && if [ -e "/usr/bin/sadf" ]; then exe="sadf -d -- -r"; else exe="sar -r -H"; fi && eval $exe | cut -d";" -f3,5,8 | sed 's/;/ /g' | awk '{print $2 " " ($4 - $5) / 1024 " MB used"}'
+memavail=`free -m | grep "Mem:" | awk '{print $2 " MB"}'` && printf "Max Daily Memory Usage\n(total memory $memavail)\n===============================\n" && for file in /var/log/sa/sa[0-9]*; do printf "\n$file\n    Time RAM used\n"; if [ -e "/usr/bin/sadf" ]; then exe="sadf -d -- -r $file"; else exe="sar -r -H -f $file"; fi && eval $exe | cut -d";" -f3,5,8 | sed 's/;/ /g' | awk '{printf "%s %.2f MB\n", $2, ($4-$5)/1024}' | sort -k2 -nr | head; done
