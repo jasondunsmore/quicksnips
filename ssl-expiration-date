@@ -1,0 +1,9 @@
+# Checks expiration of the cert on the IP of the domain you entered.
+# *** Make sure the CN matches the domain you are checking ***
+#
+# EXAMPLE OUTPUT:
+# Enter domain: slashdot.org
+# notAfter=Jul 30 14:09:43 2009 GMT
+# subject= /C=US/O=slashdot.org/OU=3246035501/OU=See www.geotrust.com/resources/cps (c)08/OU=Domain Control Validated - QuickSSL(R)/CN=slashdot.org
+read -e -p "Enter domain: " domain && \
+echo | openssl s_client -connect $domain:443 2>/dev/null |openssl x509 -enddate -subject -noout
