@@ -16,4 +16,4 @@
 #  6309 user1@example.com
 # 10595 user0@example.com
 
-gzip -dc /usr/local/psa/var/log/maillog.processed.*|grep -i smtp_auth|awk '{print $9}'|sort|uniq -c|sort -n
+cat /var/log/messages|grep smtp_auth|awk '{print $9}'|sort|uniq -c|sort -n
