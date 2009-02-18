@@ -1,0 +1,6 @@
+for x in `ls *.frm |cut -f 1 -d \.`;
+do if [ -f $x.MYD ];
+	 then echo "$x exists"
+	 else echo "$x nonexists"
+	 fi
+done

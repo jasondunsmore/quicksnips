@@ -1,0 +1,2 @@
+#Displays process list and statistics
+watch -n 1 mysqladmin --verbose proc stat
