@@ -1,0 +1,3 @@
+# Useful on overloaded servers.
+time top -bn 1 -H -d1 |head -n 50
+
