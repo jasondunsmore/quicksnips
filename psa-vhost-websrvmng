@@ -1,0 +1,1 @@
+/usr/local/psa/admin/bin/websrvmng -a && httpd -t
