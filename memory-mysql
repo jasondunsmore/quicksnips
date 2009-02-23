@@ -1,0 +1,1 @@
+if [ ! -e /root/tuning-primer.sh ]; then wget http://www.day32.com/MySQL/tuning-primer.sh; fi && sh /root/tuning-primer.sh | grep -A7 "MEMORY USAGE"
