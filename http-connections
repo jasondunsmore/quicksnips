@@ -1,0 +1,1 @@
+netstat -tunap|grep :80|awk '{print $5}'|sed 's/:.*//'|sort|uniq -c|sort -n|tail -n50
