@@ -12,4 +12,4 @@ sed -i 's/[ \t]/ /' /tmp/firstcheck; \
 sed -i 's/[ \t]/ /' /tmp/secondcheck; \
 sort -k 2 /tmp/firstcheck >/tmp/firstchecknew; \
 sort -k 2 /tmp/secondcheck >/tmp/secondchecknew; \
-join -j 2 /tmp/firstchecknew /tmp/secondchecknew |grep -v ^0 |awk '{print $3-$2, $1}' |grep -v ^0 |sort -rn;
+join -j 2 /tmp/firstchecknew /tmp/secondchecknew |grep -v ^0 |awk '{print $3-$2, $1}' |grep -v ^0 |sort -rn |uniq;
