@@ -6,6 +6,7 @@
 
 logs=$( lsof -p `cat /var/run/httpd.pid` |egrep "access.log" |awk '{if ($7 > 0) print $9}' ); \
 rm -f /tmp/firstcheck; for x in $logs; do du -s $x >>/tmp/firstcheck; done; \
+echo Waiting for 30 seconds for traffic to be logged...; \
 sleep 30; \
 rm -f /tmp/secondcheck; for x in $logs; do du -s $x >>/tmp/secondcheck; done; \
 sed -i 's/[ \t]/ /' /tmp/firstcheck; \
