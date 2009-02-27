@@ -1,0 +1,9 @@
+cat >> /etc/httpd/conf/httpd.conf <<EOF && apachectl graceful
+ExtendedStatus On
+<Location /server-status>
+    SetHandler server-status
+    Order deny,allow
+    Deny from all
+    Allow from 64.39.0.68
+</Location>
+EOF
