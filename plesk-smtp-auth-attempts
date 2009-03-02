@@ -16,4 +16,4 @@
 #  6309 user1@example.com
 # 10595 user0@example.com
 
-cat /var/log/messages|grep smtp_auth|awk '{print $9}'|sort|uniq -c|sort -n
+zgrep smtp_auth /var/log/messages*|awk '{print $9}'|sort|uniq -c|sort -n|tail -n50

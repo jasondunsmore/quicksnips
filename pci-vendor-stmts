@@ -1,1 +1,0 @@
-function vendorstmts () { for i in $*; do cecho "\n$i"; links -dump http://web.nvd.nist.gov/view/vuln/detail?vulnId=$i|grep -A10 "Vendor Statments"; done }; vendorstmts 
