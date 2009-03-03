@@ -1,0 +1,1 @@
+for x in `seq -w 01 24`; do echo -n "Hour $x: "; egrep "+%d/%b/%y:$x" /var/log/httpd/access_log |awk '{ SUM += $10 } END {print SUM/1024/1024, "M"}' ;done
