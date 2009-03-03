@@ -1,0 +1,4 @@
+# Prints out a summary of IPs, virtual hosts, and page hits from fullstatus.
+# Prints uniq count on the left to see top offenders.apachectl
+
+apachectl fullstatus |awk '/^[0-9]/ {print $11,$12,$14}' |sort -k 2 |uniq -c |sort -rn
