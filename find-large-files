@@ -1,2 +1,1 @@
-find / \( -path '/proc' -o -path '/sys' -o -path '/dev' \) -prune -o \
-  -type f -size +1024k -printf "%s %h/%f\n" |sort -rn |more
+find / \( -path "lost+found" -o -path "/proc" -o -path "/sys" -o -path "/dev" -o -path "/home/rack" -o -path "/root/.rack" -o -path "/root/.rackspace" -o -path "/etc/CommVaultRegistry/Galaxy/Instance001/" -o -path "/opt/galaxy" \) -prune -o -type f -printf "%s %h/%f\n" | sort -rn -k1 | head -n 50 | awk '{ print $1/1048576 " MB  " $2}'
