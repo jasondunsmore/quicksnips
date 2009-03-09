@@ -1,1 +1,1 @@
-function dropips () { for ip in $*; do iptables -I INPUT -s $ip -j DROP; done && iptables -L }; dropips 
+function dropips () { for ip in $*; do iptables -I INPUT -s $ip -j DROP; done && iptables -nL; }; dropips 
