@@ -1,2 +1,2 @@
 #displays apache logfiles and their size. If you know how to format this better then please do!
-lsof -p `cat /var/run/httpd.pid` |egrep "access.log" |awk '{print $7,"\t",$9 }' |sort |uniq
+lsof -p `cat /var/run/httpd.pid` |egrep "access.log" |awk '{printf "%12d %s\n", $7, $9 }' |sort |uniq
