@@ -1,4 +1,4 @@
-file="racktest.php"; if [ ! -e $file ]; then cat > $file <<EOF; fi
+file="mailtest.php"; if [ ! -e $file ]; then cat > $file <<EOF; fi
 <?php
 $to = "";
 $subject = "Hi!";

@@ -1,0 +1,1 @@
+top && echo -e "\n\nPlesk installed?\n"; rpm -q psa && echo -e "\n\nUsers logged in:\n"; w && echo -e "\n\nUsers recently logged in\n"; last|head -n5 && echo -e "\n\n Last 10 kernel messages\n"; dmesg|tail
