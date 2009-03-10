@@ -1,0 +1,10 @@
+yum install php-devel httpd-devel || up2date -i php-devel httpd-devel && mount -o remount,exec /tmp && pecl install apc && cat >> /etc/php.ini <<EOF && php -i|grep -i apc && apachectl graceful && mount -o remount,noexec /tmp
+EOFextension=apc.so
+apc.enabled=1
+apc.shm_segments=4
+apc.shm_size=33
+apc.ttl=7200
+apc.user_ttl=7200
+apc.num_files_hint=1024
+apc.mmap_file_mask=/tmp/apc.XXXXXX
+apc.enable_cli=1
