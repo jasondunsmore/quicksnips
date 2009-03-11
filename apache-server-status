@@ -4,6 +4,6 @@ ExtendedStatus On
     SetHandler server-status
     Order deny,allow
     Deny from all
-    Allow from 64.39.0.68 localhost
+    Allow from localhost
 </Location>
 EOF
