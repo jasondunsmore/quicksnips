@@ -1,2 +1,2 @@
-# Download apache buddy if it does not exist and and run it
-if  [ ! -e /home/rack/apachebuddy.pl ]; then wget --quiet http://cloud.github.com/downloads/jasondunsmore/rhel-snippets/apachebuddy.pl -O /home/rack/apachebuddy.pl; fi;  perl /home/rack/apachebuddy.pl
+# Run Apache buddy to analyze Apache's memory usage
+curl -L -s http://cloud.github.com/downloads/jasondunsmore/rhel-snippets/apachebuddy.pl | perl
