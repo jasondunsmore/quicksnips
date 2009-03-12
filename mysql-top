@@ -1,0 +1,1 @@
+watch -n1 "mysqladmin -r status && echo && mysqladmin processlist -v"
