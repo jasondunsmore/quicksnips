@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# User variable(s)
+dir=~/quicksnips
+# End user variable(s)
+
+usage="Usage: ./snippets [-m] [-e] [-x] SNIPDIR [SNIPPET]
+
+Optional arguments.
+  -h  Print this help message.
+  -m  Use the middle mouse button to paste the x-selection buffer.
+  -e  Show documentation in Emacs.
+  -x  Show documentation in Xdialog.
+"
+
+while getopts "mex:h" options; do
+    case $options in
+	m ) mouse=1;;
+	e ) edoc=1;;
+	x ) xdoc=1;;
+	h ) echo "$usage"
+	    exit 1;;
+	* ) echo "$usage"
+	    exit 1;;
+    esac
+done
+
+# Shift the positional parameters to the left by the number of options.
+shift $(($OPTIND - 1))
+
+# quicksnips base directory
+qs=$dir/$1
+
+# Get selection of the script to be pasted
+if [ $2 ]; then
+    exe=$2
+else
+    exe=$( ls -B $qs | dmenu -b )
+fi
+
+# Exit if no selection
+if [ ! $exe ]; then
+    exit 1
+fi
+
+# Log usage stats to .stats file
+echo $exe >> $qs/.stats
+
+# Paste the script
+cat $qs/$exe | sed -e '/^\#/d' -e '/^$/d' | perl -pe 'chop if eof' | xclip
+xdotool key "shift+Insert"
+
+# Show the documentation in Emacs
+if [ $edoc ]; then
+    doc=`cat $qs/$exe | sed -n '/^#/p'|sed 's/^# *//'`
+    if [ -n "$doc" ]; then
+	emacsclient -e "(quicksnips-doc \"$doc\")"
+    fi
+fi
+
+# Show the documentation in Xdialog
+if [ $xdoc ]; then
+    tmp=`mktemp`
+    cat ~/$qs/$exe | sed -n '/^#/p'|sed 's/^# *//' > $tmp
+    if [ -s $tmp ]; then
+	Xdialog --fixed-font --textbox $tmp 15 60
+    fi
+fi
