@@ -1,0 +1,1 @@
+grep AUTH=server /var/log/maillog*|sed 's/.*authid=\(.*\), mech.*/\1/'|sort|uniq -c|sort -n
