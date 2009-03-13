@@ -6,4 +6,4 @@
 # Users recently logged in
 # Last 10 kernel messages
 
-top && echo -e "\nLAST 10 KERNEL MESSAGES:"; dmesg|tail; echo -e "\nREDHAT VERSION:"; cat /etc/redhat-release; echo -e "\nPLESK INSTALLED?"; rpm -q psa; echo -e "\nRS-SYSMON INSTALLED?"; rpm -q rs-sysmon; echo -e "\nUSERS LOGGED IN:"; w; echo -e "\nUSERS RECENTLY LOGGED IN:"; last|head -n5;  echo -e "\nMEMORY USAGE:"; free -m; echo -e "\nDISK USAGE:"; df -h; echo -e "\nSYSTEM UPTIME:"; uptime
+top && echo -e "\nLAST 10 KERNEL MESSAGES:"; dmesg|tail; echo -e "\nRECENT LOAD:"; sar -q|tail; echo -e "\nREDHAT VERSION:"; cat /etc/redhat-release; echo -e "\nPLESK INSTALLED?"; rpm -q psa; echo -e "\nRS-SYSMON INSTALLED?"; rpm -q rs-sysmon; echo -e "\nUSERS LOGGED IN:"; w; echo -e "\nUSERS RECENTLY LOGGED IN:"; last|head -n5;  echo -e "\nMEMORY USAGE:"; free -m; echo -e "\nDISK USAGE:"; df -h; echo -e "\nSYSTEM UPTIME:"; uptime; echo -e "\nPUBLIC IP:"; wget -qO - www.whatismyip.com/automation/n09230945.asp; echo
