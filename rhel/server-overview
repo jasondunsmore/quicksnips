@@ -1,0 +1,9 @@
+# Puts the user in top.  Upon quitting, the following information is reported:
+#
+# Plesk installed?
+# rs-sysmon installed?
+# Users logged in
+# Users recently logged in
+# Last 10 kernel messages
+
+top && echo -e "\nLAST 10 KERNEL MESSAGES:"; dmesg|tail; echo -e "\nREDHAT VERSION:"; cat /etc/redhat-release; echo -e "\nPLESK INSTALLED?"; rpm -q psa; echo -e "\nRS-SYSMON INSTALLED?"; rpm -q rs-sysmon; echo -e "\nUSERS LOGGED IN:"; w; echo -e "\nUSERS RECENTLY LOGGED IN:"; last|head -n5;  echo -e "\nMEMORY USAGE:"; free -m; echo -e "\nDISK USAGE:"; df -h; echo -e "\nSYSTEM UPTIME:"; uptime

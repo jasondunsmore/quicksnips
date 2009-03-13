@@ -1,9 +1,0 @@
-# Puts the user in top.  Upon quitting, the following information is reported:
-#
-# Plesk installed?
-# rs-sysmon installed?
-# Users logged in
-# Users recently logged in
-# Last 10 kernel messages
-
-top && echo -e "\n\n Last 10 kernel messages\n"; dmesg|tail; echo -e "\n\nPlesk installed?\n"; rpm -q psa; echo -e "\n\nrs-sysmon installed?\n"; rpm -q rs-sysmon; echo -e "\n\nUsers logged in:\n"; w; echo -e "\n\nUsers recently logged in:\n"; last|head -n5;  echo -e "\n\nMemory usage:\n"; free -m; echo -e "\n\nDisk usage:\n"; df -h; echo -e "\n\nSystem uptime:\n"; uptime
