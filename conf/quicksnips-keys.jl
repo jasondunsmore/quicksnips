@@ -1,6 +1,7 @@
 (define snippets-keymap (make-keymap))
 (bind-keys global-keymap
 	   "M-S-s" (lambda () (system "~/quicksnips/bin/snippets -e rhel &"))
+	   "M-S-d" (lambda () (system "~/quicksnips/bin/snippets -e debian &"))
 	   "C-z" snippets-keymap)
 
 (bind-keys snippets-keymap "o" (lambda () (system "~/quicksnips/bin/snippets rhel server-overview")))

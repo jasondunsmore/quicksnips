@@ -1,1 +1,68 @@
-* Welcome
+* Intro
+This solution allows you to have access to a large number of
+one-liners and makes them available for use on remote systems without
+having to cut & paste. Dmenu is the interface, which makes it easy to
+manage thousands of menu items quickly, since it dynamically narrows
+down results based on your keystrokes. Dmenu cats the output of the
+one-liners into xclip, then xdotool mimics Shift-Insert to paste the
+output of your one-liner into the remote server without executing it,
+so that you can modify it before executing.
+
+This git repo is for sharing the one-liners. Contact JasonD or MattB
+for write access.
+
+* Requirements
+- [[http://www.suckless.org/programs/dmenu.html][dmenu]]
+- [[http://www.semicomplete.com/projects/xdotool/][xdotool]]
+- [[http://sourceforge.net/projects/xclip][xclip]]
+- [[http://git-scm.com/download][git]]
+
+* Installation
+** Install script and dependencies
+: apt-get install dmenu xdotool xclip git-core
+: cd ~
+: git clone git://quicksnips.org/git/quicksnips
+: ln -s ~/quicksnips/bin/quicksnips ~/bin
+
+** Bind the snippets script to a keybinding in your window manager
+*** Gnome (Metacity)
+Install gconf-editor if you don’t have it, then edit the keybindings
+under apps – metacity – keybinding_commands and apps – metacity –
+global keybindings. [[http://www.electricmonk.nl/log/2007/08/02/gnomemetacity-keybindings-and-other-customizations/][More detailed instructions]]
+
+*** KDE
+Use kmenuedit to create a new menu item and then apply a shortcut to
+it.
+
+*** Sawfish
+
+Add the following to your =~/.sawfishrc= file:
+
+: (load-file "~/quicksnips/conf/quicksnips-keys.jl")
+
+View =~/quicksnips/conf/quicksnips-keys.jl= for additional Sawfish
+examples.
+
+*** Ratpoison
+: bind d exec /home/mattb/scripts/snippets
+
+* Contributing
+Contact
+
+** Naming convention
+Scripts should be named with the most general descriptor
+first. Descriptors should be separated by hyphens.
+
+** Scripting conventions
+Multi-line scripts should end with ”\” (backslash) so bash treats
+them as the same line. This will prevent scripts from executing
+automatically.
+
+Comments should describe what the script does and give an example of
+the script output (when applicable).
+
+Scripts with arguments that are buried in the middle of the line
+should use a bash function to move arguments to the end of the line.
+For example:
+
+: function dropips () { for ip in $*; do iptables -I INPUT -s $ip -j DROP; done && iptables -L }; dropips
