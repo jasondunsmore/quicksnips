@@ -1,3 +1,6 @@
+#+TITLE: quicksnips
+#+LINK: qs http://quicksnips.org/quicksnips/
+
 * Intro
 Quicksnips allows you to have access to a large number of one-liners
 and makes them available for use on remote systems without having to
@@ -8,10 +11,9 @@ one-liners into xclip, then xdotool mimics Shift-Insert to paste the
 output of your one-liner into the remote server without executing it,
 so that you can modify it before executing.
 
-This git repo is for sharing the one-liners. Contact JasonD or MattB
-for write access.
-
 * Obtaining quicksnips
+
+To download quicksnips from the public git repository, use:
 
 : git clone git://quicksnips.org/git/quicksnips
 
@@ -49,8 +51,8 @@ Add the following to your =~/.sawfishrc= file:
 
 : (load-file "~/quicksnips/conf/quicksnips-keys.jl")
 
-View =~/quicksnips/conf/quicksnips-keys.jl= for additional Sawfish
-examples, including configuration Emacs-like keybindings.
+View [[qs::conf/quicksnips-keys.jl][=quicksnips-keys.jl=]] for additional Sawfish examples, including
+configuration Emacs-like keybindings.
 
 *** Ratpoison
 : bind d exec /home/mattb/scripts/quicksnips
@@ -61,11 +63,27 @@ To display documentation in Emacs when a script is selected, use
 
 : (load "~/quicksnips/conf/quicksnips-doc.el)
 
-To display documentation in Xdialog when a script is selected, use
-=quicksnips -x=.
+This will tell Emacs to load the [[qs::conf/quicksnips-doc.el][=quicksnips-doc.el=]] file, in which
+the quicksnips-doc function is defined.
+
+Alternatively, you can display documentation in Xdialog when a script
+is selected using =quicksnips -x=.
 
 * Contributing
-Contact
+For write access to the git repository, email file:jason.png
+
+** Project layout
+
+| Directory | Description                                            |
+|-----------+--------------------------------------------------------|
+| [[qs::bin/][bin/]]      | quicksnips scripts                                     |
+| [[qs::conf/][conf/]]     | quicksnips configuration files                         |
+| [[qs::debian/][debian/]]   | Debian shell snippets                                  |
+| [[qs:doc/][doc/]]      | quicksnips documentation                               |
+| [[qs::freebsd][freebsd/]]  | FreeBSD shell snippets                                 |
+| [[qs:general][general/]]  | Shell snippets that work on any GNU/Linux distribution |
+| [[qs::remote][remote/]]   | Scripts that are called remotely                       |
+| [[qs::rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets         |
 
 ** Naming convention
 Scripts should be named with the most general descriptor
@@ -84,3 +102,6 @@ should use a bash function to move arguments to the end of the line.
 For example:
 
 : function dropips () { for ip in $*; do iptables -I INPUT -s $ip -j DROP; done && iptables -L }; dropips
+
+* Feedback
+Send your suggestions, corrections, or ideas to file:feedback.png
