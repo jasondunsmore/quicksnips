@@ -1,2 +1,2 @@
 # Run Apache buddy to analyze Apache's memory usage
-curl -L -s http://cloud.github.com/downloads/jasondunsmore/rhel-snippets/apachebuddy.pl | perl
+curl -L -s http://quicksnips.org/apachebuddy.pl | perl
