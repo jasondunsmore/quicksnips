@@ -26,7 +26,7 @@ for write access.
 
 ** Bind the snippets script to a keybinding in your window manager
 *** Gnome (Metacity)
-Install gconf-editor if you don’t have it, then edit the keybindings
+Install gconf-editor if you don't have it, then edit the keybindings
 under apps – metacity – keybinding_commands and apps – metacity –
 global keybindings. [[http://www.electricmonk.nl/log/2007/08/02/gnomemetacity-keybindings-and-other-customizations/][More detailed instructions]]
 
@@ -54,8 +54,8 @@ Scripts should be named with the most general descriptor
 first. Descriptors should be separated by hyphens.
 
 ** Scripting conventions
-Multi-line scripts should end with ”\” (backslash) so bash treats
-them as the same line. This will prevent scripts from executing
+Multi-line scripts should end with "\" (backslash) so bash treats them
+as the same line. This will prevent scripts from executing
 automatically.
 
 Comments should describe what the script does and give an example of
