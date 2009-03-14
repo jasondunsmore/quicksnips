@@ -31,7 +31,7 @@ http://quicksnips.org/quicksnips/
 : git clone git://quicksnips.org/git/quicksnips
 : ln -s ~/quicksnips/bin/quicksnips ~/bin
 
-** Bind the snippets script to a keybinding in your window manager
+** Bind the quicksnips script to a keybinding in your window manager
 *** Gnome (Metacity)
 Install gconf-editor if you don't have it, then edit the keybindings
 under apps – metacity – keybinding_commands and apps – metacity –
