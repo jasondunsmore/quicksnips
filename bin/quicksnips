@@ -28,6 +28,11 @@ done
 # Shift the positional parameters to the left by the number of options.
 shift $(($OPTIND - 1))
 
+if [ ! $1 ]; then
+    echo "$usage"
+    exit 1
+fi
+
 # quicksnips base directory
 qs=$dir/$1
 
