@@ -18,7 +18,7 @@ for write access.
 - [[http://git-scm.com/download][git]]
 
 * Installation
-** Install script and dependencies
+** Install quicksnips and dependencies
 : apt-get install dmenu xdotool xclip git-core
 : cd ~
 : git clone git://quicksnips.org/git/quicksnips
@@ -32,7 +32,9 @@ global keybindings. [[http://www.electricmonk.nl/log/2007/08/02/gnomemetacity-ke
 
 *** KDE
 Use kmenuedit to create a new menu item and then apply a shortcut to
-it.
+it.  Since "Shift + Insert" is bound to the copy/paste buffer in KDE,
+the shortcut should call =quicksnips -m=, which uses the middle mouse
+button to paste the x selection buffer.
 
 *** Sawfish
 
@@ -41,10 +43,19 @@ Add the following to your =~/.sawfishrc= file:
 : (load-file "~/quicksnips/conf/quicksnips-keys.jl")
 
 View =~/quicksnips/conf/quicksnips-keys.jl= for additional Sawfish
-examples.
+examples, including configuration Emacs-like keybindings.
 
 *** Ratpoison
-: bind d exec /home/mattb/scripts/snippets
+: bind d exec /home/mattb/scripts/quicksnips
+
+** Displaying documentation
+To display documentation in Emacs when a script is selected, use
+=quicksnips -e= and put the following in your .emacs file:
+
+: (load "~/quicksnips/conf/quicksnips-doc.el)
+
+To display documentation in Xdialog when a script is selected, use
+=quicksnips -x=.
 
 * Contributing
 Contact
