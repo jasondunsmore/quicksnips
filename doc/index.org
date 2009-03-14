@@ -1,9 +1,9 @@
 * Intro
-This solution allows you to have access to a large number of
-one-liners and makes them available for use on remote systems without
-having to cut & paste. Dmenu is the interface, which makes it easy to
-manage thousands of menu items quickly, since it dynamically narrows
-down results based on your keystrokes. Dmenu cats the output of the
+Quicksnips allows you to have access to a large number of one-liners
+and makes them available for use on remote systems without having to
+cut & paste.  Dmenu is the interface, which makes it easy to manage
+thousands of menu items quickly, since it dynamically narrows down
+results based on your keystrokes.  Dmenu cats the output of the
 one-liners into xclip, then xdotool mimics Shift-Insert to paste the
 output of your one-liner into the remote server without executing it,
 so that you can modify it before executing.
@@ -11,13 +11,20 @@ so that you can modify it before executing.
 This git repo is for sharing the one-liners. Contact JasonD or MattB
 for write access.
 
-* Requirements
+* Obtaining quicksnips
+
+: git clone git://quicksnips.org/git/quicksnips
+
+You can also browse the repository at:
+http://quicksnips.org/quicksnips/
+
+* Installation
+** Requirements
 - [[http://www.suckless.org/programs/dmenu.html][dmenu]]
 - [[http://www.semicomplete.com/projects/xdotool/][xdotool]]
 - [[http://sourceforge.net/projects/xclip][xclip]]
 - [[http://git-scm.com/download][git]]
 
-* Installation
 ** Install quicksnips and dependencies
 : apt-get install dmenu xdotool xclip git-core
 : cd ~
