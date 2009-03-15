@@ -42,9 +42,13 @@ http://quicksnips.org/quicksnips/
 - [[http://git-scm.com/download][git]]
 
 ** Install quicksnips and dependencies
-If you're using Debian, everything can be installed with apt-get:
+If you're using Debian or Ubuntu, all dependencies can be installed
+with apt-get:
 
 : apt-get install dmenu xdotool xclip git-core
+
+For Fedora, you may have to download the packages from the project
+websites.
 
 Clone the quicksnips git repository:
 
