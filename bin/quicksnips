@@ -42,6 +42,7 @@ function chkdirs () {
 # Process arguments and build menu if necessary
 if [ "$snip" -a $# -eq 1 ]; then
     exe=$qsdir/$1/$snip
+    echo `basename $exe` >> $qsdir/$1/.stats
 elif [ "$snip" -a $# -eq 0 ]; then
     echo "Please indicate SNIPDIR with -s option."
     exit 1
@@ -52,23 +53,23 @@ elif [ $# -eq 0 ]; then
     cd $qsdir
     chkdirs $snipdirs
     exe=$( find $snipdirs -type f | egrep -v "/\.|~$" | sort | dmenu -b )
+    echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
 elif [ $# -eq 1 ]; then
     chkdirs $qsdir/$1
     cd $qsdir/$1
     exe=$( find -type f | sed "s/^\.\///" | egrep -v "^\.|~$" | sort | dmenu -b )
+    echo $exe >> $qsdir/$1/.stats
 elif [ $# -gt 1 ]; then
     cd $qsdir
     chkdirs $*
     exe=$( find $* -type f | egrep -v "/\.|~$" | sort | dmenu -b )
+    echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
 fi
 
 # Exit if no selection
 if [ ! $exe ]; then
     exit 1
 fi
-
-# Log usage stats to .stats file
-echo $exe >> $dir/.stats
 
 # Paste the script
 cat $exe | sed -e '/^\#/d' -e '/^$/d' | perl -pe 'chop if eof' | xclip

@@ -69,7 +69,7 @@ Usage:
 Without any arguments, quicksnips will display the snippet directories
 defined by the =snipdirs= variable in the quicksnips script.  By
 default, this is set to display all snippets directories (linux, rhel,
-debian, and bsd).  So, by default, running:
+debian, and bsd).  So running:
 
 : quicksnips linux rhel debian bsd
 
