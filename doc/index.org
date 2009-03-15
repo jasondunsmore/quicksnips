@@ -63,20 +63,6 @@ Put the quicksnips script in your $PATH:
 :   -e  Show documentation in Emacs.
 :   -x  Show documentation in Xdialog.
 
-*** KDE users
-Since "Shift + Insert" is bound to the copy/paste buffer in KDE,
-the shortcut should call =quicksnips -m=, which uses the middle mouse
-button to paste the x selection buffer.
-
-*** Displaying documentation
-To display documentation in Emacs when a script is selected, use
-=quicksnips -e= and put the following in your .emacs file:
-
-: (load "~/quicksnips/conf/quicksnips-doc.el)
-
-Alternatively, you can display documentation in Xdialog when a script
-is selected using =quicksnips -x=.
-
 *** Snippets to display in dmenu
 Without any arguments, quicksnips will display the snippet directories
 defined by the =snipdirs= variable in the quicksnips script.  By
@@ -99,6 +85,20 @@ or
 I would suggest having a keybinding for =quicksnips linux rhel= for
 use on RHEL systems and a =quicksnips linux debian= keybinding for use
 on Debian systems.
+
+*** Displaying documentation
+To display documentation in Emacs when a script is selected, use
+=quicksnips -e= and put the following in your .emacs file:
+
+: (load "~/quicksnips/conf/quicksnips-doc.el)
+
+Alternatively, you can display documentation in Xdialog when a script
+is selected using =quicksnips -x=.
+
+*** KDE users
+Since "Shift + Insert" is bound to the copy/paste buffer in KDE,
+the shortcut should call =quicksnips -m=, which uses the middle mouse
+button to paste the x selection buffer.
 
 ** Bind the quicksnips script to a keybinding in your window manager
 *** Gnome (Metacity)
