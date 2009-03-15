@@ -22,14 +22,14 @@ http://quicksnips.org/quicksnips/
 * Project layout
 | Directory | Description                                           |
 |-----------+-------------------------------------------------------|
-| [[qs::bin/][bin/]]      | quicksnips scripts                                    |
-| [[qs::conf/][conf/]]     | quicksnips configuration files                        |
-| [[qs::debian/][debian/]]   | Debian shell snippets                                 |
+| [[qs:bin/][bin/]]      | quicksnips scripts                                    |
+| [[qs:conf/][conf/]]     | quicksnips configuration files                        |
+| [[qs:debian/][debian/]]   | Debian shell snippets                                 |
 | [[qs:doc/][doc/]]      | quicksnips documentation                              |
-| [[qs::bsd][bsd/]]      | FreeBSD shell snippets                                |
+| [[qs:bsd][bsd/]]      | FreeBSD shell snippets                                |
 | [[qs:linux][linux/]]    | Shell snippets that run on any GNU/Linux distribution |
-| [[qs::remote][remote/]]   | Scripts that are called remotely                      |
-| [[qs::rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets        |
+| [[qs:remote][remote/]]   | Scripts that are called remotely                      |
+| [[qs:rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets        |
 
 * Installation
 ** Requirements
@@ -78,7 +78,7 @@ debian, and bsd).  So running:
 : quicksnips linux rhel debian bsd
 
 The default snippets directories can be customized by editing the
-=snipdirs= variable at the top of the [[qs::bin/quicksnips][=quicksnips=]] script.
+=snipdirs= variable at the top of the [[qs:bin/quicksnips][=quicksnips=]] script.
 
 To have quicksnips only display one or two snippets directories, then
 only pass the name of those directories to the script.  For example:
@@ -127,7 +127,7 @@ script and then apply a keyboard shortcut to it.
 *** Sawfish
 
 Example sawfish configuration can be found in the
-[[qs::conf/quicksnips-keys.jl][=conf/quicksnips-keys.jl=]].
+[[qs:conf/quicksnips-keys.jl][=conf/quicksnips-keys.jl=]].
 
 To use that sawfish configuration, simply add the following to your
 =~/.sawfishrc= file:
@@ -151,7 +151,7 @@ files.
 
 *** Emacs-like keybindings
 For examples of configuring Emacs-like keybindings for specific
-snippets in Sawfish, view [[qs::conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
+snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 
 | Key     | Binding                               |
 |---------+---------------------------------------|
