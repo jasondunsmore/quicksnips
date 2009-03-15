@@ -1,23 +1,24 @@
 #!/bin/bash
 
 # User variable(s)
-dir=~/quicksnips
+qsdir=~/quicksnips                           # Path to quicksnips directory
+snipdirs="rhel linux debian freebsd"         # Snippet directories to include by default
 # End user variable(s)
 
-usage="Usage: ./snippets [-m] [-e] [-x] SNIPDIR [SNIPPET]
+usage="Usage: ./snippets [-m] [-e] [-x] [-s SNIPPET] [SNIPDIR]...
 
 Optional arguments.
   -h  Print this help message.
   -m  Use the middle mouse button to paste the x-selection buffer.
   -e  Show documentation in Emacs.
-  -x  Show documentation in Xdialog.
-"
+  -x  Show documentation in Xdialog."
 
-while getopts "mex:h" options; do
+while getopts "mexs:h" options; do
     case $options in
 	m ) mouse=1;;
 	e ) edoc=1;;
 	x ) xdoc=1;;
+	s ) snip=$OPTARG;;
 	h ) echo "$usage"
 	    exit 1;;
 	* ) echo "$usage"
@@ -28,19 +29,41 @@ done
 # Shift the positional parameters to the left by the number of options.
 shift $(($OPTIND - 1))
 
-if [ ! $1 ]; then
-    echo "$usage"
+# Function to check if all SNIPDIRs exist.
+function chkdirs () {
+    for sdir in $*; do
+	if [ ! -e $sdir ]; then
+	    echo "SNIPDIR $sdir doesn't exist."
+	    exit 1
+	fi
+    done
+}
+
+# Process arguments and build menu if necessary
+if [ "$snip" -a $# -eq 1 ]; then
+    exe=$qsdir/$1/$snip
+elif [ "$snip" -a $# -eq 0 ]; then
+    echo "Please indicate SNIPDIR with -s option."
     exit 1
-fi
-
-# quicksnips base directory
-qs=$dir/$1
-
-# Get selection of the script to be pasted
-if [ $2 ]; then
-    exe=$2
-else
-    exe=$( ls -B $qs | dmenu -b )
+elif [ "$snip" -a $# -gt 1 ]; then
+    echo "Pass only one SNIPDIR with -s option."
+    exit 1
+elif [ $# -eq 0 ]; then
+    cd $qsdir
+    chkdirs $snipdirs
+    exe=$( find $snipdirs -type f | egrep -v "/\.|~$" | sort | dmenu -b )
+elif [ $# -eq 1 ]; then
+    if [ -e $qsdir/$1 ]; then
+	cd $qsdir/$1
+	exe=$( find -type f | sed "s/^\.\///" | egrep -v "^\.|~$" | sort | dmenu -b )
+    else
+	echo "That SNIPDIR doesn't exist."
+	exit 1
+    fi
+elif [ $# -gt 1 ]; then
+    cd $qsdir
+    chkdirs $*
+    exe=$( find $* -type f | egrep -v "/\.|~$" | sort | dmenu -b )
 fi
 
 # Exit if no selection
@@ -49,10 +72,10 @@ if [ ! $exe ]; then
 fi
 
 # Log usage stats to .stats file
-echo $exe >> $qs/.stats
+echo $exe >> $dir/.stats
 
 # Paste the script
-cat $qs/$exe | sed -e '/^\#/d' -e '/^$/d' | perl -pe 'chop if eof' | xclip
+cat $exe | sed -e '/^\#/d' -e '/^$/d' | perl -pe 'chop if eof' | xclip
 xdotool key "shift+Insert"
 
 # Show the documentation in Emacs

@@ -74,16 +74,16 @@ For write access to the git repository, email file:jason.png
 
 ** Project layout
 
-| Directory | Description                                            |
-|-----------+--------------------------------------------------------|
-| [[qs::bin/][bin/]]      | quicksnips scripts                                     |
-| [[qs::conf/][conf/]]     | quicksnips configuration files                         |
-| [[qs::debian/][debian/]]   | Debian shell snippets                                  |
-| [[qs:doc/][doc/]]      | quicksnips documentation                               |
-| [[qs::freebsd][freebsd/]]  | FreeBSD shell snippets                                 |
-| [[qs:general][general/]]  | Shell snippets that work on any GNU/Linux distribution |
-| [[qs::remote][remote/]]   | Scripts that are called remotely                       |
-| [[qs::rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets         |
+| Directory | Description                                    |
+|-----------+------------------------------------------------|
+| [[qs::bin/][bin/]]      | quicksnips scripts                             |
+| [[qs::conf/][conf/]]     | quicksnips configuration files                 |
+| [[qs::debian/][debian/]]   | Debian shell snippets                          |
+| [[qs:doc/][doc/]]      | quicksnips documentation                       |
+| [[qs::freebsd][freebsd/]]  | FreeBSD shell snippets                         |
+| [[qs:linux][linux/]]    | Shell snippets for any GNU/Linux distribution  |
+| [[qs::remote][remote/]]   | Scripts that are called remotely               |
+| [[qs::rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets |
 
 ** Naming convention
 Scripts should be named with the most general descriptor

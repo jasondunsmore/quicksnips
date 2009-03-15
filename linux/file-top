@@ -1,0 +1,2 @@
+# Like top, but for files
+watch --differences -n 5 'df; ls -FlAt;'
