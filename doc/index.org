@@ -81,16 +81,16 @@ For write access to the git repository, email file:jason.png
 
 ** Project layout
 
-| Directory | Description                                    |
-|-----------+------------------------------------------------|
-| [[qs::bin/][bin/]]      | quicksnips scripts                             |
-| [[qs::conf/][conf/]]     | quicksnips configuration files                 |
-| [[qs::deb/][deb/]]      | Debian shell snippets                          |
-| [[qs:doc/][doc/]]      | quicksnips documentation                       |
-| [[qs::bsd][bsd/]]      | FreeBSD shell snippets                         |
-| [[qs:lin][lin/]]      | Shell snippets for any GNU/Linux distribution  |
-| [[qs::remote][remote/]]   | Scripts that are called remotely               |
-| [[qs::rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets |
+| Directory | Description                                           |
+|-----------+-------------------------------------------------------|
+| [[qs::bin/][bin/]]      | quicksnips scripts                                    |
+| [[qs::conf/][conf/]]     | quicksnips configuration files                        |
+| [[qs::deb/][deb/]]      | Debian shell snippets                                 |
+| [[qs:doc/][doc/]]      | quicksnips documentation                              |
+| [[qs::bsd][bsd/]]      | FreeBSD shell snippets                                |
+| [[qs:lin][lin/]]      | Shell snippets that run on any GNU/Linux distribution |
+| [[qs::remote][remote/]]   | Scripts that are called remotely                      |
+| [[qs::rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets        |
 
 ** Naming convention
 Scripts should be named with the most general descriptor
@@ -111,4 +111,4 @@ For example:
 : function dropips () { for ip in $*; do iptables -I INPUT -s $ip -j DROP; done && iptables -L }; dropips
 
 * Feedback
-Send your suggestions, corrections, or ideas to file:feedback.png
+Send suggestions or bug reports to file:feedback.png
