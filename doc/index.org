@@ -54,6 +54,8 @@ Put the quicksnips script in your $PATH:
 
 ** Determine how you will run quicksnips command
 
+Usage:
+
 : $ quicksnips -h
 : Usage: ./quicksnips [-m] [-e] [-x] [-s SNIPPET] [SNIPDIR]...
 : 
@@ -109,7 +111,7 @@ Install and run gconf-editor, then create a keybinding for the
 
 ...and bind it to a key under:
 
-: apps -> metacity -> global keybindings.
+: apps -> metacity -> global keybindings
 
 [[http://www.electricmonk.nl/log/2007/08/02/gnomemetacity-keybindings-and-other-customizations/][More detailed instructions]]
 
