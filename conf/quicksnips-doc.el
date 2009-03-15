@@ -22,7 +22,7 @@
 
 ;;; Commentary:
 
-;; 
+;; (load "~/quicksnips/conf/quicksnips-doc.el)
 
 ;;; Code:
 

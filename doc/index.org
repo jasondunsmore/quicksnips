@@ -71,11 +71,11 @@ defined by the =snipdirs= variable in the quicksnips script.  By
 default, this is set to display all snippets directories (linux, rhel,
 debian, and bsd).  So running:
 
-: quicksnips linux rhel debian bsd
+: quicksnips
 
 ...is the same as running:
 
-: quicksnips
+: quicksnips linux rhel debian bsd
 
 The default snippets directories can be customized by editing the
 =snipdirs= variable at the top of the [[qs::bin/quicksnips][=quicksnips=]] script.
@@ -126,17 +126,42 @@ script and then apply a keyboard shortcut to it.
 
 *** Sawfish
 
-Add the following to your =~/.sawfishrc= file:
+Example sawfish configuration can be found in the
+[[qs::conf/quicksnips-keys.jl][=conf/quicksnips-keys.jl=]].
+
+To use that sawfish configuration, simply add the following to your
+=~/.sawfishrc= file:
 
 : (load-file "~/quicksnips/conf/quicksnips-keys.jl")
-
-View [[qs::conf/quicksnips-keys.jl][=quicksnips-keys.jl=]] for additional Sawfish examples, including
-configuration of Emacs-like keybindings.
 
 *** Ratpoison
 Example configuration:
 
 : bind d exec quicksnips
+
+** Configuration for Emacs users
+*** Shell-mode
+Since the snippet files don't end in .sh, the following should be
+added to .emacs to enable sh-mode for all buffers visiting snippets
+files.
+
+: (setq auto-mode-alist (append
+: 		       '((".*quicksnips/\(rhel\|debian\|linux\|bsd\).*" . sh-mode))
+: 		       auto-mode-alist))
+
+*** Emacs-like keybindings
+For examples of configuring Emacs-like keybindings for specific
+snippets in Sawfish, view [[qs::conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
+
+| Key     | Binding                               |
+|---------+---------------------------------------|
+| C-z     | Prefix Command                        |
+| C-z z   | C-z                                   |
+| C-z a b | quicksnips -s apache-buddy rhel       |
+| C-z a g | quicksnips -s apache-log-growers rhel |
+| C-z f b | quicksnips -s file-backup linux       |
+| C-z o   | quicksnips -s server-overview rhel    |
+| C-z u   | quicksnips -s get-public-ip linux     |
 
 * Contributing
 If you're interested in contributing to quicksnips, email
