@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # User variable(s)
-qsdir=~/quicksnips                           # Path to quicksnips directory
-snipdirs="lin rhel deb bsd"         # Snippet directories to include by default
+qsdir=~/quicksnips                         # Path to quicksnips directory
+snipdirs="linux rhel debian bsd"           # Snippet directories to include by default
 # End user variable(s)
 
-usage="Usage: ./snippets [-m] [-e] [-x] [-s SNIPPET] [SNIPDIR]...
+usage="Usage: ./quicksnips [-m] [-e] [-x] [-s SNIPPET] [SNIPDIR]...
 
 Optional arguments.
   -h  Print this help message.
@@ -33,7 +33,7 @@ shift $(($OPTIND - 1))
 function chkdirs () {
     for sdir in $*; do
 	if [ ! -e $sdir ]; then
-	    echo "SNIPDIR $sdir doesn't exist."
+	    echo "SNIPDIR `basename $sdir` doesn't exist."
 	    exit 1
 	fi
     done
@@ -53,13 +53,9 @@ elif [ $# -eq 0 ]; then
     chkdirs $snipdirs
     exe=$( find $snipdirs -type f | egrep -v "/\.|~$" | sort | dmenu -b )
 elif [ $# -eq 1 ]; then
-    if [ -e $qsdir/$1 ]; then
-	cd $qsdir/$1
-	exe=$( find -type f | sed "s/^\.\///" | egrep -v "^\.|~$" | sort | dmenu -b )
-    else
-	echo "That SNIPDIR doesn't exist."
-	exit 1
-    fi
+    chkdirs $qsdir/$1
+    cd $qsdir/$1
+    exe=$( find -type f | sed "s/^\.\///" | egrep -v "^\.|~$" | sort | dmenu -b )
 elif [ $# -gt 1 ]; then
     cd $qsdir
     chkdirs $*

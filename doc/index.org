@@ -19,6 +19,18 @@ To download quicksnips from the public git repository, use:
 You can also browse the repository at:
 http://quicksnips.org/quicksnips/
 
+* Project layout
+| Directory | Description                                           |
+|-----------+-------------------------------------------------------|
+| [[qs::bin/][bin/]]      | quicksnips scripts                                    |
+| [[qs::conf/][conf/]]     | quicksnips configuration files                        |
+| [[qs::debian/][debian/]]   | Debian shell snippets                                 |
+| [[qs:doc/][doc/]]      | quicksnips documentation                              |
+| [[qs::bsd][bsd/]]      | FreeBSD shell snippets                                |
+| [[qs:linux][linux/]]    | Shell snippets that run on any GNU/Linux distribution |
+| [[qs::remote][remote/]]   | Scripts that are called remotely                      |
+| [[qs::rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets        |
+
 * Installation
 ** Requirements
 - [[http://www.suckless.org/programs/dmenu.html][dmenu]]
@@ -40,17 +52,70 @@ Put the quicksnips script in your $PATH:
 
 : ln -s ~/quicksnips/bin/quicksnips ~/bin
 
+** Determine how you will run quicksnips command
+
+: $ quicksnips -h
+: Usage: ./quicksnips [-m] [-e] [-x] [-s SNIPPET] [SNIPDIR]...
+: 
+: Optional arguments.
+:   -h  Print this help message.
+:   -m  Use the middle mouse button to paste the x-selection buffer.
+:   -e  Show documentation in Emacs.
+:   -x  Show documentation in Xdialog.
+
+*** KDE users
+Since "Shift + Insert" is bound to the copy/paste buffer in KDE,
+the shortcut should call =quicksnips -m=, which uses the middle mouse
+button to paste the x selection buffer.
+
+*** Displaying documentation
+To display documentation in Emacs when a script is selected, use
+=quicksnips -e= and put the following in your .emacs file:
+
+: (load "~/quicksnips/conf/quicksnips-doc.el)
+
+Alternatively, you can display documentation in Xdialog when a script
+is selected using =quicksnips -x=.
+
+*** Snippets to display in dmenu
+Without any arguments, quicksnips will display the snippet directories
+defined by the =snipdirs= variable in the quicksnips script.  By
+default, this is set to display all snippets directories:
+
+: linux rhel debian bsd
+
+This can be customized by editing the =snipdirs= variable at the top
+of the [[qs::bin/quicksnips][=quicksnips=]] script.
+
+To have quicksnips only display one or two snippets directories, then
+only pass the name of those directories to the script.  For example:
+
+: quicksnips rhel
+
+or
+
+: quicksnips linux rhel
+
+I would suggest having a keybinding for =quicksnips linux rhel= for
+use on RHEL systems and a =quicksnips linux debian= keybinding for use
+on Debian systems.
+
 ** Bind the quicksnips script to a keybinding in your window manager
 *** Gnome (Metacity)
-Install gconf-editor if you don't have it, then edit the keybindings
-under apps – metacity – keybinding_commands and apps – metacity –
-global keybindings. [[http://www.electricmonk.nl/log/2007/08/02/gnomemetacity-keybindings-and-other-customizations/][More detailed instructions]]
+Install and run gconf-editor, then create a keybinding for the
+=quicksnips= command under:
+
+: apps -> metacity -> keybinding_commands
+
+...and bind it to a key under:
+
+: apps -> metacity -> global keybindings.
+
+[[http://www.electricmonk.nl/log/2007/08/02/gnomemetacity-keybindings-and-other-customizations/][More detailed instructions]]
 
 *** KDE
 Use kmenuedit to create a new menu item and then apply a shortcut to
-it.  Since "Shift + Insert" is bound to the copy/paste buffer in KDE,
-the shortcut should call =quicksnips -m=, which uses the middle mouse
-button to paste the x selection buffer.
+it.
 
 *** Sawfish
 
@@ -59,38 +124,13 @@ Add the following to your =~/.sawfishrc= file:
 : (load-file "~/quicksnips/conf/quicksnips-keys.jl")
 
 View [[qs::conf/quicksnips-keys.jl][=quicksnips-keys.jl=]] for additional Sawfish examples, including
-configuration Emacs-like keybindings.
+configuration of Emacs-like keybindings.
 
 *** Ratpoison
 : bind d exec /home/mattb/scripts/quicksnips
 
-** Displaying documentation
-To display documentation in Emacs when a script is selected, use
-=quicksnips -e= and put the following in your .emacs file:
-
-: (load "~/quicksnips/conf/quicksnips-doc.el)
-
-This will tell Emacs to load the [[qs::conf/quicksnips-doc.el][=quicksnips-doc.el=]] file, in which
-the quicksnips-doc function is defined.
-
-Alternatively, you can display documentation in Xdialog when a script
-is selected using =quicksnips -x=.
-
 * Contributing
 For write access to the git repository, email file:jason.png
-
-** Project layout
-
-| Directory | Description                                           |
-|-----------+-------------------------------------------------------|
-| [[qs::bin/][bin/]]      | quicksnips scripts                                    |
-| [[qs::conf/][conf/]]     | quicksnips configuration files                        |
-| [[qs::deb/][deb/]]      | Debian shell snippets                                 |
-| [[qs:doc/][doc/]]      | quicksnips documentation                              |
-| [[qs::bsd][bsd/]]      | FreeBSD shell snippets                                |
-| [[qs:lin][lin/]]      | Shell snippets that run on any GNU/Linux distribution |
-| [[qs::remote][remote/]]   | Scripts that are called remotely                      |
-| [[qs::rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets        |
 
 ** Naming convention
 Scripts should be named with the most general descriptor
