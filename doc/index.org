@@ -52,7 +52,7 @@ Put the quicksnips script in your $PATH:
 
 : ln -s ~/quicksnips/bin/quicksnips ~/bin
 
-** Determine how you will run quicksnips command
+** Determine how you will run the quicksnips command
 
 Usage:
 
@@ -107,7 +107,7 @@ Since "Shift + Insert" is bound to the copy/paste buffer in KDE,
 the shortcut should call =quicksnips -m=, which uses the middle mouse
 button to paste the x selection buffer.
 
-** Bind the quicksnips script to a keybinding in your window manager
+** Bind the quicksnips command to a global keybinding
 *** Gnome (Metacity)
 Install and run gconf-editor, then create a keybinding for the
 =quicksnips= command under:
@@ -139,7 +139,8 @@ Example configuration:
 : bind d exec quicksnips
 
 * Contributing
-For write access to the git repository, email file:jason.png
+If you're interested in contributing to quicksnips, email
+file:jason.png or file:matt.png
 
 ** Naming convention
 Scripts should be named with the most general descriptor
