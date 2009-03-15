@@ -68,12 +68,17 @@ Usage:
 *** Snippets to display in dmenu
 Without any arguments, quicksnips will display the snippet directories
 defined by the =snipdirs= variable in the quicksnips script.  By
-default, this is set to display all snippets directories:
+default, this is set to display all snippets directories (linux, rhel,
+debian, and bsd).  So, by default, running:
 
-: linux rhel debian bsd
+: quicksnips linux rhel debian bsd
 
-This can be customized by editing the =snipdirs= variable at the top
-of the [[qs::bin/quicksnips][=quicksnips=]] script.
+...is the same as running:
+
+: quicksnips
+
+The default snippets directories can be customized by editing the
+=snipdirs= variable at the top of the [[qs::bin/quicksnips][=quicksnips=]] script.
 
 To have quicksnips only display one or two snippets directories, then
 only pass the name of those directories to the script.  For example:
@@ -116,8 +121,8 @@ Install and run gconf-editor, then create a keybinding for the
 [[http://www.electricmonk.nl/log/2007/08/02/gnomemetacity-keybindings-and-other-customizations/][More detailed instructions]]
 
 *** KDE
-Use kmenuedit to create a new menu item and then apply a shortcut to
-it.
+Use kmenuedit to create a new menu item which calls the quicksnips
+script and then apply a keyboard shortcut to it.
 
 *** Sawfish
 
@@ -129,7 +134,9 @@ View [[qs::conf/quicksnips-keys.jl][=quicksnips-keys.jl=]] for additional Sawfis
 configuration of Emacs-like keybindings.
 
 *** Ratpoison
-: bind d exec /home/mattb/scripts/quicksnips
+Example configuration:
+
+: bind d exec quicksnips
 
 * Contributing
 For write access to the git repository, email file:jason.png
