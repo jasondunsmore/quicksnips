@@ -85,10 +85,10 @@ For write access to the git repository, email file:jason.png
 |-----------+------------------------------------------------|
 | [[qs::bin/][bin/]]      | quicksnips scripts                             |
 | [[qs::conf/][conf/]]     | quicksnips configuration files                 |
-| [[qs::debian/][debian/]]   | Debian shell snippets                          |
+| [[qs::deb/][deb/]]      | Debian shell snippets                          |
 | [[qs:doc/][doc/]]      | quicksnips documentation                       |
-| [[qs::freebsd][freebsd/]]  | FreeBSD shell snippets                         |
-| [[qs:linux][linux/]]    | Shell snippets for any GNU/Linux distribution  |
+| [[qs::bsd][bsd/]]      | FreeBSD shell snippets                         |
+| [[qs:lin][lin/]]      | Shell snippets for any GNU/Linux distribution  |
 | [[qs::remote][remote/]]   | Scripts that are called remotely               |
 | [[qs::rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets |
 

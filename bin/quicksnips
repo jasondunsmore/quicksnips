@@ -2,7 +2,7 @@
 
 # User variable(s)
 qsdir=~/quicksnips                           # Path to quicksnips directory
-snipdirs="rhel linux debian freebsd"         # Snippet directories to include by default
+snipdirs="lin rhel deb bsd"         # Snippet directories to include by default
 # End user variable(s)
 
 usage="Usage: ./snippets [-m] [-e] [-x] [-s SNIPPET] [SNIPDIR]...
