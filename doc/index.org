@@ -12,7 +12,10 @@ output of your one-liner into the remote server without executing it,
 so that you can modify it before executing.
 
 * Obtaining quicksnips
-To download quicksnips from the public git repository, use:
+** Releases
+- [[file:quicksnips-0.1.tar.gz][quicksnips-0.1]] [2009-03-15 Sun]
+** Development version
+To download the latest development version, use:
 
 : git clone git://quicksnips.org/git/quicksnips
 
@@ -89,9 +92,10 @@ or
 
 : quicksnips linux rhel
 
-I would suggest having a keybinding for =quicksnips linux rhel= for
-use on RHEL systems and a =quicksnips linux debian= keybinding for use
-on Debian systems.
+If you use more than one Linux distribution, I would suggest having a
+=quicksnips linux [distro]= keybinding for each.  For example, I have
+a keybinding for C-M-s keybinding for =quicksnips linux rhel= and a
+C-M-d keybinding for =quicksnips linux debian=.
 
 *** Displaying documentation
 To display documentation in Emacs when a script is selected, use

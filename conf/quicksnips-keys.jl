@@ -5,8 +5,8 @@
 
 (define quicksnips-keymap (make-keymap))
 (bind-keys global-keymap
-	   "M-S-s" (lambda () (system "quicksnips -e &"))
-	   "M-S-d" (lambda () (system "quicksnips -e debian &"))
+	   "M-S-s" (lambda () (system "quicksnips -e linux rhel &"))
+	   "M-S-d" (lambda () (system "quicksnips -e linux debian &"))
 	   "C-z" quicksnips-keymap)
 
 (bind-keys quicksnips-keymap "o" (lambda () (system "quicksnips -s server-overview rhel")))
