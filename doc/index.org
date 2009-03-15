@@ -12,7 +12,6 @@ output of your one-liner into the remote server without executing it,
 so that you can modify it before executing.
 
 * Obtaining quicksnips
-
 To download quicksnips from the public git repository, use:
 
 : git clone git://quicksnips.org/git/quicksnips
@@ -28,9 +27,17 @@ http://quicksnips.org/quicksnips/
 - [[http://git-scm.com/download][git]]
 
 ** Install quicksnips and dependencies
+If you're using Debian, everything can be installed with apt-get:
+
 : apt-get install dmenu xdotool xclip git-core
+
+Clone the quicksnips git repository:
+
 : cd ~
 : git clone git://quicksnips.org/git/quicksnips
+
+Put the quicksnips script in your $PATH:
+
 : ln -s ~/quicksnips/bin/quicksnips ~/bin
 
 ** Bind the quicksnips script to a keybinding in your window manager
