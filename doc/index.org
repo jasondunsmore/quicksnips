@@ -165,8 +165,10 @@ snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 |---------+---------------------------------------|
 | C-z     | Prefix Command                        |
 | C-z z   | C-z                                   |
+| C-z a   | Prefix Command                        |
 | C-z a b | quicksnips -s apache-buddy rhel       |
 | C-z a g | quicksnips -s apache-log-growers rhel |
+| C-z f   | Prefix Command                        |
 | C-z f b | quicksnips -s file-backup linux       |
 | C-z o   | quicksnips -s server-overview rhel    |
 | C-z u   | quicksnips -s get-public-ip linux     |
