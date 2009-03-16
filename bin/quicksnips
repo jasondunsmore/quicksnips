@@ -5,20 +5,23 @@ qsdir=~/quicksnips                         # Path to quicksnips directory
 snipdirs="linux rhel debian bsd"           # Snippet directories to include by default
 # End user variable(s)
 
-usage="Usage: ./quicksnips [-m] [-e] [-x] [-s SNIPPET] [SNIPDIR]...
+usage="Usage: ./quicksnips [-e] [-m] [-n] [-s SNIPPET] [-x] [SNIPDIR]...
 
 Optional arguments.
   -h  Print this help message.
-  -m  Use the middle mouse button to paste the x-selection buffer.
   -e  Show documentation in Emacs.
+  -m  Use the middle mouse button to paste the x-selection buffer.
+  -n  Don't show snippet directory prefixes.
+  -s  Select SNIPPET non-interactively.
   -x  Show documentation in Xdialog."
 
-while getopts "mexs:h" options; do
+while getopts "nmexs:h" options; do
     case $options in
-	m ) mouse=1;;
 	e ) edoc=1;;
-	x ) xdoc=1;;
+	m ) mouse=1;;
+	n ) noprefix=1;;
 	s ) snip=$OPTARG;;
+	x ) xdoc=1;;
 	h ) echo "$usage"
 	    exit 1;;
 	* ) echo "$usage"
@@ -49,20 +52,40 @@ elif [ "$snip" -a $# -eq 0 ]; then
 elif [ "$snip" -a $# -gt 1 ]; then
     echo "Pass only one SNIPDIR with -s option."
     exit 1
+elif [ $# -eq 0 -a $noprefix ]; then
+    cd $qsdir
+    chkdirs $snipdirs
+    exe=$( find $snipdirs -type f | egrep -v "/\.|~$" | sed 's/^.*\/\(.*$\)/\1/' | sort | dmenu -b ) &&
+    for snipdir in $snipdirs; do
+	if [ -e $snipdir/$exe ]; then
+	    exe=$snipdir/$exe
+	    echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
+	fi
+    done
+elif [ $# -gt 1 -a $noprefix ]; then
+    cd $qsdir
+    chkdirs $*
+    exe=$( find $* -type f | egrep -v "/\.|~$" | sed 's/^.*\/\(.*$\)/\1/' | sort | dmenu -b ) &&
+    for snipdir in $*; do
+	if [ -e $snipdir/$exe ]; then
+	    exe=$snipdir/$exe
+	    echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
+	fi
+    done
 elif [ $# -eq 0 ]; then
     cd $qsdir
     chkdirs $snipdirs
-    exe=$( find $snipdirs -type f | egrep -v "/\.|~$" | sort | dmenu -b )
+    exe=$( find $snipdirs -type f | egrep -v "/\.|~$" | sort | dmenu -b ) &&
     echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
 elif [ $# -eq 1 ]; then
     chkdirs $qsdir/$1
     cd $qsdir/$1
-    exe=$( find -type f | sed "s/^\.\///" | egrep -v "^\.|~$" | sort | dmenu -b )
+    exe=$( find -type f | sed "s/^\.\///" | egrep -v "^\.|~$" | sort | dmenu -b ) &&
     echo $exe >> $qsdir/$1/.stats
 elif [ $# -gt 1 ]; then
     cd $qsdir
     chkdirs $*
-    exe=$( find $* -type f | egrep -v "/\.|~$" | sort | dmenu -b )
+    exe=$( find $* -type f | egrep -v "/\.|~$" | sort | dmenu -b ) &&
     echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
 fi
 
