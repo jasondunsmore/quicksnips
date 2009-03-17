@@ -52,7 +52,7 @@ elif [ "$snip" -a $# -eq 0 ]; then
 elif [ "$snip" -a $# -gt 1 ]; then
     echo "Pass only one SNIPDIR with -s option."
     exit 1
-elif [ $# -eq 0 -a $noprefix ]; then
+elif [ $# -eq 0 -a "$noprefix" ]; then
     cd $qsdir
     chkdirs $snipdirs
     exe=$( find $snipdirs -type f | egrep -v "/\.|~$" | sed 's/^.*\/\(.*$\)/\1/' | sort | dmenu -b ) &&
@@ -62,7 +62,7 @@ elif [ $# -eq 0 -a $noprefix ]; then
 	    echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
 	fi
     done
-elif [ $# -gt 1 -a $noprefix ]; then
+elif [ $# -gt 1 -a "$noprefix" ]; then
     cd $qsdir
     chkdirs $*
     exe=$( find $* -type f | egrep -v "/\.|~$" | sed 's/^.*\/\(.*$\)/\1/' | sort | dmenu -b ) &&
