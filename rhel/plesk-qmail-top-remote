@@ -1,0 +1,1 @@
+grep "to remote" /usr/local/psa/var/log/maillog |awk '{print $14}' |sort |uniq -c |sort -rn |head
