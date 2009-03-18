@@ -1,3 +1,5 @@
+# Creates mail script called mailtest.php if none exists
+
 file="mailtest.php"; if [ ! -e $file ]; then cat > $file <<EOF; fi
 <?php
 $to = "";

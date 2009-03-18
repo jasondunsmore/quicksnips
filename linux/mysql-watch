@@ -1,2 +1,0 @@
-#Displays process list and statistics
-watch -n 1 mysqladmin proc stat

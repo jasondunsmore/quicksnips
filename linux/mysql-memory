@@ -1,1 +1,2 @@
+# Display MySQL memory usage.
 curl -L -s http://quicksnips.org/tuning-primer.sh | sh | grep -A8 "MEMORY USAGE"

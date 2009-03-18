@@ -1,1 +1,2 @@
+# Prints ESTABLISHED http connections.
 netstat -tunap|grep :80|grep ESTABLISHED|awk '{print $5}'|sed 's/:.*//'|sort|uniq -c|sort -n|tail

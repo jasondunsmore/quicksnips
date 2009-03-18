@@ -1,1 +1,3 @@
+# Sorts processes by highest memory usage.
+
 ps -eo pmem,pcpu,rss,vsize,args | sort -k 1 -r | more

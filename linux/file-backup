@@ -1,1 +1,2 @@
+# Copies and renames a file for backup.
 function bak () { cp -a $1 $1.bak.`date +%Y%m%d.%H%M%S`; }; bak 

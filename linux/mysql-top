@@ -1,1 +1,2 @@
+# Watches the mysql status summary and process list.
 watch -n1 "mysqladmin -r status && echo && mysqladmin processlist -v"
