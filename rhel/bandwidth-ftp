@@ -1,1 +1,3 @@
-for day in `seq 01 31`; do echo -n "`date +%B` $day: "; egrep " `date +%b`space: {1,2}$day " xferlog* | awk '  $12 ~ /o/  { SUM +=$8 } END {print SUM/1024/1024, "M"}'; done
+# Prints the amount of FTP bandwidth used for each day of the month.
+
+if [ -e /var/log/xferlog ]; then for day in `seq 01 31`; do echo -n "`date +%B` $day: "; zgrep -E " `date +%b`space: {1,2}$day " /var/log/xferlog* | awk '  $12 ~ /o/  { SUM +=$8 } END {print SUM/1024/1024, "M"}'; done; else echo "/var/log/xferlog doesn't exist"; fi
