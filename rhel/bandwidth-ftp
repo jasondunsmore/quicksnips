@@ -1,3 +1,6 @@
 # Prints the amount of FTP bandwidth used for each day of the month.
+# 
+# The ftpbandwidth function takes log files as arguments.  The files
+# can be a list of gzipped or uncompressed files.
 
-if [ -e /var/log/xferlog ]; then for day in `seq 01 31`; do echo -n "`date +%B` $day: "; zgrep -E " `date +%b`space: {1,2}$day " /var/log/xferlog* | awk '  $12 ~ /o/  { SUM +=$8 } END {print SUM/1024/1024, "M"}'; done; else echo "/var/log/xferlog doesn't exist"; fi
+function ftpbandwidth () { if [ -e /var/log/xferlog ]; then for day in `seq 01 31`; do echo -n "`date +%B` $day: "; zgrep -E " `date +%b`space: {1,2}$day " $* | awk '  $12 ~ /o/  { SUM +=$8 } END {print SUM/1024/1024, "M"}'; done; else echo "/var/log/xferlog doesn't exist"; fi; }; ftpbandwidth /var/log/xferlog*

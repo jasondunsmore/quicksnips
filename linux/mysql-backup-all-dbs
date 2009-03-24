@@ -1,0 +1,3 @@
+# Dumps all MySQL databases to a file.
+
+mysqldump -Q --all-databases > mysql-backup-`date +%Y%m%d.%H%M%S`.sql
