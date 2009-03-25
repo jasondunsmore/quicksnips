@@ -1,3 +1,5 @@
-#calculates bandwidth used per day 
-for day in `seq -w 01 31`; do echo -n "January $day: "; egrep "$day/Jan" \
-access_log* |awk '{ SUM += $10 } END {print SUM/1024/1024, "M"}' ;done
+# Displays the Apache bandwidth use each day over the current month.
+# The apachebandwidthday function takes the log files (gzipped or not)
+# as arguments.
+
+function apachebandwidthday () { for day in `seq -w 01 31`; do echo -n "January $day: "; zgrep -E "$day/Jan" $*|awk '{ SUM += $10 } END {print SUM/1024/1024, "M"}'; done; }; apachebandwidthday /var/log/httpd/access_log*

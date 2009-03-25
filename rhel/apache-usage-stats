@@ -1,3 +1,5 @@
-# Prints statistics on Apache's resource usage
+# Prints statistics on Apache's resource usage.
+# Better for when Apache isn't under load.  Use apache-buddy for
+# analyzing a live Apache configuration.
 
 curclients=`ps ax | grep httpd | grep -v grep | wc -l` && maxclients=`egrep "^MaxClients" /etc/httpd/conf/httpd.conf | head -n1 | awk '{print $2}'` && pmemused=`ps aux | grep httpd | grep -v grep | awk '{SUM += $4} END {print SUM "%"}'` && memused=`ps aux | grep httpd | grep -v grep | awk '{SUM += $6} END {print SUM/1024 " MB"}'` && memavail=`free -m | grep "Mem:" | awk '{print $2 " MB"}'` && echo "Apache is currently using $curclients out of $maxclients clients and $memused ($pmemused) out of $memavail available memory."

@@ -1,1 +1,3 @@
-cat access_log | gawk '{print $1}' |sort |uniq -c |sort -rn
+# Prints the number of entries in the access log for each IP.
+
+cat access_log | gawk '{print $1}' | sort | uniq -c | sort -rn

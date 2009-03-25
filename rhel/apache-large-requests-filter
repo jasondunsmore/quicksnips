@@ -1,8 +1,7 @@
-# Prints any request over 300 bytes long. Useful to run this accross
-# several log files to look for suspicious requests after a
-# compromise.
-# Example Output (truncated):
-
+# Prints any request over 300 bytes long.
+# Useful to run this accross several log files to look for suspicious
+# requests after a compromise.  Example Output (truncated):
+#
 # exampledomain.com-access_log ... /wget?cmd.exe+3040FFIJEIJGE...30r9jf09jffe
 
 perl -n -e '@a=split; $r=$a[6]; print "$ARGV ... $r\n" if length($r)>300;' \

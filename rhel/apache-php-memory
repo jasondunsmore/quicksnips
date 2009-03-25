@@ -1,6 +1,4 @@
-# Determines what the approximate configured max memory usage for
-# Apache + PHP is.
-#
+# Determines approximate configured max memory usage for Apache + PHP.
 # Example output:
 #
 # Approximate configured max memory usage for Apache + PHP:

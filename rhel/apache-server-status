@@ -1,3 +1,9 @@
+# Adds the server-status configuration to Apache.
+# Add your IP to the "Allow from" line in
+# /etc/httpd/conf.d/serverstatus.conf if you want to access the
+# server-status page from your browser.  Otherwise, use the "apachectl
+# fullstatus" command.
+
 cat > /etc/httpd/conf.d/serverstatus.conf <<EOF && httpd -t && apachectl graceful && service httpd status && echo -e '\nIf server-status page does not display, you may need to add the following\nto any mod_rewrite rules in their .htaccess file:\n\nRewriteCond %{REQUEST_URI} !=/server-status\n'
 ExtendedStatus On
 <Location /server-status>

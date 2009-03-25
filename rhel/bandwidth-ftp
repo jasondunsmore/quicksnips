@@ -1,5 +1,4 @@
 # Prints the amount of FTP bandwidth used for each day of the month.
-# 
 # The ftpbandwidth function takes log files as arguments.  The files
 # can be a list of gzipped or uncompressed files.
 

@@ -1,1 +1,16 @@
-grep "Invalid user" /var/log/secure|awk '{print $10}'|sort -n|uniq -c|sort -n
+# Displays the IP addresses that have had the most failed SSH logins.
+#
+# Example output:
+#
+#    196 81.91.216.6
+#    206 210.40.128.31
+#    208 77.92.148.162
+#    411 211.157.98.25
+#    415 211.97.118.24
+#    571 89.208.43.96
+#    625 161.200.92.65
+#   2610 65.60.24.250
+#   3255 203.190.0.29
+#   4328 61.155.9.5
+
+egrep "Illegal user|Invalid user" /var/log/secure|awk '{print $10}'|sort -n|uniq -c|sort -n

@@ -1,8 +1,10 @@
-# Grabs the Apache log files and computes the difference in size for each one.
-# This will give you an idea of which virtual hosts are seeing the most activity.
-# Useful if a server is overloaded and fullstatus is slow or inaccessible.
-# Do a sanity check on the access log names, this may need to be edited to
-# accomodate logfiles withouth access_log in the name.
+# Displays Apache accesses per vhost based on diffs between log files.
+# Grabs the Apache log files and computes the difference in size for
+# each one.  This will give you an idea of which virtual hosts are
+# seeing the most activity.  Useful if a server is overloaded and
+# fullstatus is slow or inaccessible.  Do a sanity check on the access
+# log names, this may need to be edited to accomodate logfiles
+# withouth access_log in the name.
 
 logs=$( lsof -p `cat /var/run/httpd.pid` |egrep "access.log" |awk '{if ($7 > 0) print $9}' ); \
 rm -f /tmp/firstcheck; for x in $logs; do du -s $x >>/tmp/firstcheck; done; \

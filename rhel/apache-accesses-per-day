@@ -1,1 +1,9 @@
+# Prints the number of entries in the access_log per day.
+# Example output:
+# 
+#      44 16/Feb/2009
+#      32 18/Feb/2009
+#       4 17/Jan/2009
+#       2 22/Dec/2008
+
 ( cat /var/log/httpd/access_log{,.[0-9]} && if [ -e /var/log/httpd/access_log.*.gz ]; then zcat /var/log/httpd/access_log.*.gz; fi ) | awk '{print $4}' | awk -F [ '{print $2}' | awk -F : '{print $1}'| sort | uniq -c | sort -nr
