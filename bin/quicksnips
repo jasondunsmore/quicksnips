@@ -5,21 +5,23 @@ qsdir=~/quicksnips                         # Path to quicksnips directory
 snipdirs="linux rhel debian bsd"           # Snippet directories to include by default
 # End user variable(s)
 
-usage="Usage: ./quicksnips [-e] [-m] [-n] [-s SNIPPET] [-x] [SNIPDIR]...
+usage="Usage: ./quicksnips [-e] [-m] [-n] [-p] [-s SNIPPET] [-x] [SNIPDIR]...
 
 Optional arguments.
   -h  Print this help message.
   -e  Show documentation in Emacs.
   -m  Use the middle mouse button to paste the x-selection buffer.
   -n  Don't show snippet directory prefixes.
+  -p  Preserve newlines and comments.
   -s  Select SNIPPET non-interactively.
   -x  Show documentation in Xdialog."
 
-while getopts "nmexs:h" options; do
+while getopts "emnpxs:h" options; do
     case $options in
 	e ) edoc=1;;
 	m ) mouse=1;;
 	n ) noprefix=1;;
+	p ) preserve=1;;
 	s ) snip=$OPTARG;;
 	x ) xdoc=1;;
 	h ) echo "$usage"
@@ -95,7 +97,11 @@ if [ ! $exe ]; then
 fi
 
 # Paste the script
-cat $exe | sed -e '/^\#/d' -e '/^$/d' | perl -pe 'chop if eof' | xclip
+if [ $preserve ]; then
+    cat $exe | xclip
+else
+    cat $exe | sed -e '/^\#/d' -e '/^$/d' | perl -pe 'chop if eof' | xclip
+fi
 xdotool key "shift+Insert"
 
 # Show the documentation in Emacs

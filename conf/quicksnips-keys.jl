@@ -7,6 +7,7 @@
 (bind-keys global-keymap
 	   "M-S-s" (lambda () (system "quicksnips -e linux rhel &"))
 	   "M-S-d" (lambda () (system "quicksnips -e linux debian &"))
+	   "M-S-p" (lambda () (system "quicksnips -p prefabs &"))
 	   "C-z" quicksnips-keymap)
 
 (bind-keys quicksnips-keymap "o" (lambda () (system "quicksnips -s server-overview rhel")))
