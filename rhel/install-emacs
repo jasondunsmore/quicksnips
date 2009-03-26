@@ -1,1 +1,3 @@
+# Installs Emacs.
+
 if [ -n "`cat /etc/redhat-release|egrep 'Red Hat Enterprise Linux ES release [234]'`" ]; then up2date -i emacs-nox && echo alias emacs=\"emacs-nox\" >> /root/.bashrc; . /root/.bashrc; else yum install emacs; fi

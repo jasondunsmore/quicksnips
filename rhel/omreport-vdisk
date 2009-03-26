@@ -1,1 +1,3 @@
+# Shows all virtual storage devices on controller 0 on Dells.
+
 omreport storage vdisk controller=0

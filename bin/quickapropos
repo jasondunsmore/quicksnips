@@ -1,0 +1,1 @@
+for file in $(grep -irl $1 /home/jason/quicksnips/{rhel,bsd,linux,debian}); do printf "%-24s - %s\n" `basename $file` "$(head -n1 $file|egrep "^#"|sed 's/# *//'|cut -c1-55)"; done

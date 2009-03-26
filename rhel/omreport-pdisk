@@ -1,1 +1,3 @@
+# Shows all physical storage devices on controller 0 on Dells.
+
 omreport storage pdisk controller=0

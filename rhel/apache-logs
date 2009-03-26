@@ -1,3 +1,0 @@
-# Shows the apache logs without digging in configuration files
-
-lsof -p `cat /var/run/httpd.pid` |egrep "log$"|awk '{print $9}'

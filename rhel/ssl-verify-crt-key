@@ -1,2 +1,2 @@
-#Verifies the last .crt and .key files that you added into the server match.
+# Verifies the last .crt and .key files that you added into the server match.
 lastcrt=`find /etc/httpd/conf/ -name \*.crt |xargs ls -lrt |tail -n 1 |awk '{print $9}'`; lastkey=`find /etc/httpd/conf/ -name \*.key |xargs ls -lrt |tail -n 1 |awk '{print $9}'`; fullcert=`find /etc/httpd/conf/ -name $lastcrt`; fullkey=`find /etc/httpd/conf/ -name $lastkey`; modlastcrt=`openssl x509 -noout -modulus -in $fullcert | openssl md5`; modlastkey=`openssl rsa -noout -modulus -in $fullkey |openssl md5`; echo -e $modlastcrt "\n\b" $modlastkey

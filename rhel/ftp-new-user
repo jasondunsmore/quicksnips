@@ -1,1 +1,4 @@
+# Adds multiple FTP users to a server.
+# Usage: newftp user1 [user2] [user3] [...]
+
 function newftp () { if [ ! -e /usr/bin/mkpasswd ]; then yum install expect || up2date -i expect; fi && pas=`mkpasswd`; if [ -z $2 ]; then useradd -s /bin/false $1; else useradd -d $2 -s /bin/false $1; fi && echo $pas|passwd --stdin $1 && echo "Password: $pas"; }; newftp
