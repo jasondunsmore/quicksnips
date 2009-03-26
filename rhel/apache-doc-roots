@@ -1,0 +1,3 @@
+# Prints all documentroots being served by Apache
+
+httpd -S 2>&1|egrep "\/.*\/"|sed 's/.*(\(.*\):.*).*/\1/'|sort|uniq|xargs cat|grep -i DocumentRoot|awk '{print $2}'|sort|uniq
