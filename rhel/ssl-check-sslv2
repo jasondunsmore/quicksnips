@@ -1,0 +1,3 @@
+# Checks to make sure sslv2 is disabled
+function checksslv2 () { openssl s_client -connect $1:$2 -ssl2; }; checksslv2
+
