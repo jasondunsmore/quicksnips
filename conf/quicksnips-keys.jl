@@ -10,6 +10,7 @@
 	   "M-S-p" (lambda () (system "quicksnips -p prefabs &"))
 	   "C-z" quicksnips-keymap)
 
+(bind-keys quicksnips-keymap "e" (lambda () (system "quicksnips -s install-emacs rhel")))
 (bind-keys quicksnips-keymap "o" (lambda () (system "quicksnips -s server-overview rhel")))
 (bind-keys quicksnips-keymap "u" (lambda () (system "quicksnips -s get-public-ip linux")))
 (bind-keys quicksnips-keymap "z" '(synthesize-event "C-z" (input-focus)))

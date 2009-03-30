@@ -1,0 +1,3 @@
+# Displays recent network throughput on eth0
+
+sar -n DEV | head -n 3 && sar -n DEV | grep eth0
