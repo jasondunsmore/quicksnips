@@ -1,0 +1,5 @@
+# Changes the I/O nice for a list of processes matching a pattern.
+#
+# Doesn't work on RHEL3 or RHEL4
+
+function ioniceprocs () { for pid in `pgrep $1`; do echo ionice -c3 -p$pid; ionice -c3 -p$pid; done; }; ioniceprocs 
