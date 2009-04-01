@@ -1,28 +1,26 @@
 #!/bin/bash
 
 # User variable(s)
-qsdir=~/quicksnips                         # Path to quicksnips directory
-snipdirs="linux rhel debian bsd"           # Snippet directories to include by default
+basedir=~/quicksnips                           # Path to quicksnips directory
+snipdir=snippets                               # Default snipdir
 # End user variable(s)
 
-usage="Usage: ./quicksnips [-e] [-m] [-n] [-p] [-s SNIPPET] [-x] [SNIPDIR]...
+usage="Usage: ./quicksnips [-e] [-m] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
 
 Optional arguments.
   -h  Print this help message.
   -e  Show documentation in Emacs.
   -m  Use the middle mouse button to paste the x-selection buffer.
-  -n  Don't show snippet directory prefixes.
   -p  Preserve newlines and comments.
-  -s  Select SNIPPET non-interactively.
+  -s  Specify alternate snippet directory.
   -x  Show documentation in Xdialog."
 
-while getopts "emnpxs:h" options; do
+while getopts "emps:xh" options; do
     case $options in
 	e ) edoc=1;;
 	m ) mouse=1;;
-	n ) noprefix=1;;
 	p ) preserve=1;;
-	s ) snip=$OPTARG;;
+	s ) snipdir=$OPTARG;;
 	x ) xdoc=1;;
 	h ) echo "$usage"
 	    exit 1;;
@@ -31,64 +29,19 @@ while getopts "emnpxs:h" options; do
     esac
 done
 
+snipdir=$basedir/$snipdir
+
 # Shift the positional parameters to the left by the number of options.
 shift $(($OPTIND - 1))
 
-# Function to check if all SNIPDIRs exist.
-function chkdirs () {
-    for sdir in $*; do
-	if [ ! -e $sdir ]; then
-	    echo "SNIPDIR `basename $sdir` doesn't exist."
-	    exit 1
-	fi
-    done
-}
-
 # Process arguments and build menu if necessary
-if [ "$snip" -a $# -eq 1 ]; then
-    exe=$qsdir/$1/$snip
-    echo `basename $exe` >> $qsdir/$1/.stats
-elif [ "$snip" -a $# -eq 0 ]; then
-    echo "Please indicate SNIPDIR with -s option."
-    exit 1
-elif [ "$snip" -a $# -gt 1 ]; then
-    echo "Pass only one SNIPDIR with -s option."
-    exit 1
-elif [ $# -eq 0 -a "$noprefix" ]; then
-    cd $qsdir
-    chkdirs $snipdirs
-    exe=$( find $snipdirs -type f | egrep -v "/\.|~$" | sed 's/^.*\/\(.*$\)/\1/' | sort | dmenu -b ) &&
-    for snipdir in $snipdirs; do
-	if [ -e $snipdir/$exe ]; then
-	    exe=$snipdir/$exe
-	    echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
-	fi
-    done
-elif [ $# -gt 1 -a "$noprefix" ]; then
-    cd $qsdir
-    chkdirs $*
-    exe=$( find $* -type f | egrep -v "/\.|~$" | sed 's/^.*\/\(.*$\)/\1/' | sort | dmenu -b ) &&
-    for snipdir in $*; do
-	if [ -e $snipdir/$exe ]; then
-	    exe=$snipdir/$exe
-	    echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
-	fi
-    done
-elif [ $# -eq 0 ]; then
-    cd $qsdir
-    chkdirs $snipdirs
-    exe=$( find $snipdirs -type f | egrep -v "/\.|~$" | sort | dmenu -b ) &&
-    echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
-elif [ $# -eq 1 ]; then
-    chkdirs $qsdir/$1
-    cd $qsdir/$1
-    exe=$( find -type f | sed "s/^\.\///" | egrep -v "^\.|~$" | sort | dmenu -b ) &&
-    echo $exe >> $qsdir/$1/.stats
-elif [ $# -gt 1 ]; then
-    cd $qsdir
-    chkdirs $*
-    exe=$( find $* -type f | egrep -v "/\.|~$" | sort | dmenu -b ) &&
-    echo `basename $exe` >> $qsdir/`dirname $exe`/.stats
+if [ "$1" ]; then
+    exe=$snipdir/$1
+    echo $1 >> $snipdir/.stats
+else
+    cd $snipdir
+    exe=$( find -type f | egrep -v "/\.|~$" | sed 's/^.*\/\(.*$\)/\1/' | sort | dmenu -b ) &&
+    echo $exe >> $snipdir/.stats
 fi
 
 # Exit if no selection
@@ -102,11 +55,17 @@ if [ $preserve ]; then
 else
     cat $exe | sed -e '/^\#/d' -e '/^$/d' | perl -pe 'chop if eof' | xclip
 fi
-xdotool key "shift+Insert"
+
+if [ $mouse ]; then
+    xdotool mousedown 2
+    xdotool mouseup 2
+else
+    xdotool key "shift+Insert"
+fi
 
 # Show the documentation in Emacs
 if [ $edoc ]; then
-    doc=`cat $qs/$exe | sed -n '/^#/p'|sed 's/^# *//'`
+    doc=`cat $snipdir/$exe | sed -n '/^#/p'|sed 's/^# *//'`
     if [ -n "$doc" ]; then
 	emacsclient -e "(quicksnips-doc \"$doc\")"
     fi
@@ -115,8 +74,10 @@ fi
 # Show the documentation in Xdialog
 if [ $xdoc ]; then
     tmp=`mktemp`
-    cat ~/$qs/$exe | sed -n '/^#/p'|sed 's/^# *//' > $tmp
+    cat ~/$snipdir/$exe | sed -n '/^#/p'|sed 's/^# *//' > $tmp
     if [ -s $tmp ]; then
 	Xdialog --fixed-font --textbox $tmp 15 60
     fi
 fi
+
+exit 0

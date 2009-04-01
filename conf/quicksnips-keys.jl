@@ -5,21 +5,24 @@
 
 (define quicksnips-keymap (make-keymap))
 (bind-keys global-keymap
-	   "M-S-s" (lambda () (system "quicksnips -e linux rhel &"))
-	   "M-S-d" (lambda () (system "quicksnips -e linux debian &"))
-	   "M-S-p" (lambda () (system "quicksnips -p prefabs &"))
+	   "M-S-s" (lambda () (system "quicksnips &"))
+	   "M-S-p" (lambda () (system "quicksnips -p -s prefabs &"))
 	   "C-z" quicksnips-keymap)
 
-(bind-keys quicksnips-keymap "e" (lambda () (system "quicksnips -s install-emacs rhel")))
-(bind-keys quicksnips-keymap "o" (lambda () (system "quicksnips -s server-overview rhel")))
-(bind-keys quicksnips-keymap "u" (lambda () (system "quicksnips -s get-public-ip linux")))
+(bind-keys quicksnips-keymap "e" (lambda () (system "quicksnips install-emacs")))
+(bind-keys quicksnips-keymap "o" (lambda () (system "quicksnips server-overview")))
+(bind-keys quicksnips-keymap "u" (lambda () (system "quicksnips get-public-ip")))
 (bind-keys quicksnips-keymap "z" '(synthesize-event "C-z" (input-focus)))
-
-(define quicksnips-f-keymap (make-keymap))
-(bind-keys quicksnips-keymap "f" quicksnips-f-keymap)
-(bind-keys quicksnips-f-keymap "b" (lambda () (system "quicksnips -s file-backup linux")))
 
 (define quicksnips-a-keymap (make-keymap))
 (bind-keys quicksnips-keymap "a" quicksnips-a-keymap)
-(bind-keys quicksnips-a-keymap "b" (lambda () (system "quicksnips -s apache-buddy rhel")))
-(bind-keys quicksnips-a-keymap "g" (lambda () (system "quicksnips -s apache-log-growers rhel")))
+(bind-keys quicksnips-a-keymap "b" (lambda () (system "quicksnips apache-buddy")))
+(bind-keys quicksnips-a-keymap "g" (lambda () (system "quicksnips apache-log-growers")))
+
+(define quicksnips-f-keymap (make-keymap))
+(bind-keys quicksnips-keymap "f" quicksnips-f-keymap)
+(bind-keys quicksnips-f-keymap "b" (lambda () (system "quicksnips file-backup")))
+
+(define quicksnips-m-keymap (make-keymap))
+(bind-keys quicksnips-keymap "m" quicksnips-m-keymap)
+(bind-keys quicksnips-m-keymap "m" (lambda () (system "quicksnips mysql-memory")))
