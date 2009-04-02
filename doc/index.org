@@ -12,9 +12,6 @@ output of your one-liner into the remote server without executing it,
 so that you can modify it before executing.
 
 * Obtaining quicksnips
-** Releases
-- [[file:quicksnips-0.1.tar.gz][quicksnips-0.1]] [2009-03-15 Sun]
-** Development version
 To download the latest development version, use:
 
 : git clone git://quicksnips.org/git/quicksnips
@@ -58,45 +55,15 @@ Put the quicksnips script in your $PATH:
 
 ** Determine how you will run the quicksnips command
 
-Usage:
-
-: $ quicksnips -h
-: Usage: ./quicksnips [-m] [-e] [-x] [-s SNIPPET] [SNIPDIR]...
+: Usage: ./quicksnips [-e] [-m] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
 : 
 : Optional arguments.
 :   -h  Print this help message.
-:   -m  Use the middle mouse button to paste the x-selection buffer.
 :   -e  Show documentation in Emacs.
+:   -m  Use the middle mouse button to paste the x-selection buffer.
+:   -p  Preserve newlines and comments.
+:   -s  Specify alternate snippet directory.
 :   -x  Show documentation in Xdialog.
-
-*** Snippets to display in dmenu
-Without any arguments, quicksnips will display the snippet directories
-defined by the =snipdirs= variable in the quicksnips script.  By
-default, this is set to display all snippets directories (linux, rhel,
-debian, and bsd).  So running:
-
-: quicksnips
-
-...is the same as running:
-
-: quicksnips linux rhel debian bsd
-
-The default snippets directories can be customized by editing the
-=snipdirs= variable at the top of the [[qs:bin/quicksnips][=quicksnips=]] script.
-
-To have quicksnips only display one or two snippets directories, then
-only pass the name of those directories to the script.  For example:
-
-: quicksnips rhel
-
-or
-
-: quicksnips linux rhel
-
-If you use more than one Linux distribution, I would suggest having a
-=quicksnips linux [distro]= keybinding for each.  For example, I have
-a keybinding for C-M-s keybinding for =quicksnips linux rhel= and a
-C-M-d keybinding for =quicksnips linux debian=.
 
 *** Displaying documentation
 To display documentation in Emacs when a script is selected, use
@@ -151,24 +118,28 @@ added to .emacs to enable sh-mode for all buffers visiting snippets
 files.
 
 : (setq auto-mode-alist (append
-: 		       '((".*quicksnips/\(rhel\|debian\|linux\|bsd\).*" . sh-mode))
+: 		       '((".*quicksnips.*" . sh-mode))
 : 		       auto-mode-alist))
 
 *** Emacs-like keybindings
 For examples of configuring Emacs-like keybindings for specific
 snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 
-| Key     | Binding                               |
-|---------+---------------------------------------|
-| C-z     | Prefix Command                        |
-| C-z z   | C-z                                   |
-| C-z a   | Prefix Command                        |
-| C-z a b | quicksnips -s apache-buddy rhel       |
-| C-z a g | quicksnips -s apache-log-growers rhel |
-| C-z f   | Prefix Command                        |
-| C-z f b | quicksnips -s file-backup linux       |
-| C-z o   | quicksnips -s server-overview rhel    |
-| C-z u   | quicksnips -s get-public-ip linux     |
+| Key     | Binding                       |
+|---------+-------------------------------|
+| M-S-s   | quicksnips                    |
+| C-z     | Prefix Command                |
+| C-z z   | C-z                           |
+| C-z a   | Prefix Command                |
+| C-z a b | quicksnips apache-buddy       |
+| C-z a g | quicksnips apache-log-growers |
+| C-z e   | quicksnips install-emacs      |
+| C-z f   | Prefix Command                |
+| C-z f b | quicksnips file-backup        |
+| C-z m   | Prefix Command                |
+| C-z m m | quicksnips mysql-memory       |
+| C-z o   | quicksnips server-overview    |
+| C-z u   | quicksnips get-public-ip      |
 
 * Contributing
 If you're interested in contributing to quicksnips, email
