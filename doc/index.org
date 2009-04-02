@@ -23,16 +23,13 @@ You can also browse the repository at:
 http://quicksnips.org/quicksnips/
 
 * Project layout
-| Directory | Description                                           |
-|-----------+-------------------------------------------------------|
-| [[qs:bin/][bin/]]      | quicksnips scripts                                    |
-| [[qs:conf/][conf/]]     | quicksnips configuration files                        |
-| [[qs:debian/][debian/]]   | Debian shell snippets                                 |
-| [[qs:doc/][doc/]]      | quicksnips documentation                              |
-| [[qs:bsd][bsd/]]      | FreeBSD shell snippets                                |
-| [[qs:linux][linux/]]    | Shell snippets that run on any GNU/Linux distribution |
-| [[qs:remote][remote/]]   | Scripts that are called remotely                      |
-| [[qs:rhel/][rhel/]]     | RHEL (Red Hat Enterprise Linux) shell snippets        |
+| Directory | Description                      |
+|-----------+----------------------------------|
+| [[qs:bin/][bin/]]      | quicksnips scripts               |
+| [[qs:conf/][conf/]]     | quicksnips configuration files   |
+| [[qs:doc/][doc/]]      | quicksnips documentation         |
+| [[qs:snippets/][snippets/]] | Code snippets                    |
+| [[qs:remote][remote/]]   | Scripts that are called remotely |
 
 * Installation
 ** Requirements
