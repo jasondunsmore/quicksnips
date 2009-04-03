@@ -49,9 +49,10 @@ Clone the quicksnips git repository:
 : cd ~
 : git clone git://quicksnips.org/git/quicksnips
 
-Put the quicksnips script in your $PATH:
+Put =~/quicksnips/bin= in your =$PATH=.  For example, your =~./bashrc=
+or =~/.bash_profile= file might contain:
 
-: ln -s ~/quicksnips/bin/quicksnips ~/bin
+: export PATH=$PATH:$HOME/bin:$HOME/quicksnips/bin
 
 ** Determine how you will run the quicksnips command
 
