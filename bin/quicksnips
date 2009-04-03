@@ -30,6 +30,10 @@ while getopts "emps:xh" options; do
 done
 
 snipdir=$basedir/$snipdir
+if [ ! -e $snipdir ]; then
+    echo "$snipdir doesn't exist."
+    exit 1
+fi
 
 # Shift the positional parameters to the left by the number of options.
 shift $(($OPTIND - 1))
