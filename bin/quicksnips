@@ -30,7 +30,7 @@ while getopts "emps:xh" options; do
 done
 
 snipdir=$basedir/$snipdir
-if [ ! -e $snipdir ]; then
+if [[ ! -e $snipdir ]]; then
     echo "$snipdir doesn't exist."
     exit 1
 fi
@@ -39,7 +39,7 @@ fi
 shift $(($OPTIND - 1))
 
 # Process arguments and build menu if necessary
-if [ "$1" ]; then
+if [[ "$1" ]]; then
     exe=$snipdir/$1
     echo $1 >> $snipdir/.stats
 else
@@ -49,18 +49,18 @@ else
 fi
 
 # Exit if no selection
-if [ ! $exe ]; then
+if [[ ! $exe ]]; then
     exit 1
 fi
 
 # Paste the script
-if [ $preserve ]; then
+if [[ $preserve ]]; then
     cat $exe | xclip
 else
     cat $exe | sed -e '/^\#/d' -e '/^$/d' | perl -pe 'chop if eof' | xclip
 fi
 
-if [ $mouse ]; then
+if [[ $mouse ]]; then
     xdotool mousedown 2
     xdotool mouseup 2
 else
@@ -68,18 +68,18 @@ else
 fi
 
 # Show the documentation in Emacs
-if [ $edoc ]; then
+if [[ $edoc ]]; then
     doc=`cat $snipdir/$exe | sed -n '/^#/p'|sed 's/^# *//'`
-    if [ -n "$doc" ]; then
+    if [[ -n "$doc" ]]; then
 	emacsclient -e "(quicksnips-doc \"$doc\")"
     fi
 fi
 
 # Show the documentation in Xdialog
-if [ $xdoc ]; then
+if [[ $xdoc ]]; then
     tmp=`mktemp`
     cat ~/$snipdir/$exe | sed -n '/^#/p'|sed 's/^# *//' > $tmp
-    if [ -s $tmp ]; then
+    if [[ -s $tmp ]]; then
 	Xdialog --fixed-font --textbox $tmp 15 60
     fi
 fi

@@ -52,5 +52,4 @@ else
 fi
 echo "Don't for get to configure FTP daemon umask, set it to 002."
 }
-
-apachedevelopersetup;
+apachedevelopersetup 
