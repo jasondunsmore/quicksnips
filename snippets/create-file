@@ -1,0 +1,4 @@
+# Creates an empty file 782 kB in size.
+# Optionally, use /dev/urandom for a file of random bits.
+
+dd if=/dev/zero of=/tmp/782k bs=1024 count=782
