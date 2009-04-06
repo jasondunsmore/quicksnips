@@ -3,7 +3,7 @@
 for file in $( grep -l RESTART /var/log/sa/sar* ); do
     file="${file/sar/sa}"
     echo; echo $file; echo
-    sar|head -n3|tail -n1 && (sar -f $file|grep -B8 RESTART|grep -v Average); echo
+    sar|head -n3|tail -n1 && sar -f $file|grep -B8 RESTART|grep -v Average; echo
     sar -q|head -n3|tail -n1 && sar -q -f $file|grep -B8 RESTART|grep -v Average; echo
     sar -r|head -n3|tail -n1 && sar -r -f $file|grep -B8 RESTART|grep -v Average; echo
 done
