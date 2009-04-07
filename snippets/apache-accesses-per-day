@@ -1,4 +1,4 @@
-# Shows which days had the most accesses
+# Shows Apache accesses per day
 # Example output:
 # 
 #      44 16/Feb/2009
@@ -16,6 +16,6 @@ function smartcat () {
     done
 }
 function apacheaccessesday () {
-    smartcat $* | awk '{print $4}' | awk -F [ '{print $2}' | awk -F : '{print $1}' | sort | uniq -c | sort -n | tail -n30
+    smartcat $* | awk '{print $4}' | awk -F [ '{print $2}' | awk -F : '{print $1}' | sort | uniq -c 
 }
 apacheaccessesday /var/log/httpd/access_log*
