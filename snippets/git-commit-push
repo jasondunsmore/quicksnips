@@ -1,1 +1,1 @@
-function gitcommitpush () { git commit -am "$1" && git push origin master; }; gitcommitpush
+function gitcommitpush () { git commit -am "$1" && git push origin master; }; gitcommitpush ""

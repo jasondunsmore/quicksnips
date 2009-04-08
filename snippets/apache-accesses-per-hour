@@ -1,10 +1,4 @@
-# Shows which days had the most accesses
-# Example output:
-# 
-#      44 16/Feb/2009
-#      32 18/Feb/2009
-#       4 17/Jan/2009
-#       2 22/Dec/2008
+# Shows Apache accesses per hour.
 
 function smartcat () {
     for file in $*; do
