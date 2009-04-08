@@ -23,6 +23,10 @@
 (bind-keys quicksnips-keymap "f" quicksnips-f-keymap)
 (bind-keys quicksnips-f-keymap "b" (lambda () (system "quicksnips file-backup")))
 
+(define quicksnips-g-keymap (make-keymap))
+(bind-keys quicksnips-keymap "g" quicksnips-g-keymap)
+(bind-keys quicksnips-g-keymap "c" (lambda () (system "quicksnips git-commit-push")))
+
 (define quicksnips-m-keymap (make-keymap))
 (bind-keys quicksnips-keymap "m" quicksnips-m-keymap)
 (bind-keys quicksnips-m-keymap "m" (lambda () (system "quicksnips mysql-memory")))
