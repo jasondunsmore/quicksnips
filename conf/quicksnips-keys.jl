@@ -30,3 +30,9 @@
 (define quicksnips-m-keymap (make-keymap))
 (bind-keys quicksnips-keymap "m" quicksnips-m-keymap)
 (bind-keys quicksnips-m-keymap "m" (lambda () (system "quicksnips mysql-memory")))
+
+(define quicksnips-s-keymap (make-keymap))
+(bind-keys quicksnips-keymap "s" quicksnips-s-keymap)
+(bind-keys quicksnips-s-keymap "c" (lambda () (system "quicksnips sar-recent-cpu")))
+(bind-keys quicksnips-s-keymap "l" (lambda () (system "quicksnips sar-recent-load")))
+(bind-keys quicksnips-s-keymap "m" (lambda () (system "quicksnips sar-recent-memory")))
