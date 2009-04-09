@@ -1,0 +1,3 @@
+# Initiate an SSL session.
+
+openssl s_client -connect 

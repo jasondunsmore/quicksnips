@@ -1,0 +1,4 @@
+# Decodes an SSL certificate file.
+# Add path to file at end of command.
+
+openssl x509 -text -in 
