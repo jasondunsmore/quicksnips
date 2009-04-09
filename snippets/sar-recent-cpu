@@ -1,0 +1,3 @@
+# Shows recent CPU usage with column titles via sar.
+
+sar | head -n3 | tail -n1 && sar | tail -n15
