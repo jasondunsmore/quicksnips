@@ -1,5 +1,5 @@
 # Blocks IPs with more than a specified number of login attempts.
-# Usage: sshblockattackers LOGFILE NUMTRIES
+# Usage: sshblockattackers NUMTRIES LOGFILE
 
 function sshdictattack () {
     zgrep -E "Failed password|Illegal user|Invalid user" $* |
@@ -8,10 +8,13 @@ function sshdictattack () {
 }
 function sshblockattackers () {
     tmp=$(mktemp)
-    sshdictattack $1|awk -v tries="$2" '{ if( $1 >= tries ) print $2 }' > $tmp
+    tries=$1
+    shift
+    sshdictattack "$@"|awk -v tries="$tries" '{ if( $1 >= tries ) print $2 }' > $tmp
     cat $tmp
     while read ip; do
 	echo iptables -I INPUT -s $ip -j DROP
+	iptables -I INPUT -s $ip -j DROP
     done < $tmp
 }
-sshblockattackers /var/log/secure* 1000
+sshblockattackers 1000 /var/log/secure*
