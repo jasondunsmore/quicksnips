@@ -1,0 +1,26 @@
+#+TITLE: quicksnips usage statistics
+
+Run the =quicksnips-usage-stats= snippet to see your usage statistics.
+
+* Jason Dunsmore
+
+:     99 server-overview
+:     81 get-public-ip
+:     43 apache-buddy
+:     30 git-commit-push
+:     27 mysql-memory
+:     26 install-emacs
+:     24 http-connections
+:     15 apache-show-logfiles
+:     14 ssh-dict-attack
+:     13 ssh-block-attackers
+:     13 file-backup
+:     13 apache-doc-roots
+:     11 sar-before-restarts
+:     11 iptables-drop-ips
+:      9 apache-log-growers
+:      8 ssh-allow-ips
+:      8 email-test
+:      7 sar-max-daily-memory
+:      7 sar-max-daily-load
+:      7 plesk-bandwidth-per-domain
