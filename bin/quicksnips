@@ -5,20 +5,20 @@ basedir=~/quicksnips                           # Path to quicksnips directory
 snipdir=snippets                               # Default snipdir
 # End user variable(s)
 
-usage="Usage: ./quicksnips [-e] [-m] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
+usage="Usage: ./quicksnips [-e] [-i] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
 
 Optional arguments.
   -h  Print this help message.
   -e  Show documentation in Emacs.
-  -m  Use the middle mouse button to paste the x-selection buffer.
+  -i  Use Shift + Insert to paste the x-selection buffer.
   -p  Preserve newlines and comments.
   -s  Specify alternate snippet directory.
   -x  Show documentation in Xdialog."
 
-while getopts "emps:xh" options; do
+while getopts "eips:xh" options; do
     case $options in
 	e ) edoc=1;;
-	m ) mouse=1;;
+	i ) inskey=1;;
 	p ) preserve=1;;
 	s ) snipdir=$OPTARG;;
 	x ) xdoc=1;;
@@ -60,11 +60,11 @@ else
     cat $exe | sed '/^[^# ]/,$!d' | perl -pe 'chop if eof' | xclip
 fi
 
-if [[ $mouse ]]; then
+if [[ $inskey ]]; then
+    xdotool key "shift+Insert"
+else
     xdotool mousedown 2
     xdotool mouseup 2
-else
-    xdotool key "shift+Insert"
 fi
 
 # Show the documentation in Emacs
