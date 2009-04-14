@@ -1,0 +1,2 @@
+# Finds broken symlinks in working directory
+find . -type l ! -exec test -e {} \; -print
