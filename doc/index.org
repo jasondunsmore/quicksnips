@@ -137,11 +137,13 @@ snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 | C-z e   | quicksnips install-emacs      |
 | C-z f   | Prefix Command                |
 | C-z f b | quicksnips file-backup        |
+| C-z g   | Prefix Command                |
 | C-z g c | quicksnips git-commit-push    |
 | C-z m   | Prefix Command                |
 | C-z m m | quicksnips mysql-memory       |
 | C-z o   | quicksnips server-overview    |
 | C-z u   | quicksnips get-public-ip      |
+| C-z s   | Prefix Command                |
 | C-z s c | quicksnips sar-recent-cpu     |
 | C-z s l | quicksnips sar-recent-load    |
 | C-z s m | quicksnips sar-recent-memory  |
