@@ -1,0 +1,9 @@
+function pleskbandwidthdomain () {
+    tmpfile=$(mktemp)
+    mysql psa -Bse 'select name, date, http_out + ftp_out + smtp_out + pop3_imap_out from DomainsTraffic, domains where DomainsTraffic.dom_id=domains.id' > $tmpfile
+    for dom in $( awk '{ print $1 }' $tmpfile|sort|uniq ); do
+	grep $dom $tmpfile | awk '$2 ~ /2009-04/' |
+	awk -v dom=$dom '{ sum+=$3 } END { printf "%7.2f GB %s\n", sum/1024/1024/1024, dom }'
+    done | sort -n | tail -n20
+}
+pleskbandwidthdomain

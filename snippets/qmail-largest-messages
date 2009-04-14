@@ -1,0 +1,3 @@
+# Shows the 100 largest messages.
+
+find /var/qmail/mailnames/*/*/Maildir/{cur,new,tmp}/ -type f | xargs du -s | sort -n | tail -n100 | awk '{printf "%3i MB  %s\n", $1/1024, $2}'

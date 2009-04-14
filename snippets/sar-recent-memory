@@ -1,0 +1,3 @@
+# Shows recent memory usage with column titles via sar.
+
+sar -r | head -n3 | tail -n1 && sar -r | tail -n15

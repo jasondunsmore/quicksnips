@@ -7,4 +7,39 @@
 # Users recently logged in
 # Last 10 kernel messages
 
-top && echo -e "\nIPTABLES FIREWALL:"; iptables-save|egrep -v "^#"; echo -e "\nLAST 10 KERNEL MESSAGES:"; dmesg|tail; echo -e "\nRECENT LOAD:"; sar -q|tail; echo -e "\nREDHAT VERSION:"; cat /etc/redhat-release; echo -e "\nPLESK INSTALLED?"; rpm -q psa; echo -e "\nRS-SYSMON INSTALLED?"; rpm -q rs-sysmon; echo -e "\nUSERS LOGGED IN:"; w; echo -e "\nUSERS RECENTLY LOGGED IN:"; last|head -n5;  echo -e "\nMEMORY USAGE:"; free -m; echo -e "\nDISK USAGE:"; df -h; echo -e "\nSYSTEM UPTIME:"; uptime; echo -e "\nPUBLIC IP:"; wget -qO - www.whatismyip.com/automation/n09230945.asp; echo
+function serveroverview () {
+top
+echo -e "\nIPTABLES FIREWALL:"
+iptables-save|egrep -v "^#"
+echo -e "\nLAST 10 KERNEL MESSAGES:"
+dmesg|tail
+echo -e "\nRECENT LOAD:"
+sar -q|tail
+echo -e "\nREDHAT VERSION:"
+cat /etc/redhat-release
+echo -e "\nPLESK INSTALLED?"
+rpm -q psa
+echo -e "\nRS-SYSMON INSTALLED?"
+rpm -q rs-sysmon
+echo -e "\nUSERS LOGGED IN:"
+who
+echo -e "\nUSERS RECENTLY LOGGED IN:"
+last|head -n5
+echo -e "\nMEMORY USAGE:"
+free -m
+echo -e "\nDISK USAGE:"
+df -h
+echo -e "\nSYSTEM UPTIME:"
+uptime
+echo -e "\nAPACHE MAXCLIENTS USED/TOTAL:"
+clientsused=$( pgrep httpd|wc -l )
+clientstotal=$( egrep "^MaxClients" /etc/httpd/conf/httpd.conf | head -n1 | awk '{print $2}' )
+echo $clientsused/$clientstotal
+echo -e "\nMYSQL CONNECTIONS USED/TOTAL:"
+connectionsused=$( mysql -Bse 'show full processlist'|wc -l )
+connectionstotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
+echo $connectionsused/$connectionstotal
+echo -e "\nPUBLIC IP:"
+wget -qO - www.whatismyip.com/automation/n09230945.asp; echo
+}
+serveroverview

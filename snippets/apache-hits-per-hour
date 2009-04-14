@@ -1,3 +1,0 @@
-# Prints the number of Apache requests per hour over the last day.
-
-function apachehitshour () { for x in `seq -w 01 24`; do echo -n "Hour $x: "; zgrep -E `date +%d/%b/%Y:$x` $* |wc -l; done; }; apachehitshour /var/log/httpd/access_log*

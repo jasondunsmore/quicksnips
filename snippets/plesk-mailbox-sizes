@@ -1,2 +1,0 @@
-cd /var/qmail/mailnames ; du -hs --block-size=1024K */* | \
-    sort -nr | head -50 |sed s/[[:space:]]/'\/'/ |awk -F\/ '{print $1"M\t"$3"@"$2}'

@@ -1,0 +1,15 @@
+# Shows Apache accesses per hour.
+
+function smartcat () {
+    for file in $*; do
+	if [ "$( file $file|awk '{ print $2 }' )" == "gzip" ]; then
+	    zcat $file
+	else
+	    cat $file
+	fi
+    done
+}
+function apacheaccesseshour () {
+    smartcat $* | awk '{print $4}' | awk -F [ '{print $2}' | awk -F : '{print $1 ":" $2 ":00" }' | sort | uniq -c
+}
+apacheaccesseshour /var/log/httpd/access_log*

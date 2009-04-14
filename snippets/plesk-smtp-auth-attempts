@@ -16,4 +16,7 @@
 #  6309 user1@example.com
 # 10595 user0@example.com
 
-zgrep smtp_auth /var/log/messages*|awk '{print $9}'|sort|uniq -c|sort -n|tail -n50
+function smtpauthattempts () {
+    zgrep smtp_auth $*|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'|sort|uniq -c|sort -n|tail -n50
+}
+smtpauthattempts /usr/local/psa/var/log/maillog*

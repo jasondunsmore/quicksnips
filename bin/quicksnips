@@ -57,7 +57,7 @@ fi
 if [[ $preserve ]]; then
     cat $exe | xclip
 else
-    cat $exe | sed -e '/^\#/d' -e '/^$/d' | perl -pe 'chop if eof' | xclip
+    cat $exe | sed '/^[^# ]/,$!d' | perl -pe 'chop if eof' | xclip
 fi
 
 if [[ $mouse ]]; then
