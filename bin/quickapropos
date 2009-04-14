@@ -4,18 +4,20 @@ usage="Usage: ./quickapropos SEARCHTERM
 Optional arguments.
   -a  Show a list of all quicksnips."
 
-while getopts "a" options; do
+while getopts "ah" options; do
     case $options in
 	a ) allsnips=1;;
+        h ) echo "$usage"
+            exit 1;;
+        * ) echo "$usage"
+            exit 1;;
     esac
 done
 
 shift $(($OPTIND - 1))
 
 function printsnip () {
-    printf "%-27s - %s\n" \
-	`basename $file` \
-	"$(head -n1 $1|egrep '^#'|sed 's/# *//'|cut -c1-55)"
+    printf "%-27s - %s\n" 	`basename $file` 	"$(head -n1 $1|egrep '^#'|sed 's/# *//'|cut -c1-55)"
 }
 
 if [[ $1 ]]; then
