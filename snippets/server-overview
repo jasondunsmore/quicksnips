@@ -14,7 +14,7 @@ iptables-save|egrep -v "^#"
 echo -e "\nLAST 10 KERNEL MESSAGES:"
 dmesg|tail
 echo -e "\nRECENT LOAD:"
-sar -q|tail
+sar -q | head -n3 | tail -n1 && sar -q | tail
 echo -e "\nREDHAT VERSION:"
 cat /etc/redhat-release
 echo -e "\nPLESK INSTALLED?"
