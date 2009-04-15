@@ -1,0 +1,3 @@
+# Shows all Apache vhost configuration files.
+
+httpd -S 2>&1|egrep "\/.*\/"|sed 's/.*(\(.*\):.*).*/\1/'|sort|uniq

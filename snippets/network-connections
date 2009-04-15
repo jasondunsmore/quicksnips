@@ -1,6 +1,7 @@
-# Prints network connections.
-# Usage: netconn PORT [STATE]
-# Example: networkconnections 80 ESTABLISHED
+# Prints non-listening network connections.
+# Usage: networkconnections PORT [STATE]
+# Examples: networkconnections 80
+#           networkconnections 80 ESTABLISHED
 
 function networkconnections () {
     if [[ -n $2 ]]; then

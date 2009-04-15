@@ -18,7 +18,9 @@
 (define quicksnips-a-keymap (make-keymap))
 (bind-keys quicksnips-keymap "a" quicksnips-a-keymap)
 (bind-keys quicksnips-a-keymap "b" (lambda () (system "quicksnips apache-buddy")))
+(bind-keys quicksnips-a-keymap "d" (lambda () (system "quicksnips apache-doc-roots")))
 (bind-keys quicksnips-a-keymap "g" (lambda () (system "quicksnips apache-log-growers")))
+(bind-keys quicksnips-a-keymap "l" (lambda () (system "quicksnips apache-show-logfiles")))
 
 (define quicksnips-f-keymap (make-keymap))
 (bind-keys quicksnips-keymap "f" quicksnips-f-keymap)
