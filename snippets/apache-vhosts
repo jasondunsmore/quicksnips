@@ -1,0 +1,3 @@
+# List all configured Apache vhosts
+
+httpd -S 2>&1|egrep "\/.*\/"|awk '$1 ~ /port/ { print $4 }'|sort|uniq
