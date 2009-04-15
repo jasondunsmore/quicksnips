@@ -9,6 +9,7 @@
 
 function serveroverview () {
 top
+(
 echo -e "\nIPTABLES FIREWALL:"
 iptables-save|egrep -v "^#"
 echo -e "\nLAST 10 KERNEL MESSAGES:"
@@ -41,5 +42,6 @@ connectionstotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '
 echo $connectionsused/$connectionstotal
 echo -e "\nPUBLIC IP:"
 wget -qO - www.whatismyip.com/automation/n09230945.asp; echo
+)|more
 }
 serveroverview

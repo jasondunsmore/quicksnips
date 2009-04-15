@@ -36,6 +36,6 @@
 
 (define quicksnips-s-keymap (make-keymap))
 (bind-keys quicksnips-keymap "s" quicksnips-s-keymap)
-(bind-keys quicksnips-s-keymap "c" (lambda () (system "quicksnips sar-recent-cpu")))
-(bind-keys quicksnips-s-keymap "l" (lambda () (system "quicksnips sar-recent-load")))
-(bind-keys quicksnips-s-keymap "m" (lambda () (system "quicksnips sar-recent-memory")))
+(bind-keys quicksnips-s-keymap "s" (lambda () (system "quicksnips sar-recent-cpu")))
+(bind-keys quicksnips-s-keymap "q" (lambda () (system "quicksnips sar-recent-load")))
+(bind-keys quicksnips-s-keymap "r" (lambda () (system "quicksnips sar-recent-memory")))
