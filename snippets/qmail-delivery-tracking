@@ -1,0 +1,24 @@
+# starting delivery 9
+#function mailtracker () { grep $1 maillog |grep "info msg" |awk '{print $9,$15}' |tr ":" " " >/tmp/test; while read mid dp ; do cat maillog |awk "/$mid/ && /$dp/,/end msg $mid/" |awk "/$mid/ || /$dp/"; done < /tmp/test; }; mailtracker
+#grep info@imediasc.com maillog |grep "info msg" |awk '{print $9,$15}' |tr ":" " " >/tmp/test; while read mid dp ; do oid=`cat maillog |awk "/$mid/ && /$dp/,/end msg $mid/" |grep "starting delivery" |awk '{print $9}' |tr ":" " "`; echo $oid; cat maillog |awk "/$mid/ && /$dp/,/end msg $mid/" |awk "/$mid/ || /$dp/ || /$oid/"; done < /tmp/test; 
+#function mailtracker () { grep $1 maillog |grep "info msg" |awk '{print $9,$15}' |tr ":" " " >/tmp/test; while read mid dp ; do oid=`cat maillog |awk "/$mid/ && /$dp/,/end msg $mid/" |grep "starting delivery" |awk '{print $9}' |tr ":" " "`; echo $oid; cat maillog |awk "/$mid/ && /$dp/,/end msg $mid/" |grep -e $mid -e $oid -e $dp; done < /tmp/test; }; mailtracker
+#function mailtracker () { grep $1 maillog |grep "info msg" |awk '{print $9,$15}' |tr ":" " " >/tmp/test; while read mid dp ; do cat maillog |awk "/$mid/ && /$dp/,/end msg $mid/" |grep "starting delivery" |awk '{print $9}' |tr ":" " " >/tmp/test2; while read oid; do echo $oid; done < /tmp/test2; cat maillog |awk "/$mid/ && /$dp/,/end msg $mid/" |grep -e $mid -e $oid -e $dp; done < /tmp/test; }; mailtracker
+
+function mailtracker() {
+rm -f /tmp/mailpath; touch /tmp/mailpath;
+rm -f /tmp/test; touch /tmp/test;
+grep $1 maillog |grep "info msg" |awk '{print $9,$15}' |tr ":" " " >/tmp/test; while read mid dp ; do grepStr=$mid\|$dp; cat maillog |awk "/$mid/ && /$dp/,/end msg $mid/" >/tmp/mailpath; done < /tmp/test;
+qids=( $(for x in `grep "starting delivery" /tmp/mailpath |awk '{print $9}' |tr ":" " "`; do echo $x ; done;) )
+grepStr=$grepStr\|${qids[@]}
+grepStr=`echo $grepStr |tr " " "\|"`
+egrep "$grepStr" /tmp/mailpath
+}; mailtracker
+
+mailtracker info@conquerclub.com;
+
+#egrep $grepStr /tmp/mailpath
+#grep -e $mid -e $dp -e
+#for x in $( seq 0 $((${#qids[@]} - 1))); 
+#do echo ${qids[$x]};
+#done;
+#for x in `grep "starting delivery" /tmp/mailpath |awk '{print $9}' |tr ":" " "`; do echo $x ; done;
