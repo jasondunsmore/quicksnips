@@ -1,0 +1,6 @@
+# Base64 encodes a string
+
+function base64encode () {
+    perl -MMIME::Base64 -e "print encode_base64(\"$1\");"
+}
+base64encode

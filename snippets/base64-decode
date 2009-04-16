@@ -1,0 +1,7 @@
+# Decodes a base64-encoded string
+
+function base64decode () {
+    perl -MMIME::Base64 -e "print decode_base64(\"$1\");"
+    echo
+}
+base64decode
