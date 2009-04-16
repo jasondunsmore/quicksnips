@@ -1,15 +1,13 @@
+#!/bin/bash
+
 # Displays quicksnips usage statistics.
 
-function quicksnipsusagestats () {
 (
     echo "Number of times snippets have been used:"
     cat ~/quicksnips/snippets/.stats|sort|uniq -c|sort -rn
-    echo -e "\nScripts never used:"
     allsnips=$(mktemp)
-    ls -1B ~/quicksnips/snippets/|sort > $allsnips
     usedsnips=$(mktemp)
+    ls -1B ~/quicksnips/snippets/|sort > $allsnips
     cat ~/quicksnips/snippets/.stats|sort|uniq > $usedsnips
-    comm -23 $allsnips $usedsnips
+    comm -23 $allsnips $usedsnips|sed 's/^/      0 /'
 ) | more
-}
-quicksnipsusagestats
