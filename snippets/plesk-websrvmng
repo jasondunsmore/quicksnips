@@ -1,1 +1,3 @@
+# Creates configuration files for all domains in Plesk.
+
 /usr/local/psa/admin/bin/websrvmng -a && httpd -t

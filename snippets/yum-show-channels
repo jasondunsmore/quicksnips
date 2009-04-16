@@ -1,1 +1,3 @@
+# Shows all repos used by Yum.
+
 echo "repo list" | yum shell

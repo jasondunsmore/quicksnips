@@ -1,1 +1,3 @@
+# Updates APT package index and upgrades system packages (Debian only).
+
 apt-get update && apt-get dist-upgrade

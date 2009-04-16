@@ -1,1 +1,3 @@
+# Shows all domains hosted in Plesk.
+
 mysql psa -uadmin -p`cat /etc/psa/.psa.shadow` -e 'select displayName from domains\G'|grep displayName|cut -d" " -f2

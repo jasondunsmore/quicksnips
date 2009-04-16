@@ -1,12 +1,16 @@
-if [[ -e /root/.my.cnf ]]; then
-    echo ".my.cnf exists, fix the user/pass."
-    echo The Plesk password is: $( cat /etc/psa/.psa.shadow )
-    cat /root/.my.cnf
-else
-    pass=$( cat /etc/psa/.psa.shadow )
-    cat > /root/.my.cnf <<EOF
+# Creates a .my.cnf file in /root with Plesk MySQL credentials if one doesn't exist.
+
+function pleskmysqldotmydotcnf () {
+    if [[ -e /root/.my.cnf ]]; then
+	echo ".my.cnf exists, fix the user/pass."
+	echo The Plesk password is: $( cat /etc/psa/.psa.shadow )
+	cat /root/.my.cnf
+    else
+	pass=$( cat /etc/psa/.psa.shadow )
+	cat > /root/.my.cnf <<EOF
 [client]
 user="admin"
 pass="$pass"
 EOF
-fi
+    fi
+pleskmysqldotmydotcnf

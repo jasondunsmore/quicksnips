@@ -1,1 +1,3 @@
+# Like the /proc/cpuinfo file in Linux.
+
 sysctl -a | egrep -i 'hw.machine|hw.model|hw.ncpu'

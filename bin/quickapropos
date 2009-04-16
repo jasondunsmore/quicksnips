@@ -1,5 +1,7 @@
 #!/bin/bash
 
+snipdir=~/quicksnips/snippets
+
 usage="Usage: ./quickapropos [-l] SEARCHTERM
        ./quickapropos -a
 
@@ -22,7 +24,7 @@ done
 shift $(($OPTIND - 1))
 
 width=$(tput cols)
-let width=width-30 # Room for snippet name
+let width=width-30    # Room for snippet name
 let dotdotdot=width-3
 
 function printsnip () {
@@ -38,11 +40,15 @@ function printsnip () {
 }
 
 if [[ $1 ]]; then
-    for file in $( grep -Eirl $1 ~/quicksnips/snippets|egrep -v "/\.|~$" ); do
+    matchingfiles=$( (
+	grep -Eirl $1 $snipdir               # Search snippet doc & code
+	find $snipdir -type f | grep -Ei $1  # Also match file names
+	) | egrep -v "/\.|~$" | sort | uniq )
+    for file in $matchingfiles; do
 	printsnip $file
     done | sort
 elif [[ $allsnips ]]; then
-    for file in $( find ~/quicksnips/snippets -type f|egrep -v "/\.|~$" ); do
+    for file in $( find $snipdir -type f|egrep -v "/\.|~$" ); do
 	printsnip $file
     done | sort
 else

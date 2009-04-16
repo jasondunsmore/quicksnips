@@ -1,1 +1,11 @@
-/usr/local/psa/admin/sbin/statistics --calculate-one --domain-name=
+# Updates statistics for one or all domains.
+# Usage: pleskupdatestatistics [DOMAIN]
+
+function pleskupdatestatistics () {
+    if [[ -n "$1" ]]; then
+	/usr/local/psa/admin/sbin/statistics --calculate-one --domain-name=$1
+    else
+	/usr/local/psa/admin/sbin/statistics
+    fi
+}
+pleskupdatestatistics 

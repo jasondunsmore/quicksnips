@@ -1,1 +1,4 @@
+# Commits all changes and then pushes to origin.
+# Usage: gitcommitpush COMMITMSG
+
 function gitcommitpush () { git commit -am "$1" && git push origin master; }; gitcommitpush ""
