@@ -1,14 +1,16 @@
 #!/bin/bash
 
-usage="Usage: ./quickapropos SEARCHTERM
+usage="Usage: ./quickapropos [-l] SEARCHTERM
        ./quickapropos -a
 
 Optional arguments.
-  -a  Show a list of all quicksnips."
+  -a  Show a list of all quicksnips.
+  -l  Do not trim output to the terminal width."
 
-while getopts "ah" options; do
+while getopts "alh" options; do
     case $options in
 	a ) allsnips=1;;
+	l ) longdesc=1;;
         h ) echo "$usage"
             exit 1;;
         * ) echo "$usage"
@@ -16,10 +18,23 @@ while getopts "ah" options; do
     esac
 done
 
+# Shift the positional parameters to the left by the number of options.
 shift $(($OPTIND - 1))
 
+width=$(tput cols)
+let width=width-30 # Room for snippet name
+let dotdotdot=width-3
+
 function printsnip () {
-    printf "%-27s - %s\n" 	`basename $file` 	"$(head -n1 $1|egrep '^#'|sed 's/# *//'|cut -c1-55)"
+    if [[ -n $longdesc ]]; then
+	printf "%-27s - %s\n" `basename $file` "$(head -n1 $1|egrep '^#'|sed 's/# *//')"
+    else
+	if [[ $( head -n1 $1 |egrep '^#'|sed 's/# *//'|wc -c ) -ge $width ]]; then
+	    printf "%-27s - %s...\n" `basename $file` "$(head -n1 $1|egrep '^#'|sed 's/# *//'|cut -c1-$dotdotdot)"
+	else
+	    printf "%-27s - %s\n" `basename $file` "$(head -n1 $1|egrep '^#'|sed 's/# *//')"
+	fi
+    fi
 }
 
 if [[ $1 ]]; then
