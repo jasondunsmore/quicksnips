@@ -7,9 +7,9 @@ and makes them available for use on remote systems without having to
 cut & paste.  Dmenu is the interface, which makes it easy to manage
 thousands of menu items quickly, since it dynamically narrows down
 results based on your keystrokes.  Dmenu cats the output of the
-one-liners into xclip, then xdotool mimics Shift-Insert to paste the
-output of your one-liner into the remote server without executing it,
-so that you can modify it before executing.
+one-liners into xclip, then xdotool mimics the middle mouse button to
+paste the output of your one-liner into the remote server without
+executing it, so that you can modify it before executing.
 
 * Obtaining quicksnips
 To download the latest development version, use:
@@ -18,6 +18,9 @@ To download the latest development version, use:
 
 You can also browse the repository at:
 http://quicksnips.org/quicksnips/
+
+To browse source-highlighted versions of the snippets, visit:
+http://quicksnips.org/snippets/
 
 * Project layout
 | Directory | Description                      |
@@ -56,12 +59,12 @@ or =~/.bash_profile= file might contain:
 
 ** Determine how you will run the quicksnips command
 
-: Usage: ./quicksnips [-e] [-m] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
+: Usage: ./quicksnips [-e] [-i] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
 : 
 : Optional arguments.
 :   -h  Print this help message.
 :   -e  Show documentation in Emacs.
-:   -m  Use the middle mouse button to paste the x-selection buffer.
+:   -i  Use Shift + Insert to paste the x-selection buffer.
 :   -p  Preserve newlines and comments.
 :   -s  Specify alternate snippet directory.
 :   -x  Show documentation in Xdialog.
@@ -74,11 +77,6 @@ To display documentation in Emacs when a script is selected, use
 
 Alternatively, you can display documentation in Xdialog when a script
 is selected using =quicksnips -x=.
-
-*** KDE users
-Since "Shift + Insert" is bound to the copy/paste buffer in KDE,
-the shortcut should call =quicksnips -m=, which uses the middle mouse
-button to paste the x selection buffer.
 
 ** Bind the quicksnips command to a global keybinding
 *** Gnome (Metacity)
