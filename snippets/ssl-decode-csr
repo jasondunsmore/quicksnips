@@ -1,0 +1,4 @@
+# Decodes a CSR file.
+# Add path to file at end of command.
+
+openssl req -text -in 
