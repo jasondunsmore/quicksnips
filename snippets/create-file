@@ -1,4 +1,7 @@
-# Creates an empty file 782 kB in size.
-# Optionally, use /dev/urandom for a file of random bits.
+# Creates an empty file.  Takes number of MB as argument.
+# Usage: createfile NUMBER
 
-dd if=/dev/zero of=/tmp/782k bs=1024 count=782
+function createfile () {
+    dd if=/dev/zero of=$1_testfile bs=1048576 count=$1
+}
+createfile 

@@ -1,2 +1,0 @@
-# Create test file of 10MB
-dd if=/dev/zero of=10MB_testfile bs=10485760 count=1
