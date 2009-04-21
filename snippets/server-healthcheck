@@ -1,0 +1,55 @@
+# Puts the user in top.  Upon quitting, the following information is reported:
+#
+# iptables firewall running?
+# Plesk installed?
+# rs-sysmon installed?
+# Users logged in
+# Users recently logged in
+# Last 10 kernel messages
+
+function warningmsg () { tput setaf 1; echo "WARNING: $1"; }
+function serverhealthcheck () {
+echo -e "\nIPTABLES FIREWALL:"
+iptables-save|egrep -v "^#"
+
+echo -e "\nLAST 10 KERNEL MESSAGES:"
+dmesg|tail
+
+echo -e "\nRECENT LOAD:"
+sar -q | head -n3 | tail -n1 && sar -q | tail
+
+echo -e "\nPLESK INSTALLED?"
+rpm -q psa
+
+echo -e "\nRS-SYSMON INSTALLED?"
+rpm -q rs-sysmon
+
+echo -e "\nUSERS LOGGED IN:"
+who
+
+swapdat=$(mktemp)
+sar -r|sed '$d'|tail -n$swappts|awk '{ print $10 }' > $swapdat
+curl http://quicksnips.org/sd.sh > /tmp/sd.sh
+/tmp/sd.sh $swapdat
+
+memavail=$( free -m|sed -n 3p|awk '{ print $4 }' )
+if [[ $memavail -lt 50 ]]; then
+    warningmsg "There are only $memavail MB of free memory"
+fi
+dfroot=$( df -Pm|sed 1d|awk '$6 ~ /^\/$/ { print $4 }' )
+if [[ $dfroot -lt 1024 ]]; then
+    warningmsg "The root partition only has $dfroot MB available"
+fi
+mcused=$( mysql -Bse 'show full processlist'|wc -l )
+mctotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
+let mcleft=$mctotal-$mcused
+if [[ $mcleft -lt 10 ]]; then
+    warningmsg "MySQL connections used/total: $mcused/$mctotal"
+fi
+acused=$( pgrep httpd|wc -l )
+actotal=$( egrep "^MaxClients" /etc/httpd/conf/httpd.conf | head -n1 | awk '{print $2}' )
+let acleft=$actotal-$acused
+if [[ $acleft -lt 10 ]]; then
+    warningmsg "Apache MaxClients used/total: $acused/$actotal"
+}
+serverhealthcheck

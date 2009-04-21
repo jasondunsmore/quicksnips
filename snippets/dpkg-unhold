@@ -1,0 +1,6 @@
+# Removes a hold on a package in Debian.
+
+function unholdpkg () {
+    echo "$1 install"|dpkg --set-selections
+}
+unholdpkg

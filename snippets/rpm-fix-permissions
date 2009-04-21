@@ -1,0 +1,3 @@
+# Fixes all RPM permissions on the filesystem
+
+for i in `rpm -qa`; do rpm --setperms --setugids $i && echo $i done; done
