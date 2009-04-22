@@ -1,0 +1,38 @@
+#!/usr/bin/perl -w
+use DBI;
+use strict;
+my $user;
+my $pass;
+if(-e '/etc/psa/.psa.shadow') {
+        $user = 'admin';
+        open(BLAH, "/etc/psa/.psa.shadow");
+        while(<BLAH>) {
+                chomp;
+                $pass = $_;
+        }
+        close(BLAH);
+}
+my $dbh = DBI->connect ('dbi:mysql:psa',$user,$pass) or die "Can't connect: $DBI
+::errstr\n";
+open(BLAH, "/usr/share/dict/linux.words");
+my %dictword;
+while(<BLAH>) {
+        chomp;
+        $dictword{$_} = 1;
+}
+close(BLAH);
+my $sth = $dbh->prepare( "SELECT CONCAT_WS('\@',mail_name,domains.name),mail_nam
+e,password FROM mail,domains,accounts WHERE mail.dom_id=domains.id AND mail.acco
+unt_id=accounts.id AND postbox='true' ORDER BY domains.name,mail_name" );
+$sth->execute();
+while(my($addy,$mailname,$userpass) = $sth->fetchrow_array) {
+        my $lcpass = lc $userpass;
+        my $lcname = lc $mailname;
+        my $lcpassnonums = $userpass;
+        $lcpassnonums =~ s/[0-9]+$//;
+        if(defined($dictword{$userpass}) || defined($dictword{$lcpassnonums}) ||
+ $userpass =~ /^[0-9]+$/ || $lcpass eq $lcname || $lcpass eq ) {
+                $userpass = '[blank]' if $userpass eq ;
+                print "addy: $addy\npassword: $userpass\n\n";
+        }
+}

@@ -2,12 +2,18 @@
 
 function warningmsg () { tput setaf 1; echo "WARNING: $1"; tput sgr0; }
 function serverhealthcheck () {
+
+if [[ $(who|wc -l) -gt 1 ]]; then
+    warningmsg "Other users are logged in."
+    who
+fi
 swapdat=$(mktemp)
+swappts=3
 sar -r|sed '$d'|tail -n$swappts|awk '{ print $10 }' > $swapdat
 sdsh=$(mktemp)
 curl -s http://quicksnips.org/sd.sh > $sdsh
 swapsd=$(sh $sdsh $swapdat)
-rm $swapdat $sdsh
+rm -f $swapdat $sdsh
 if [[ $swapsd -gt 5 ]]; then
     warningmsg "Server is currently swapping."
 fi
@@ -19,7 +25,7 @@ dfroot=$( df -Pm|sed 1d|awk '$6 ~ /^\/$/ { print $4 }' )
 if [[ $dfroot -lt 1024 ]]; then
     warningmsg "The root partition only has $dfroot MB available"
 fi
-if [[ ! $( mysql -e exit || echo denied ) == "denied" ]]; then
+if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
     mcused=$( mysql -Bse 'show full processlist'|wc -l )
     mctotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
     let mcleft=$mctotal-$mcused

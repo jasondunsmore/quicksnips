@@ -34,6 +34,10 @@
 (bind-keys quicksnips-keymap "m" quicksnips-m-keymap)
 (bind-keys quicksnips-m-keymap "m" (lambda () (system "quicksnips mysql-memory")))
 
+(define quicksnips-p-keymap (make-keymap))
+(bind-keys quicksnips-keymap "p" quicksnips-p-keymap)
+(bind-keys quicksnips-p-keymap "p" (lambda () (system "quicksnips plesk-admin-password")))
+
 (define quicksnips-s-keymap (make-keymap))
 (bind-keys quicksnips-keymap "s" quicksnips-s-keymap)
 (bind-keys quicksnips-s-keymap "s" (lambda () (system "quicksnips sar-recent-cpu")))
