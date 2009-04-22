@@ -61,4 +61,4 @@ if [[ $acleft -lt 10 ]]; then
     warningmsg "Apache MaxClients used/total: $acused/$actotal"
 fi
 }
-serverhealthcheck
+serverhealthcheck|more
