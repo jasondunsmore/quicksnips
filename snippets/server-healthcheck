@@ -1,8 +1,27 @@
 # Check on server health and reports warnings.
 
 function warningmsg () { tput setaf 1; echo "WARNING: $1"; tput sgr0; }
+function infomsg () { tput setaf 2; echo "INFO: $1"; tput sgr0; }
 function serverhealthcheck () {
-
+if [[ -n $( rpm -q psa ) ]]; then
+    infomsg "This is a PLESK box."
+fi
+if [[ -n $( rpm -q rs-sysmon ) ]]; then
+    infomsg "rs-sysmon is installed."
+fi
+msgskeys="error|Error|Out of Memory|segfault|DriveReady SeekComplete"
+msgserrs="$(grep "$(date '+%b %d')" /var/log/messages|egrep "$msgskeys")"
+if [[ -n $msgserrs ]]; then
+    warningmsg "The following was logged today in /var/log/messages"
+    echo "$msgserrs"
+fi
+for i in $( sar -q|tail -n6|sed '$d'|awk '{print $5}' ); do
+    if [[ ${i/\.*} -gt 5 ]]; then
+	warningmsg "The load average has been above 5 in the past hour."
+	sar -q | head -n3 | tail -n1 && sar -q | tail
+	break
+    fi
+done
 if [[ $(who|wc -l) -gt 1 ]]; then
     warningmsg "Other users are logged in."
     who

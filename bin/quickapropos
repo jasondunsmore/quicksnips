@@ -28,22 +28,23 @@ let width=width-30    # Room for snippet name
 let dotdotdot=width-3
 
 function printsnip () {
+    docstr="$(sed -e '/^#/!d' -e 's/# *//' -e '1q' $1)"
     if [[ -n $longdesc ]]; then
-	printf "%-27s - %s\n" `basename $file` "$(head -n1 $1|egrep '^#'|sed 's/# *//')"
+	printf "%-27s - %s\n" `basename $file` "$docstr"
     else
-	if [[ $( head -n1 $1 |egrep '^#'|sed 's/# *//'|wc -c ) -ge $width ]]; then
-	    printf "%-27s - %s...\n" `basename $file` "$(head -n1 $1|egrep '^#'|sed 's/# *//'|cut -c1-$dotdotdot)"
+	if [[ $( echo $docstr|wc -c ) -ge $width ]]; then
+	    printf "%-27s - %s...\n" `basename $file` "$( echo $docstr|cut -c1-$dotdotdot)"
 	else
-	    printf "%-27s - %s\n" `basename $file` "$(head -n1 $1|egrep '^#'|sed 's/# *//')"
+	    printf "%-27s - %s\n" `basename $file` "$docstr"
 	fi
     fi
 }
 
 if [[ $1 ]]; then
     matchingfiles=$( (
-	grep -Eirl $1 $snipdir               # Search snippet doc & code
-	find $snipdir -type f | grep -Ei $1  # Also match file names
-	) | egrep -v "/\.|~$" | sort | uniq )
+	    grep -Eirl $1 $snipdir               # Search snippet doc & code
+	    find $snipdir -type f | grep -Ei $1  # Also match file names
+	    ) | egrep -v "/\.|~$" | sort | uniq )
     for file in $matchingfiles; do
 	printsnip $file
     done | sort
