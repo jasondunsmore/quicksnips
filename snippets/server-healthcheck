@@ -33,7 +33,7 @@ sdsh=$(mktemp)
 curl -s http://quicksnips.org/sd.sh > $sdsh
 swapsd=$(sh $sdsh $swapdat)
 rm -f $swapdat $sdsh
-if [[ $swapsd -gt 5 ]]; then
+if [[ ${swapsd/\.*} -gt 5 ]]; then
     warningmsg "Server is currently swapping."
 fi
 memavail=$( free -m|sed -n 3p|awk '{ print $4 }' )

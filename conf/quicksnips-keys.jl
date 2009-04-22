@@ -11,7 +11,7 @@
 	   "C-z" quicksnips-keymap)
 
 (bind-keys quicksnips-keymap "e" (lambda () (system "quicksnips install-emacs")))
-(bind-keys quicksnips-keymap "o" (lambda () (system "quicksnips server-overview")))
+(bind-keys quicksnips-keymap "o" (lambda () (system "quicksnips server-healthcheck")))
 (bind-keys quicksnips-keymap "u" (lambda () (system "quicksnips get-public-ip")))
 (bind-keys quicksnips-keymap "z" '(synthesize-event "C-z" (input-focus)))
 
