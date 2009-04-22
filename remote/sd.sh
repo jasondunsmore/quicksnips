@@ -86,11 +86,12 @@ sd ()
 mean=$(arith_mean); count=$?   # Two returns from function!
 std_dev=$(sd $mean $count)
 
-echo
-echo "Number of data points in \""$datafile"\" = $count"
-echo "Arithmetic mean (average) = $mean"
-echo "Standard Deviation = $std_dev"
-echo
+#echo
+#echo "Number of data points in \""$datafile"\" = $count"
+#echo "Arithmetic mean (average) = $mean"
+#echo "Standard Deviation = $std_dev"
+#echo
+echo $std_dev
 # ======================================================= #
 
 exit
