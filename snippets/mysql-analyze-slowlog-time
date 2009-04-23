@@ -1,0 +1,3 @@
+# Shows the "slow" queries that took the longest to run.
+
+mysqldumpslow -s t -r /var/lib/mysqllogs/slow-log
