@@ -8,10 +8,10 @@ function messagestoday () {
     grep "$(date '+%b %d')" /var/log/messages|egrep "$msgskeys"
 }
 function serverhealthcheck () {
-    if [[ ! "$( rpm -q psa )" == "is not installed" ]]; then
+    if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
 	infomsg "This is a PLESK box."
     fi
-    if [[ ! "$( rpm -q rs-sysmon )" == "is not installed" ]]; then
+    if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]; then
 	infomsg "rs-sysmon is installed."
     fi
     msgserrs="$(messagestoday)"
