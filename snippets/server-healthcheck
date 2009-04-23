@@ -1,5 +1,7 @@
 # Check on server health and reports warnings.
-
+# Checks the following:
+# - 
+# 
 function warningmsg () { tput setaf 1; echo "WARNING: $1"; tput sgr0; }
 function infomsg () { tput setaf 2; echo "INFO: $1"; tput sgr0; }
 function chkmsg () { tput setaf 3; echo "$1"; tput sgr0; }
@@ -8,6 +10,7 @@ function messagestoday () {
     grep "$(date '+%b %d')" /var/log/messages|egrep "$msgskeys"
 }
 function serverhealthcheck () {
+if [[ $( whoami ) == "root" ]]; then     
     if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
 	infomsg "This is a PLESK box."
     fi
@@ -68,7 +71,7 @@ function serverhealthcheck () {
 	warningmsg "root can't login to mysql."
     fi
     #chkmsg "Checking Apache..."
-    abin=$(netstat -ltnp|awk '$4 ~ /:80/ { print $7 }'|cut -d / -f 2)
+    abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
     aroot=$($abin -V|grep "HTTPD_ROOT"|sed 's/.*=\"\(.*\)\"/\1/')
     aconf=$($abin -V|grep "SERVER_CONFIG_FILE"|sed 's/.*=\"\(.*\)\"/\1/')
     amode=$($abin -l|egrep "worker.c|prefork.c"|sed 's/ *\(.*\)\.c/\1/')
@@ -90,5 +93,8 @@ function serverhealthcheck () {
     if [[ $amaxmemkb -gt $memkbavail ]]; then
 	warningmsg "Apache is configured to use $amaxmemkb kB of memory.  Only $memkbavail kB of memory are installed.  MaxClients should be lowered from $actotal to $acrecommend."
     fi
+else
+    echo "server-healthcheck should be run as root."
+fi
 }
 serverhealthcheck|more
