@@ -1,0 +1,108 @@
+#!/bin/bash
+
+function warningmsg () { tput setaf 1; echo "WARNING: $1"; tput sgr0; }
+function infomsg () { tput setaf 2; echo "INFO: $1"; tput sgr0; }
+function chkmsg () { tput setaf 3; echo "$1"; tput sgr0; }
+function messagestoday () {
+    msgskeys="error|Error|Out of Memory|segfault|DriveReady SeekComplete"
+    grep "$(date '+%b %d')" /var/log/messages|egrep "$msgskeys"
+}
+if [[ $( whoami ) == "root" ]]; then     
+    if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
+	infomsg "This is a PLESK box."
+    fi
+    if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]; then
+	infomsg "rs-sysmon is installed."
+    fi
+    msgserrs="$(messagestoday)"
+    if [[ -n $msgserrs ]]; then
+	warningmsg "The following was logged today in /var/log/messages"
+	echo "$msgserrs" | head -n10
+	nmsgs=$( echo "$msgserrs"|wc -l )
+	if [[ $nmsgs -gt 10 ]]; then
+	    echo "[...]"
+	    echo "Only showing first 10 of $nmsgs lines."
+	    echo "To see the full output, run \"messagestoday\"."
+	fi
+    fi
+    for i in $( sar -q|tail -n6|sed '$d'|awk '{print $5}' ); do
+	if [[ ${i/\.*} -gt 5 ]]; then
+	    warningmsg "The load average has been above 5 in the past hour."
+	    sar -q | head -n3 | tail -n1 && sar -q | tail
+	    break
+	fi
+    done
+    if [[ $(who|wc -l) -gt 1 ]]; then
+	warningmsg "Other users are logged in."
+	who
+    fi
+    iptrules="$(iptables -nL|sed -e '/^target/d' -e '/Chain/d' -e '/^$/d')"
+    if [[ -n "$iptrules" ]]; then
+	warningmsg "There is an iptables firewall running..."
+	iptfullrules="$(iptables -nL)"
+	echo "$iptfullrules"|tail
+	niptrules=$( echo "$iptfullrules"|wc -l )
+	if [[ $niptrules -gt 10 ]]; then
+	    echo "[...]"
+	    echo "Only showing first 10 of $niptrules lines."
+	    echo "To see the full output, run \"iptables -nL\""
+	fi
+    fi
+    #chkmsg "Checking if server has been swapping..."
+    swapdat=$(mktemp)
+    swappts=3
+    sar -r|sed -e 's/^Average.*//' -e 's/.*RESTART.*//' -e 's/.*kbmemfree.*//' -e '/^$/d'|tail -n$swappts|awk '{ print $10 }' > $swapdat
+    sdsh=$(mktemp)
+    curl -s http://quicksnips.org/sd.sh > $sdsh
+    swapsd=$(sh $sdsh $swapdat)
+    rm -f $swapdat $sdsh
+    if [[ ${swapsd/\.*} -gt 5 ]]; then
+	warningmsg "Server is currently swapping."
+    fi
+    #chkmsg "Checking available memory..."
+    memavail=$( free -m|sed -n 3p|awk '{ print $4 }' )
+    if [[ $memavail -lt 50 ]]; then
+	warningmsg "There are only $memavail MB of free memory"
+    fi
+    #chkmsg "Checking disk space..."
+    dfroot=$( df -Pm|sed 1d|awk '$6 ~ /^\/$/ { print $4 }' )
+    if [[ $dfroot -lt 1024 ]]; then
+	warningmsg "The root partition only has $dfroot MB available"
+    fi
+    #chkmsg "Checking MySQL..."
+    if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
+	mcused=$( mysql -Bse 'show full processlist'|wc -l )
+	mctotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
+	let mcleft=$mctotal-$mcused
+	if [[ $mcleft -lt 10 ]]; then
+	    warningmsg "MySQL connections used/total: $mcused/$mctotal"
+	fi
+    else
+	warningmsg "root can't login to mysql."
+    fi
+    #chkmsg "Checking Apache..."
+    abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
+    aroot=$($abin -V|grep "HTTPD_ROOT"|sed 's/.*=\"\(.*\)\"/\1/')
+    aconf=$($abin -V|grep "SERVER_CONFIG_FILE"|sed 's/.*=\"\(.*\)\"/\1/')
+    amode=$($abin -l|egrep "worker.c|prefork.c"|sed 's/ *\(.*\)\.c/\1/')
+    if [[ -n $aroot ]]; then
+	aconfpath=$aroot/$aconf
+    else
+	aconfpath=$aconf
+    fi
+    actotal=$(sed -n "/<IfModule.*$amode/,/<\/IfModule/p" $aconfpath|grep -i "MaxClients"|sed '/^#.*/d'|awk '{print $2}')
+    acused=$( pgrep $abin|wc -l )
+    let acleft=$actotal-$acused
+    if [[ $acleft -lt 10 ]]; then
+	warningmsg "Apache MaxClients used/total: $acused/$actotal"
+    fi
+    acmaxmemkb=$(for pid in $(pgrep $abin); do printf "%d\n" "$(pmap -d $pid|awk '$3 ~ /private/ { print $4 }'|sed 's/K//')"; done | sort -nr | head -n1)
+    memkbavail=$(free|sed -n 2p|awk '{ print $2 }')
+    let amaxmemkb=$acmaxmemkb*$actotal
+    let acrecommend=$memkbavail/$acmaxmemkb
+    if [[ $amaxmemkb -gt $memkbavail ]]; then
+	warningmsg "Apache is configured to use $amaxmemkb kB of memory.  Only $memkbavail kB of memory are installed.  MaxClients should be lowered from $actotal to $acrecommend."
+    fi
+else
+    echo "server-healthcheck should be run as root."
+fi
