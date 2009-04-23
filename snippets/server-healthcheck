@@ -2,4 +2,4 @@
 # Checks the following:
 # - 
 
-curl http://quicksnips.org/serverhealthcheck | bash
+curl -s http://quicksnips.org/serverhealthcheck | bash
