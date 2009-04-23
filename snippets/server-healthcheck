@@ -35,7 +35,7 @@ function serverhealthcheck () {
 	warningmsg "Other users are logged in."
 	who
     fi
-#chkmsg "Checking if server has been swapping..."
+    #chkmsg "Checking if server has been swapping..."
     swapdat=$(mktemp)
     swappts=3
     sar -r|sed -e 's/^Average.*//' -e 's/.*RESTART.*//' -e 's/.*kbmemfree.*//' -e '/^$/d'|tail -n$swappts|awk '{ print $10 }' > $swapdat
@@ -46,17 +46,17 @@ function serverhealthcheck () {
     if [[ ${swapsd/\.*} -gt 5 ]]; then
 	warningmsg "Server is currently swapping."
     fi
-#chkmsg "Checking available memory..."
+    #chkmsg "Checking available memory..."
     memavail=$( free -m|sed -n 3p|awk '{ print $4 }' )
     if [[ $memavail -lt 50 ]]; then
 	warningmsg "There are only $memavail MB of free memory"
     fi
-#chkmsg "Checking disk space..."
+    #chkmsg "Checking disk space..."
     dfroot=$( df -Pm|sed 1d|awk '$6 ~ /^\/$/ { print $4 }' )
     if [[ $dfroot -lt 1024 ]]; then
 	warningmsg "The root partition only has $dfroot MB available"
     fi
-#chkmsg "Checking MySQL..."
+    #chkmsg "Checking MySQL..."
     if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
 	mcused=$( mysql -Bse 'show full processlist'|wc -l )
 	mctotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
@@ -67,7 +67,7 @@ function serverhealthcheck () {
     else
 	warningmsg "root can't login to mysql."
     fi
-#chkmsg "Checking Apache..."
+    #chkmsg "Checking Apache..."
     abin=$(netstat -ltnp|awk '$4 ~ /:80/ { print $7 }'|cut -d / -f 2)
     aroot=$($abin -V|grep "HTTPD_ROOT"|sed 's/.*=\"\(.*\)\"/\1/')
     aconf=$($abin -V|grep "SERVER_CONFIG_FILE"|sed 's/.*=\"\(.*\)\"/\1/')
@@ -83,7 +83,6 @@ function serverhealthcheck () {
     if [[ $acleft -lt 10 ]]; then
 	warningmsg "Apache MaxClients used/total: $acused/$actotal"
     fi
-#acmaxmemkb=$(ps aux|awk -v abin=$abin '$11 ~ abin'|sort -rnk6|head -n1|awk '{ print $6 }')
     acmaxmemkb=$(for pid in $(pgrep $abin); do printf "%d\n" "$(pmap -d $pid|awk '$3 ~ /private/ { print $4 }'|sed 's/K//')"; done | sort -nr | head -n1)
     memkbavail=$(free|sed -n 2p|awk '{ print $2 }')
     let amaxmemkb=$acmaxmemkb*$actotal
