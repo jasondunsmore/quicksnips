@@ -29,4 +29,4 @@ qccmds=(
     )
 for (( i = 0 ; i <= ${#qccmds[@]} ; i++ )); do
     qcprint "${qccmds[$i]}"
-done
+done | more

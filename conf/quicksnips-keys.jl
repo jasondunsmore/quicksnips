@@ -39,6 +39,10 @@
 (bind-keys quicksnips-keymap "p" quicksnips-p-keymap)
 (bind-keys quicksnips-p-keymap "p" (lambda () (system "quicksnips plesk-admin-password")))
 
+(define quicksnips-q-keymap (make-keymap))
+(bind-keys quicksnips-keymap "q" quicksnips-q-keymap)
+(bind-keys quicksnips-q-keymap "c" (lambda () (system "quicksnips server-qccheck")))
+
 (define quicksnips-s-keymap (make-keymap))
 (bind-keys quicksnips-keymap "s" quicksnips-s-keymap)
 (bind-keys quicksnips-s-keymap "s" (lambda () (system "quicksnips sar-recent-cpu")))
