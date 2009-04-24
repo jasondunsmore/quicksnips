@@ -14,16 +14,14 @@ function printcmdout () {
     # Usage: printcmdout COMMAND WARNINGMSG [TESTCOMMAND]
     if [[ -n $3 ]]; then
 	cmdtest=$(eval "$3")
+	cmdout=$(eval "$1")
     else
 	cmdtest=$(eval "$1")
+	cmdout="$cmdtest"
     fi
     if [[ -n $cmdtest ]]; then
 	warningmsg "$2..."
-	if [[ -z $3 ]]; then
-	    echo $cmdtest | head -n10
-	else
-	    eval "$1" | head -n10
-	fi
+	echo "$cmdout" | head -n10
 	nlines=$( echo "$cmdout"|wc -l )
 	if [[ $nlines -gt 10 ]]; then
 	    pmsg "[...]"
@@ -154,7 +152,7 @@ fi
 
 # Check Apache
 abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
-if [[ -z "$($abin -V|egrep "^Server version.*Apache\/[0-9].*")" ]]; then
+if [[ -z "$($abin -V 2>&1|egrep "^Server version.*Apache\/[0-9].*")" ]]; then
     warningmsg "The process listening on port 80 is not Apache."
 else
     aroot=$($abin -V|grep "HTTPD_ROOT"|sed 's/.*=\"\(.*\)\"/\1/')
