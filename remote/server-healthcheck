@@ -7,9 +7,14 @@ function messagestoday () {
     msgskeys="error|Error|Out of Memory|segfault|DriveReady SeekComplete"
     grep "$(date '+%b %d')" /var/log/messages|egrep "$msgskeys"
 }
-if [[ $( whoami ) == "root" ]]; then     
+if [[ $( whoami ) == "root" ]]; then
+    publicip="$(curl www.whatismyip.com/automation/n09230945.asp)"
     if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
-	infomsg "This is a PLESK box."
+	infomsg "This is a Plesk box.
+      Plesk URL: https://$publicip:8443/
+      Plesk admin password: $(cat /etc/psa/.psa.shadow)"
+    else
+	infomsg "Public IP: $publicip"
     fi
     if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]; then
 	infomsg "rs-sysmon is installed."
