@@ -2,7 +2,7 @@
 
 function warningmsg () { tput setaf 1; echo "WARNING: $1"; tput sgr0; }
 function infomsg () { tput setaf 2; echo "INFO: $1"; tput sgr0; }
-function chkmsg () { tput setaf 3; echo "$1"; tput sgr0; }
+function pmsg () { tput setaf 3; echo "$1"; tput sgr0; }
 function messagestoday () {
     msgskeys="error|Error|Out of Memory|segfault|DriveReady SeekComplete"
     grep "$(date '+%b %d')" /var/log/messages|egrep "$msgskeys"
@@ -25,9 +25,9 @@ if [[ $( whoami ) == "root" ]]; then
 	echo "$msgserrs" | head -n10
 	nmsgs=$( echo "$msgserrs"|wc -l )
 	if [[ $nmsgs -gt 10 ]]; then
-	    echo "[...]"
-	    echo "Only showing first 10 of $nmsgs lines."
-	    echo "To see the full output, run \"messagestoday\"."
+	    pmsg "[...]"
+	    pmsg "Only showing first 10 of $nmsgs lines."
+	    pmsg "To see the full output, run \"messagestoday\"."
 	fi
     fi
     for i in $( sar -q|tail -n6|sed '$d'|awk '{print $5}' ); do
@@ -48,12 +48,12 @@ if [[ $( whoami ) == "root" ]]; then
 	echo "$iptfullrules"|tail
 	niptrules=$( echo "$iptfullrules"|wc -l )
 	if [[ $niptrules -gt 10 ]]; then
-	    echo "[...]"
-	    echo "Only showing first 10 of $niptrules lines."
-	    echo "To see the full output, run \"iptables -nL\""
+	    pmsg "[...]"
+	    pmsg "Only showing first 10 of $niptrules lines."
+	    pmsg "To see the full output, run \"iptables -nL\""
 	fi
     fi
-    #chkmsg "Checking if server has been swapping..."
+    #pmsg "Checking if server has been swapping..."
     swapdat=$(mktemp)
     swappts=3
     sar -r|sed -e 's/^Average.*//' -e 's/.*RESTART.*//' -e 's/.*kbmemfree.*//' -e '/^$/d'|tail -n$swappts|awk '{ print $10 }' > $swapdat
@@ -64,17 +64,17 @@ if [[ $( whoami ) == "root" ]]; then
     if [[ ${swapsd/\.*} -gt 5 ]]; then
 	warningmsg "Server is currently swapping."
     fi
-    #chkmsg "Checking available memory..."
+    #pmsg "Checking available memory..."
     memavail=$( free -m|sed -n 3p|awk '{ print $4 }' )
     if [[ $memavail -lt 50 ]]; then
 	warningmsg "There are only $memavail MB of free memory"
     fi
-    #chkmsg "Checking disk space..."
+    #pmsg "Checking disk space..."
     dfroot=$( df -Pm|sed 1d|awk '$6 ~ /^\/$/ { print $4 }' )
     if [[ $dfroot -lt 1024 ]]; then
 	warningmsg "The root partition only has $dfroot MB available"
     fi
-    #chkmsg "Checking MySQL..."
+    #pmsg "Checking MySQL..."
     if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
 	mcused=$( mysql -Bse 'show full processlist'|wc -l )
 	mctotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
@@ -85,7 +85,7 @@ if [[ $( whoami ) == "root" ]]; then
     else
 	warningmsg "root can't login to mysql."
     fi
-    #chkmsg "Checking Apache..."
+    #pmsg "Checking Apache..."
     abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
     aroot=$($abin -V|grep "HTTPD_ROOT"|sed 's/.*=\"\(.*\)\"/\1/')
     aconf=$($abin -V|grep "SERVER_CONFIG_FILE"|sed 's/.*=\"\(.*\)\"/\1/')
