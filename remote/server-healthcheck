@@ -13,13 +13,17 @@ function messagestoday () {
 function printcmdout () {
     # Usage: printcmdout COMMAND WARNINGMSG [TESTCOMMAND]
     if [[ -n $3 ]]; then
-	cmdout=$(eval "$3")
+	cmdtest=$(eval "$3")
     else
-	cmdout=$(eval "$1")
+	cmdtest=$(eval "$1")
     fi
-    if [[ -n $cmdout ]]; then
+    if [[ -n $cmdtest ]]; then
 	warningmsg "$2..."
-	echo "$cmdout" | head -n10
+	if [[ -z $3 ]]; then
+	    echo $cmdtest | head -n10
+	else
+	    eval "$1" | head -n10
+	fi
 	nlines=$( echo "$cmdout"|wc -l )
 	if [[ $nlines -gt 10 ]]; then
 	    pmsg "[...]"
@@ -64,11 +68,10 @@ else
     fi
 fi
 
-# Check for Plesk
 if [[ -z $( which rpm ) ]]; then
-    echo "This script requires the rpm command to report on installed packages.
-Please install rpm."
+    pmsg "This script requires the rpm command to report on installed packages.  Please install rpm."
 else
+    # Check for Plesk
     publicip="$(curl -s www.whatismyip.com/automation/n09230945.asp)"
     if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
 	infomsg "This is a Plesk box.
@@ -77,11 +80,12 @@ else
     else
 	infomsg "Public IP: $publicip"
     fi
-fi
 
-# Check for rs-sysmon
-if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]; then
-    infomsg "rs-sysmon is installed."
+    # Check for rs-sysmon
+    if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]
+    then
+	infomsg "rs-sysmon is installed."
+    fi
 fi
 
 # Check for interesting syslog messages
