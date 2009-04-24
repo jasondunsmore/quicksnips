@@ -2,6 +2,6 @@
 # Usage: createfile NUMBER
 
 function createfile () {
-    dd if=/dev/zero of=$1_testfile bs=1048576 count=$1
+    dd if=/dev/zero of=$1M_testfile bs=1048576 count=$1
 }
 createfile 

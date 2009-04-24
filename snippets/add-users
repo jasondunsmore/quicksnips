@@ -3,7 +3,7 @@
 
 function addusers () {
     if [ ! -e /usr/bin/mkpasswd ]; then
-	yum install expect || up2date -i expect
+	yum -y install expect || up2date -i expect
     fi &&
     for user in $*; do
 	pas=`mkpasswd`

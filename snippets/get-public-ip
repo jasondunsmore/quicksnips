@@ -1,2 +1,2 @@
-#Gets public IP from whatismyip.com.
-wget -qO - www.whatismyip.com/automation/n09230945.asp; echo
+# Gets public IP from whatismyip.com.
+curl -s www.whatismyip.com/automation/n09230945.asp; echo

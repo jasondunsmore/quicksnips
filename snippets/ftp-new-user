@@ -3,7 +3,7 @@
 
 function newftp () {
     if [ ! -e /usr/bin/mkpasswd ]; then
-	yum install expect || up2date -i expect
+	yum -y install expect || up2date -i expect
     fi &&
     pas=`mkpasswd`
     if [ -z $2 ]; then

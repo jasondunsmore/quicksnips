@@ -32,13 +32,13 @@ function printiptables () {
 
 # Make sure script is being run as root.
 if [[ $( whoami ) != "root" ]]; then
-    echo "server-healthcheck should be run as root."
+    pmsg "server-healthcheck should be run as root."
     exit 1
 fi
 
 # Make sure system is GNU/Linux
 if [[ -z "$( uname -o|grep "GNU/Linux" )" ]]; then
-    echo "You don't appear to be running GNU/Linux.  This script is for GNU/Linux."
+    pmsg "You don't appear to be running GNU/Linux.  This script is for GNU/Linux."
     exit 1
 fi
 
