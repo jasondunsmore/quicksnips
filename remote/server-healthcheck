@@ -1,4 +1,5 @@
 #!/bin/bash
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
 function warningmsg () { tput setaf 1; echo "WARNING: $1"; tput sgr0; }
 function infomsg () { tput setaf 2; echo "INFO: $1"; tput sgr0; }
@@ -32,19 +33,42 @@ function printiptables () {
     printcmdout "$1" "$2" "$1|sed -e '/^target/d' -e '/Chain/d' -e '/^$/d'"
 }
 
-if [[ $( whoami ) == "root" ]]; then
-    # Check OS version
-    if [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 3") ]]; then
+# Make sure script is being run as root.
+if [[ $( whoami ) != "root" ]]; then
+    echo "server-healthcheck should be run as root."
+    exit 1
+fi
+
+# Make sure system is GNU/Linux
+if [[ -z "$( uname -o|grep "GNU/Linux" )" ]]; then
+    echo "You don't appear to be running GNU/Linux.  This script is for GNU/Linux."
+    exit 1
+fi
+
+# Check OS version
+if [[ ! -e /etc/issue ]]; then
+    echo "Server doesn't have an /etc/issue file.  That's weird."
+else
+    if [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 3") ]]
+    then
 	infomsg "Server is running RHEL3."
-    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 4") ]]; then
+    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 4") ]]
+    then
 	infomsg "Server is running RHEL4."
-    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 5") ]]; then
+    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 5") ]]
+    then
 	infomsg "Server is running RHEL5."
-    elif [[ -n $(cat /etc/issue|grep "Debian GNU/Linux") ]]; then
+    elif [[ -n $(cat /etc/issue|grep "Debian GNU/Linux") ]]
+    then
 	infomsg "Server is running Debian."
     fi
+fi
 
-    # Check for Plesk
+# Check for Plesk
+if [[ -z $( which rpm ) ]]; then
+    echo "This script requires the rpm command to report on installed packages.
+Please install rpm."
+else
     publicip="$(curl -s www.whatismyip.com/automation/n09230945.asp)"
     if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
 	infomsg "This is a Plesk box.
@@ -53,34 +77,39 @@ if [[ $( whoami ) == "root" ]]; then
     else
 	infomsg "Public IP: $publicip"
     fi
+fi
 
-    # Check for rs-sysmon
-    if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]; then
-	infomsg "rs-sysmon is installed."
+# Check for rs-sysmon
+if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]; then
+    infomsg "rs-sysmon is installed."
+fi
+
+# Check for interesting syslog messages
+printcmdout messagestoday "The following was logged today in /var/log/messages"
+
+# Check for a running iptables firewall
+printiptables "iptables -nL" "There is an iptables firewall running"
+printiptables "iptables -nL -t nat" "There are rules in the iptables nat table"
+printiptables "iptables -nL -t mangle" "There are rules in the iptables mangle table"
+
+# Check the load average in the past hour
+for i in $( sar -q|tail -n6|sed '$d'|awk '{print $5}' ); do
+    if [[ ${i/\.*} -gt 5 ]]; then
+	warningmsg "The load average has been above 5 in the past hour."
+	sar -q | head -n3 | tail -n1 && sar -q | tail
+	break
     fi
+done
+if [[ $(who|wc -l) -gt 1 ]]; then
+    warningmsg "Other users are logged in."
+    who
+fi
 
-    # Check for interesting syslog messages
-    printcmdout messagestoday "The following was logged today in /var/log/messages"
-
-    # Check for a running iptables firewall
-    printiptables "iptables -nL" "There is an iptables firewall running"
-    printiptables "iptables -nL -t nat" "There are rules in the iptables nat table"
-    printiptables "iptables -nL -t mangle" "There are rules in the iptables mangle table"
-
-    # Check the load average in the past hour
-    for i in $( sar -q|tail -n6|sed '$d'|awk '{print $5}' ); do
-	if [[ ${i/\.*} -gt 5 ]]; then
-	    warningmsg "The load average has been above 5 in the past hour."
-	    sar -q | head -n3 | tail -n1 && sar -q | tail
-	    break
-	fi
-    done
-    if [[ $(who|wc -l) -gt 1 ]]; then
-	warningmsg "Other users are logged in."
-	who
-    fi
-
-    # Check if server has been swapping
+# Check if server has been swapping
+# Make sure required packages are installed.
+if [[ -z $( which bc ) ]]; then
+    pmsg "This script requires the bc command to analyze swap usage.  Please install bc."
+else
     swappts=3
     swapdat=$(mktemp)
     sar -r|sed -e 's/^Average.*//' -e 's/.*RESTART.*//' -e 's/.*kbmemfree.*//' -e '/^$/d'|tail -n$swappts|awk '{ print $10 }' > $swapdat
@@ -93,33 +122,37 @@ if [[ $( whoami ) == "root" ]]; then
 	    warningmsg "Server is currently swapping."
 	fi
     fi
+fi
 
-    # Check available memory
-    memavail=$( free -m|sed -n 3p|awk '{ print $4 }' )
-    if [[ $memavail -lt 50 ]]; then
-	warningmsg "There are only $memavail MB of free memory"
+# Check available memory
+memavail=$( free -m|sed -n 3p|awk '{ print $4 }' )
+if [[ $memavail -lt 50 ]]; then
+    warningmsg "There are only $memavail MB of free memory"
+fi
+
+# Checking available disk space
+dfroot=$( df -Pm|sed 1d|awk '$6 ~ /^\/$/ { print $4 }' )
+if [[ $dfroot -lt 1024 ]]; then
+    warningmsg "The root partition only has $dfroot MB available"
+fi
+
+# Check MySQL
+if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
+    mcused=$( mysql -Bse 'show full processlist'|wc -l )
+    mctotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
+    let mcleft=$mctotal-$mcused
+    if [[ $mcleft -lt 10 ]]; then
+	warningmsg "MySQL connections used/total: $mcused/$mctotal"
     fi
+else
+    warningmsg "root can't login to mysql."
+fi
 
-    # Checking available disk space
-    dfroot=$( df -Pm|sed 1d|awk '$6 ~ /^\/$/ { print $4 }' )
-    if [[ $dfroot -lt 1024 ]]; then
-	warningmsg "The root partition only has $dfroot MB available"
-    fi
-
-    # Check MySQL
-    if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
-	mcused=$( mysql -Bse 'show full processlist'|wc -l )
-	mctotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
-	let mcleft=$mctotal-$mcused
-	if [[ $mcleft -lt 10 ]]; then
-	    warningmsg "MySQL connections used/total: $mcused/$mctotal"
-	fi
-    else
-	warningmsg "root can't login to mysql."
-    fi
-
-    # Check Apache
-    abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
+# Check Apache
+abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
+if [[ -z "$($abin -V|egrep "^Server version.*Apache\/[0-9].*")" ]]; then
+    warningmsg "The process listening on port 80 is not Apache."
+else
     aroot=$($abin -V|grep "HTTPD_ROOT"|sed 's/.*=\"\(.*\)\"/\1/')
     aconf=$($abin -V|grep "SERVER_CONFIG_FILE"|sed 's/.*=\"\(.*\)\"/\1/')
     amode=$($abin -l|egrep "worker.c|prefork.c"|sed 's/ *\(.*\)\.c/\1/')
@@ -141,6 +174,6 @@ if [[ $( whoami ) == "root" ]]; then
     if [[ $amaxmemkb -gt $memkbavail ]]; then
 	warningmsg "Apache is configured to use $amaxmemkb kB of memory.  Only $memkbavail kB of memory are installed.  MaxClients should be lowered from $actotal to $acrecommend."
     fi
-else
-    echo "server-healthcheck should be run as root."
 fi
+
+exit 0
