@@ -8,7 +8,7 @@ function messagestoday () {
     grep "$(date '+%b %d')" /var/log/messages|egrep "$msgskeys"
 }
 if [[ $( whoami ) == "root" ]]; then
-    publicip="$(curl www.whatismyip.com/automation/n09230945.asp)"
+    publicip="$(curl -s www.whatismyip.com/automation/n09230945.asp)"
     if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
 	infomsg "This is a Plesk box.
       Plesk URL: https://$publicip:8443/

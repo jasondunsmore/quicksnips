@@ -1,3 +1,3 @@
 # Display MySQL memory usage.
 
-curl -s http://quicksnips.org/tuning-primer.sh > /tmp/tuning-primer.sh && bash /tmp/tuning-primer.sh mem
+curl -s http://quicksnips.org/remote/tuning-primer.sh > /tmp/tuning-primer.sh && bash /tmp/tuning-primer.sh mem
