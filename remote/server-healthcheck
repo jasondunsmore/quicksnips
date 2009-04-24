@@ -46,17 +46,13 @@ fi
 if [[ ! -e /etc/issue ]]; then
     echo "Server doesn't have an /etc/issue file.  That's weird."
 else
-    if [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 3") ]]
-    then
+    if [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 3") ]]; then
 	infomsg "Server is running RHEL3."
-    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 4") ]]
-    then
+    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 4") ]]; then
 	infomsg "Server is running RHEL4."
-    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 5") ]]
-    then
+    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux Server release 5") ]]; then
 	infomsg "Server is running RHEL5."
-    elif [[ -n $(cat /etc/issue|grep "Debian GNU/Linux") ]]
-    then
+    elif [[ -n $(cat /etc/issue|grep "Debian GNU/Linux") ]]; then
 	infomsg "Server is running Debian."
     else
 	infomsg "Server isn't running RHEL{3,4,5} or Debian.  From /etc/issue..."
@@ -78,8 +74,7 @@ else
     fi
 
     # Check for rs-sysmon
-    if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]
-    then
+    if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]; then
 	infomsg "rs-sysmon is installed."
     fi
 fi
