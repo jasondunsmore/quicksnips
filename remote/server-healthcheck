@@ -5,11 +5,6 @@ function warningmsg () { tput setaf 1; echo "WARNING: $1"; tput sgr0; }
 function infomsg () { tput setaf 2; echo "INFO: $1"; tput sgr0; }
 function pmsg () { tput setaf 3; echo "$1"; tput sgr0; }
 
-function messagestoday () {
-    msgskeys="error|Error|Out of Memory|segfault|DriveReady SeekComplete"
-    grep "$(date '+%b %d')" /var/log/messages|egrep "$msgskeys"
-}
-
 function printcmdout () {
     # Usage: printcmdout COMMAND WARNINGMSG [TESTCOMMAND]
     if [[ -n $3 ]]; then
@@ -63,6 +58,9 @@ else
     elif [[ -n $(cat /etc/issue|grep "Debian GNU/Linux") ]]
     then
 	infomsg "Server is running Debian."
+    else
+	infomsg "Server isn't running RHEL{3,4,5} or Debian.  From /etc/issue..."
+	head -n1 /etc/issue
     fi
 fi
 
@@ -87,7 +85,7 @@ else
 fi
 
 # Check for interesting syslog messages
-printcmdout messagestoday "The following was logged today in /var/log/messages"
+printcmdout 'grep "$(date "+%b %d")" /var/log/messages|egrep "error|Error|Out of Memory|segfault|DriveReady SeekComplete"' "The following was logged today in /var/log/messages"
 
 # Check for a running iptables firewall
 printiptables "iptables -nL" "There is an iptables firewall running"
