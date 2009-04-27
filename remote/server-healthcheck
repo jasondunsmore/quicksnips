@@ -146,7 +146,7 @@ fi
 # Check Apache
 abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
 if [[ -z "$($abin -V 2>&1|egrep "^Server version.*Apache\/[0-9].*")" ]]; then
-    warningmsg "The process listening on port 80 is not Apache."
+    warningmsg "Apache is not listening on port 80."
 else
     aroot=$($abin -V|grep "HTTPD_ROOT"|sed 's/.*=\"\(.*\)\"/\1/')
     aconf=$($abin -V|grep "SERVER_CONFIG_FILE"|sed 's/.*=\"\(.*\)\"/\1/')
