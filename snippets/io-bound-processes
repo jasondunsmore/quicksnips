@@ -1,2 +1,3 @@
 # Finds processes causing high iowait
-ps ax | awk '$3 ~ /^D/ { print $0 }'
+
+while [ 1 ]; do ps ax | awk '$3 ~ /^D/ { print $0 }'; sleep 0.1; done
