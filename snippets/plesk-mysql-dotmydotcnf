@@ -13,4 +13,5 @@ user="admin"
 pass="$pass"
 EOF
     fi
+}
 pleskmysqldotmydotcnf
