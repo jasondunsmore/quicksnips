@@ -17,7 +17,7 @@ function printcmdout () {
     if [[ -n $cmdtest ]]; then
 	warningmsg "$2..."
 	echo "$cmdout" | head -n10
-	nlines=$( echo "$cmdout"|wc -l )
+	nlines=$( echo "$cmdout"|sed -n '$=' )
 	if [[ $nlines -gt 10 ]]; then
 	    pmsg "[...]"
 	    pmsg "Only showing first 10 of $nlines lines."
@@ -95,7 +95,7 @@ for i in $( sar -q|tail -n6|sed '$d'|awk '{print $5}' ); do
 	break
     fi
 done
-if [[ $(who|wc -l) -gt 1 ]]; then
+if [[ $(who|sed -n '$=') -gt 1 ]]; then
     warningmsg "Other users are logged in."
     who
 fi
@@ -108,7 +108,7 @@ else
     swappts=3
     swapdat=$(mktemp)
     sar -r|sed -e 's/^Average.*//' -e 's/.*RESTART.*//' -e 's/.*kbmemfree.*//' -e '/^$/d'|tail -n$swappts|awk '{ print $10 }' > $swapdat
-    if [[ $(cat $swapdat|wc -l) -ge 3 ]]; then
+    if [[ $(cat $swapdat|sed -n '$=') -ge 3 ]]; then
 	sdsh=$(mktemp)
 	curl -s http://quicksnips.org/sd.sh > $sdsh
 	swapsd=$(sh $sdsh $swapdat)
@@ -133,7 +133,7 @@ fi
 
 # Check MySQL
 if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
-    mcused=$( mysql -Bse 'show full processlist'|wc -l )
+    mcused=$( mysql -Bse 'show full processlist'|sed -n '$=' )
     mctotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
     let mcleft=$mctotal-$mcused
     if [[ $mcleft -lt 10 ]]; then
@@ -157,7 +157,7 @@ else
 	aconfpath=$aconf
     fi
     actotal=$(sed -n "/<IfModule.*$amode/,/<\/IfModule/p" $aconfpath|grep -i "MaxClients"|sed '/^#.*/d'|awk '{print $2}')
-    acused=$( pgrep $abin|wc -l )
+    acused=$( pgrep $abin|sed -n '$=' )
     let acleft=$actotal-$acused
     if [[ $acleft -lt 10 ]]; then
 	warningmsg "Apache MaxClients used/total: $acused/$actotal"
