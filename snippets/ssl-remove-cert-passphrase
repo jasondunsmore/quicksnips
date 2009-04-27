@@ -1,0 +1,11 @@
+# Removes a passphrase from an SSL key.  Operates on .pem or .key files.
+# Usage: sslremovecertpassphrase OLDKEY NEWKEY
+
+function sslremovecertpassphrase () {
+    if [ -z "$1" -o -z "$2" ]; then
+	echo "Usage: sslremovecertpassphrase OLDKEY NEWKEY"
+    else
+	openssl rsa -in $1 -out $2
+    fi
+}
+sslremovecertpassphrase 

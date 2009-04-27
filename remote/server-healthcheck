@@ -114,7 +114,8 @@ else
 	swapsd=$(sh $sdsh $swapdat)
 	rm -f $swapdat $sdsh
 	if [[ ${swapsd/\.*} -gt 5 ]]; then
-	    warningmsg "Server is currently swapping."
+	    warningmsg "Server has been actively swapping in the past half hour."
+	    sar -r | head -n3 | tail -n1 && sar -r | tail
 	fi
     fi
 fi

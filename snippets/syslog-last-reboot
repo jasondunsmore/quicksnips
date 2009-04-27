@@ -1,3 +1,3 @@
-# Shows entries in /var/log/messages since last reboot with last 30 before reboot.
+# Shows entries in /var/log/messages since last reboot with last 50 before reboot.
 
-grep -h -B30 -A9999999 "$(grep syslog /var/log/messages|grep restart|tail -n1|cut -c1-15)" /var/log/messages|less -S
+grep -h -B200 -A9999999 "$(grep syslog /var/log/messages|grep restart|tail -n1|cut -c1-15)" /var/log/messages|less +151 -S
