@@ -1,9 +1,0 @@
-# Adds DAG repo to a RHEL4 box, installs package, removes DAG repo
-
-function daginst () {
-    rpm -Uhv http://apt.sw.be/redhat/el4/en/$(uname -i)/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.$(uname -i).rpm
-    echo "yum dag http://apt.sw.be/redhat/el4/en/\$ARCH/dag" >> /etc/sysconfig/rhn/sources
-    up2date -i $*
-    sed -i"~" "s/^yum dag http:\/\/apt.sw.be\/redhat\/el4\/en\/$ARCH\/dag/#yum dag http:\/\/apt.sw.be\/redhat\/el4\/en\/$ARCH\/dag/" /etc/sysconfig/rhn/sources
-}
-daginst 
