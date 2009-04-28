@@ -7,5 +7,6 @@ function pleskbandwidthdomain () {
 	grep $dom $statsfile | awk -v date="$(date +%Y-%m)" '$2 ~ date' |
 	awk -v dom=$dom '{ sum+=$3 } END { printf "%7.2f GB %s\n", sum/1024/1024/1024, dom }'
     done | sort -n | tail -n20
+    rm -f $statsfile
 }
 pleskbandwidthdomain
