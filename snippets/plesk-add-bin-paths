@@ -1,0 +1,3 @@
+# Adds Plesk binary directories to your $PATH.
+
+export PATH=$PATH:/usr/local/psa/bin/:/usr/local/psa/admin/bin/
