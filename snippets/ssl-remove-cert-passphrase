@@ -3,9 +3,9 @@
 
 function sslremovecertpassphrase () {
     if [ -z "$1" -o -z "$2" ]; then
-	echo "Usage: sslremovecertpassphrase OLDKEY NEWKEY"
+        echo "Usage: sslremovecertpassphrase OLDKEY NEWKEY"
     else
-	openssl rsa -in $1 -out $2
+        openssl rsa -in $1 -out $2
     fi
 }
 sslremovecertpassphrase 

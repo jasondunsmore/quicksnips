@@ -1,20 +1,20 @@
 # Adds DAG repo to a RHEL4 box, installs package, removes DAG repo
 
 function dagconf () {
-	rpm -Uhv http://apt.sw.be/redhat/$1/en/$(uname -i)/rpmforge/RPMS/rpmforge-release-0.3.6-1.$1.rf.$(uname -i).rpm
-	echo "yum dag http://apt.sw.be/redhat/$1/en/$ARCH/dag" >> /etc/sysconfig/rhn/sources
-	up2date -i $*
-	sed -i"~" "s/^yum dag http:\/\/apt.sw.be\/redhat\/$1\/en\/$ARCH\/dag/#yum dag http:\/\/apt.sw.be\/redhat\/$1\/en\/$ARCH\/dag/" /etc/sysconfig/rhn/sources
+        rpm -Uhv http://apt.sw.be/redhat/$1/en/$(uname -i)/rpmforge/RPMS/rpmforge-release-0.3.6-1.$1.rf.$(uname -i).rpm
+        echo "yum dag http://apt.sw.be/redhat/$1/en/$ARCH/dag" >> /etc/sysconfig/rhn/sources
+        up2date -i $*
+        sed -i"~" "s/^yum dag http:\/\/apt.sw.be\/redhat\/$1\/en\/$ARCH\/dag/#yum dag http:\/\/apt.sw.be\/redhat\/$1\/en\/$ARCH\/dag/" /etc/sysconfig/rhn/sources
 }
 function daginstall () {
     if [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 3") ]]; then
-	dagconf el3
+        dagconf el3
     elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 4") ]]; then
-	dagconf el4
+        dagconf el4
     elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux Server release 5") ]]; then
-	dagconf el5
+        dagconf el5
     else
-	echo "Server isn't running RHEL{3,4,5}."
+        echo "Server isn't running RHEL{3,4,5}."
     fi
 }
 daginstall 

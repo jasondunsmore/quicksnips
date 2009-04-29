@@ -3,13 +3,13 @@
 
 function newftp () {
     if [ ! -e /usr/bin/mkpasswd ]; then
-	yum -y install expect || up2date -i expect
+        yum -y install expect || up2date -i expect
     fi &&
     pas=`mkpasswd`
     if [ -z $2 ]; then
-	useradd -s /bin/false $1
+        useradd -s /bin/false $1
     else
-	useradd -d $2 -s /bin/false $1
+        useradd -d $2 -s /bin/false $1
     fi &&
     echo $pas|passwd --stdin $1 && echo "Password: $pas"
 }; newftp

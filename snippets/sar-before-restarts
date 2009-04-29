@@ -3,22 +3,22 @@
 function sarbeforerestarts () {
     i=0
     for file in $( grep -l RESTART /var/log/sa/sar* ); do
-	i=i+=1
-	file="${file/sar/sa}"
-	echo; echo $file; echo
-	sar|head -n3|tail -n1 && sar -f $file|grep -B8 RESTART|grep -v Average; echo
-	sar -q|head -n3|tail -n1 && sar -q -f $file|grep -B8 RESTART|grep -v Average; echo
-	sar -r|head -n3|tail -n1 && sar -r -f $file|grep -B8 RESTART|grep -v Average; echo
+        i=i+=1
+        file="${file/sar/sa}"
+        echo; echo $file; echo
+        sar|head -n3|tail -n1 && sar -f $file|grep -B8 RESTART|grep -v Average; echo
+        sar -q|head -n3|tail -n1 && sar -q -f $file|grep -B8 RESTART|grep -v Average; echo
+        sar -r|head -n3|tail -n1 && sar -r -f $file|grep -B8 RESTART|grep -v Average; echo
     done
     if [[ $( sar|grep RESTART ) ]]; then
-	i=i+=1
-	echo; echo Today; echo
-	sar|head -n3|tail -n1 && sar|grep -B8 RESTART|grep -v Average; echo
-	sar -q|head -n3|tail -n1 && sar -q|grep -B8 RESTART|grep -v Average; echo
-	sar -r|head -n3|tail -n1 && sar -r|grep -B8 RESTART|grep -v Average; echo
+        i=i+=1
+        echo; echo Today; echo
+        sar|head -n3|tail -n1 && sar|grep -B8 RESTART|grep -v Average; echo
+        sar -q|head -n3|tail -n1 && sar -q|grep -B8 RESTART|grep -v Average; echo
+        sar -r|head -n3|tail -n1 && sar -r|grep -B8 RESTART|grep -v Average; echo
     fi
     if [[ $i = 0 ]]; then
-	echo "No system restarts were logged in the last week."
+        echo "No system restarts were logged in the last week."
     fi
 }
 sarbeforerestarts

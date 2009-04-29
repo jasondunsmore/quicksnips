@@ -2,12 +2,12 @@
 
 function smtpbandwidth () {
     if [ -e $1 ]; then
-	for day in $(seq 01 $(date +%d)); do
-	    echo -n "$(date +%B) $day: "
-	    zgrep -E "$(date +%b)space: {1,2}$day " $* | grep 'relay=localhost' | awk ' $8 ~ /size=/ {print $8}' | awk -F= '{SUM += $2} END {print SUM/1024,"K"}'
-	done
+        for day in $(seq 01 $(date +%d)); do
+            echo -n "$(date +%B) $day: "
+            zgrep -E "$(date +%b)space: {1,2}$day " $* | grep 'relay=localhost' | awk ' $8 ~ /size=/ {print $8}' | awk -F= '{SUM += $2} END {print SUM/1024,"K"}'
+        done
     else
-	echo "/var/log/maillog doesn't exist."
+        echo "/var/log/maillog doesn't exist."
     fi
 }
 smtpbandwidth /var/log/maillog*

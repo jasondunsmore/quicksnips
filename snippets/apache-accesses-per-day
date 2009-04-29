@@ -8,11 +8,11 @@
 
 function smartcat () {
     for file in $*; do
-	if [ "$( file $file|awk '{ print $2 }' )" == "gzip" ]; then
-	    zcat $file
-	else
-	    cat $file
-	fi
+        if [ "$( file $file|awk '{ print $2 }' )" == "gzip" ]; then
+            zcat $file
+        else
+            cat $file
+        fi
     done
 }
 function apacheaccessesday () {

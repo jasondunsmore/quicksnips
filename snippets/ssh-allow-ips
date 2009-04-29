@@ -3,10 +3,10 @@
 function bak () { cp -a $1 $1.bak.`date +%Y%m%d.%H%M%S`; }
 function sshallowips () {
     if [[ $(egrep "^sshd" /etc/hosts.{allow,deny}) ]]; then
-	echo "There are already sshd rules in /etc/hosts.allow or /etc/hosts.deny."
+        echo "There are already sshd rules in /etc/hosts.allow or /etc/hosts.deny."
     else
-	bak /etc/hosts.allow
-	cat >> /etc/hosts.allow <<EOF
+        bak /etc/hosts.allow
+        cat >> /etc/hosts.allow <<EOF
 # Allow Rackspace IPs
 sshd : 64.39.0.0/255.255.254.0
 sshd : 64.39.2.144/255.255.255.240
@@ -15,14 +15,14 @@ sshd : 10.0.0.0/255.240.0.0
 
 # Allow customer IPs
 EOF
-	bak /etc/hosts.deny
-	cat >> /etc/hosts.deny <<EOF
+        bak /etc/hosts.deny
+        cat >> /etc/hosts.deny <<EOF
 # Deny all other IPs
 sshd : ALL
 EOF
-	for ip in $*; do
-	    echo "sshd : $ip" >> /etc/hosts.allow
-	done
+        for ip in $*; do
+            echo "sshd : $ip" >> /etc/hosts.allow
+        done
     fi
 }
 sshallowips 

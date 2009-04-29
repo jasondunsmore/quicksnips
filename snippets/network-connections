@@ -5,9 +5,9 @@
 
 function networkconnections () {
     if [[ -n $2 ]]; then
-	netstat -tunp | awk -v port=":$1" -v state="$2" '$4 ~ port && $6 ~ state { print $5 }'|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'|sort -n|uniq -c|sort -n
+        netstat -tunp | awk -v port=":$1" -v state="$2" '$4 ~ port && $6 ~ state { print $5 }'|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'|sort -n|uniq -c|sort -n
     else
-	netstat -tunp | awk -v port=":$1" '$4 ~ port { print $5 }'|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'|sort -n|uniq -c|sort -n
+        netstat -tunp | awk -v port=":$1" '$4 ~ port { print $5 }'|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'|sort -n|uniq -c|sort -n
     fi
 }
 networkconnections 

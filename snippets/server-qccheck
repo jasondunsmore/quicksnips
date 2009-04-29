@@ -3,9 +3,9 @@
 function qcprint () {
     cmdout="$(eval "$1 2>/dev/null")"
     if [[ -n "$cmdout" ]]; then
-	echo "$ $1"
-	echo "$cmdout"
-	echo
+        echo "$ $1"
+        echo "$cmdout"
+        echo
     fi
 }
 qccmds=(

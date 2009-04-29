@@ -3,17 +3,17 @@
 
 function addusers () {
     if [[ -z "$1" ]]; then
-	echo "Usage: addusers USER1 [USER2] [USER3] [...]"
+        echo "Usage: addusers USER1 [USER2] [USER3] [...]"
     else
-	if [[ ! -e /usr/bin/mkpasswd ]]; then
-	    yum -y install expect || up2date -i expect
-	fi &&
-	for user in $*; do
-	    pas=`mkpasswd`
-	    useradd -s /bin/false $user
-	    echo "User: $user"
-	    echo $pas|passwd --stdin $user >/dev/null && echo "Password: $pas"
-	done 
+        if [[ ! -e /usr/bin/mkpasswd ]]; then
+            yum -y install expect || up2date -i expect
+        fi &&
+        for user in $*; do
+            pas=`mkpasswd`
+            useradd -s /bin/false $user
+            echo "User: $user"
+            echo $pas|passwd --stdin $user >/dev/null && echo "Password: $pas"
+        done 
     fi
 }
 addusers 
