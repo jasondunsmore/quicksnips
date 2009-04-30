@@ -80,7 +80,12 @@ else
 fi
 
 # Check for interesting syslog messages
-printcmdout 'grep "$(date "+%b %d")" /var/log/messages|egrep "error|Error|Out of Memory|segfault|DriveReady SeekComplete"' "The following was logged today in /var/log/messages"
+msgssize=$(stat -c%s "/var/log/messages")
+if [[ $msgssize -lt 1073741824 ]]; then
+    printcmdout 'grep "$(date "+%b %d")" /var/log/messages|egrep "error|Error|Out of Memory|segfault|DriveReady SeekComplete"' "The following was logged today in /var/log/messages"
+else
+    infomsg "Skipping /var/log/messages check, file larger than 1 GB."
+fi
 
 # Check for a running iptables firewall
 printiptables "iptables -nL" "There is an iptables firewall running"
