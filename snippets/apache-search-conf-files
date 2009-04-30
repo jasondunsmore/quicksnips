@@ -1,0 +1,9 @@
+# Search all Apache configuration files
+
+function apachesearchconffiles () {
+    httpd -S 2>&1|egrep "\/.*\/"|sed 's/.*(\(.*\):.*).*/\1/'|sort|uniq|while read file; do
+    egrep "$1" $file
+    done
+}
+apachesearchconffiles 
+
