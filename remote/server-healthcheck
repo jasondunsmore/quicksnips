@@ -66,7 +66,7 @@ if [[ -z $( which rpm ) ]]; then
 else
     # Check for Plesk
     if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
-	infomsg "This is a Plesk box.
+	infomsg "This server is running Plesk $(awk '{print $1}' /usr/local/psa/version).
       Plesk URL: https://$PUBLICIP:8443/
       Plesk admin password: $(cat /etc/psa/.psa.shadow)"
     else
