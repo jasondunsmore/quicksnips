@@ -47,13 +47,13 @@ fi
 if [[ ! -e /etc/issue ]]; then
     echo "Server doesn't have an /etc/issue file.  That's weird."
 else
-    if [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 3") ]]; then
+    if [[ -n $(grep "Red Hat Enterprise Linux ES release 3" /etc/issue) ]]; then
 	infomsg "Server is running RHEL3."
-    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux ES release 4") ]]; then
+    elif [[ -n $(grep "Red Hat Enterprise Linux ES release 4" /etc/issue) ]]; then
 	infomsg "Server is running RHEL4."
-    elif [[ -n $(cat /etc/issue|grep "Red Hat Enterprise Linux Server release 5") ]]; then
+    elif [[ -n $(grep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
 	infomsg "Server is running RHEL5."
-    elif [[ -n $(cat /etc/issue|grep "Debian GNU/Linux") ]]; then
+    elif [[ -n $(grep "Debian GNU/Linux" /etc/issue) ]]; then
 	infomsg "Server is running Debian."
     else
 	infomsg "Server isn't running RHEL{3,4,5} or Debian.  From /etc/issue..."
@@ -66,9 +66,9 @@ if [[ -z $( which rpm ) ]]; then
 else
     # Check for Plesk
     if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
-	infomsg "This server is running Plesk $(awk '{print $1}' /usr/local/psa/version).
-      Plesk URL: https://$PUBLICIP:8443/
-      Plesk admin password: $(cat /etc/psa/.psa.shadow)"
+	infomsg "This server is running Plesk $(awk '{print $1}' /usr/local/psa/version)."
+	infomsg "Plesk URL: https://$PUBLICIP:8443/"
+	infomsg "Plesk admin password: $(cat /etc/psa/.psa.shadow)"
     else
 	infomsg "Public IP: $PUBLICIP"
     fi
@@ -77,9 +77,9 @@ else
     if [[ ! "$( rpm -q webmin )" == "package webmin is not installed" ]]; then
 	webminport=$(netstat -ltnp|grep "$(ps ax|grep miniserv.pl|grep -v grep|awk '{print $1}')"|awk '{print $4}'|sed 's/.*:\(.*\)$/\1/')
 	if [[ -n "$webminport" ]]; then
-	    infomsg "Webmin is installed and running.
-      Webmin URL: https://$PUBLICIP:$webminport/
-      Primary Webmin user: $(head -n1 /etc/webmin/miniserv.users | cut -d: -f1)"
+	    infomsg "Webmin is installed and running."
+	    infomsg "Webmin URL: https://$PUBLICIP:$webminport/"
+	    infomsg "Primary Webmin user: $(head -n1 /etc/webmin/miniserv.users | cut -d: -f1)"
 	fi
     fi
 
@@ -88,6 +88,10 @@ else
 	infomsg "rs-sysmon is installed."
     fi
 fi
+
+# Check system time
+timeoffset=$(ntpdate -q pool.ntp.org|head -n1|awk '{print $6}'|sed 's/-\?\(.*\)\..*/\1/')
+[[ $timeoffset -gt 300 ]] && warningmsg "Server time is over 5 minutes off."
 
 # Check for interesting syslog messages
 msgssize=$(stat -c%s "/var/log/messages")
@@ -116,7 +120,6 @@ if [[ $(who|sed -n '$=') -gt 1 ]]; then
 fi
 
 # Check if server has been swapping
-# Make sure required packages are installed.
 if [[ -z $( which bc ) ]]; then
     pmsg "This script requires the bc command to analyze swap usage.  Please install bc."
 else
