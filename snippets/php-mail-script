@@ -1,14 +1,17 @@
 # Creates mail script called mailtest.php if none exists
 
-file="mailtest.php"; if [ ! -e $file ]; then cat > $file <<EOF; fi
+function phpmailscript () {
+    file="mailtest.php"
+    if [ ! -e $file ]; then
+	cat > $file <<EOF
 <?php
-$to = "";
-$subject = "Hi!";
-$body = "Hi,\n\nHow are you?";
-if (mail($to, $subject, $body)) {
+if (mail("$1", "Hi!", "Hi,\n\nHow are you?")) {
   echo("<p>Message successfully sent!</p>");
  } else {
   echo("<p>Message delivery failed...</p>");
  }
 ?>
 EOF
+    fi
+}
+phpmailscript 
