@@ -18,6 +18,8 @@ qccmds=(
     "cat /proc/scsi/scsi"
     "rpm -q psa"
     "head -n50 /etc/psa/psa.key"
+    "up2date --show-channels"
+    "echo \"repo list\" | yum shell"
     "rpm -q mysqlbackup"
     "rpm -q sophosav-installer"
     "/opt/sophos-av/bin/savconfig -v"
