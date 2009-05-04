@@ -13,11 +13,15 @@ function sshblockattackers () {
     shift
     sshdictattack "$@"|awk -v tries="$tries" '{ if( $1 >= tries ) print $2 }' > $attackers
     iptables -nL INPUT|awk '$1 ~ /DROP/ { print $4 }'|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' > $blocked
+    echo "iptables rules before:"
+    iptables -nL
     while read ip; do
         if [[ $( grep -xc "$ip" $blocked ) = 0 ]]; then
             echo iptables -I INPUT -s $ip -j DROP
             iptables -I INPUT -s $ip -j DROP
         fi
     done < $attackers
+    echo "iptables rules after:"
+    iptables -nL
 }
 sshblockattackers 1000 /var/log/secure*

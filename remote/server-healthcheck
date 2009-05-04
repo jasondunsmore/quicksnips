@@ -47,11 +47,11 @@ fi
 if [[ ! -e /etc/issue ]]; then
     echo "Server doesn't have an /etc/issue file.  That's weird."
 else
-    if [[ -n $(grep "Red Hat Enterprise Linux ES release 3" /etc/issue) ]]; then
+    if [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 3" /etc/issue) ]]; then
 	infomsg "Server is running RHEL3."
-    elif [[ -n $(grep "Red Hat Enterprise Linux ES release 4" /etc/issue) ]]; then
+    elif [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 4" /etc/issue) ]]; then
 	infomsg "Server is running RHEL4."
-    elif [[ -n $(grep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
+    elif [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
 	infomsg "Server is running RHEL5."
     elif [[ -n $(grep "Debian GNU/Linux" /etc/issue) ]]; then
 	infomsg "Server is running Debian."
@@ -96,7 +96,7 @@ timeoffset=$(ntpdate -q pool.ntp.org|head -n1|awk '{print $6}'|sed 's/-\?\(.*\)\
 # Check for interesting syslog messages
 msgssize=$(stat -c%s "/var/log/messages")
 if [[ $msgssize -lt 1073741824 ]]; then
-    printcmdout 'grep "$(date "+%b %d")" /var/log/messages|egrep "error|Error|Out of Memory|segfault|DriveReady SeekComplete"' "The following was logged today in /var/log/messages"
+    printcmdout 'grep "$(date "+%b %d")" /var/log/messages|egrep "error|Error|Out of Memory|segfault|DriveReady SeekComplete|BUG"' "The following was logged today in /var/log/messages"
 else
     pmsg "Skipping /var/log/messages check, file larger than 1 GB."
 fi
