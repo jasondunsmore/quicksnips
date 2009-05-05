@@ -1,0 +1,21 @@
+function mailcheck() {
+ip=`curl -s www.whatismyip.com/automation/n09230945.asp`
+ptr=`dig -x $ip +short |sed s/\.$//`;
+adata=`dig $ptr +short`;
+helo=`echo "helo rackspace.com" |nc localhost 25 |tail -n 1 |cut -f 2 -d ' '`;
+
+if ! [[ $ip ]]; then echo "No Public IP Obtained";return; fi
+if ! [[ $ptr ]]; then echo "No PTR Obtained"; return; fi
+if ! [[ $adata ]]; then echo "PTR does not forward resolve"; return; fi
+if ! [[ $helo ]]; then echo "No HELO data obtained"; return; fi
+
+if [[ $ptr == $helo ]] && [[ $adata == $ip ]]; then echo "*** 3-way Passed ***";
+else echo "*** 3-way failed ***";
+fi
+
+echo "IP is $ip"
+echo "PTR is $ptr"
+echo "Hostname resolves to $adata"
+echo "SMTP HELO is $helo"
+}
+mailcheck
