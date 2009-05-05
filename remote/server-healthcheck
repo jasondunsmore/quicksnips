@@ -61,6 +61,8 @@ else
     fi
 fi
 
+infomsg "Public IP: $PUBLICIP"
+
 if [[ -z $( which rpm ) ]]; then
     pmsg "This script requires the rpm command to report on installed packages.  Please install rpm."
 else
@@ -69,8 +71,6 @@ else
 	infomsg "This server is running Plesk $(awk '{print $1}' /usr/local/psa/version)."
 	infomsg "Plesk URL: https://$PUBLICIP:8443/"
 	infomsg "Plesk admin password: $(cat /etc/psa/.psa.shadow)"
-    else
-	infomsg "Public IP: $PUBLICIP"
     fi
 
     # Check for Webmin
@@ -186,7 +186,7 @@ else
     let amaxmemkb=$aclargestkb*$actotal
     let acrecommend=$memkbavail/$aclargestkb
     if [[ $amaxmemkb -gt $memkbavail ]]; then
-	warningmsg "Apache is configured to use $amaxmemkb kB of memory.  Only $memkbavail kB of memory are installed.  MaxClients should be lowered from $actotal to $acrecommend."
+	warningmsg "Apache is configured to use $amaxmemkb kB of memory.  Only $memkbavail kB of memory are installed.  Consider lowering MaxClients from $actotal to $acrecommend."
     fi
 fi
 

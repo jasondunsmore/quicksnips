@@ -1,3 +1,15 @@
 # Prints the number of entries in the access log for each IP.
 
-cat access_log | gawk '{print $1}' | sort | uniq -c | sort -rn
+function smartcat () {
+    for file in $*; do
+        if [ "$( file $file|awk '{ print $2 }' )" == "gzip" ]; then
+            zcat $file
+        else
+            cat $file
+        fi
+    done
+}
+function apacheaccessesperip () {
+    smartcat $* | gawk '{print $1}' | sort | uniq -c | sort -n
+}
+apacheaccessesperip /var/log/httpd/access_log*

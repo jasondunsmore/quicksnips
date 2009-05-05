@@ -1,7 +1,7 @@
 # Starts screen with server-healthcheck running in a background terminal.
 
-if [[ -n "$(ps ax|grep SCREEN|grep -v grep)" ]]; then
-    echo "There's already a screen session running."
+if [[ -n "$(find /var/run/screen/S-root/ -type f)" ]]; then
+    echo "There's already a root screen session running."
     screen -ls
 else
     echo -e "defscrollback 10000\nscreen -t healthcheck 0 bash -c 'curl -s http://quicksnips.org/remote/server-healthcheck | bash; bash -l'\nscreen 1 bash -l" > /tmp/.screenrc && screen -c /tmp/.screenrc
