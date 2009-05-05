@@ -67,14 +67,14 @@ if [[ -z $( which rpm ) ]]; then
     pmsg "This script requires the rpm command to report on installed packages.  Please install rpm."
 else
     # Check for Plesk
-    if [[ ! "$( rpm -q psa )" == "package psa is not installed" ]]; then
+    if [[ "$( rpm -q psa )" != "package psa is not installed" ]]; then
 	infomsg "This server is running Plesk $(awk '{print $1}' /usr/local/psa/version)."
 	infomsg "Plesk URL: https://$PUBLICIP:8443/"
 	infomsg "Plesk admin password: $(cat /etc/psa/.psa.shadow)"
     fi
 
     # Check for Webmin
-    if [[ ! "$( rpm -q webmin )" == "package webmin is not installed" ]]; then
+    if [[ "$( rpm -q webmin )" != "package webmin is not installed" ]]; then
 	webminport=$(netstat -ltnp|grep "$(ps ax|grep miniserv.pl|grep -v grep|awk '{print $1}')"|awk '{print $4}'|sed 's/.*:\(.*\)$/\1/')
 	if [[ -n "$webminport" ]]; then
 	    infomsg "Webmin is installed and running."
@@ -84,7 +84,7 @@ else
     fi
 
     # Check for rs-sysmon
-    if [[ ! "$( rpm -q rs-sysmon )" == "package rs-sysmon is not installed" ]]; then
+    if [[ "$( rpm -q rs-sysmon )" != "package rs-sysmon is not installed" ]]; then
 	infomsg "rs-sysmon is installed."
     fi
 fi
