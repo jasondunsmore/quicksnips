@@ -2,13 +2,13 @@
 
 function installemacs () {
     if [[ -n "`cat /etc/redhat-release|egrep 'Red Hat Enterprise Linux [AE]S release [234]'`" ]]; then
-        if [[ "$(rpm -q emacs-nox)" != "package emacs-nox is not installed" ]]; then
+        if [[ "$(rpm -q emacs-nox)" == "package emacs-nox is not installed" ]]; then
             up2date -i emacs-nox &&
             echo alias emacs=\"emacs-nox\" >> /root/.bashrc
             . /root/.bashrc
         fi
     else
-        if [[ "$(rpm -q emacs)" != "package emacs is not installed" ]]; then
+        if [[ "$(rpm -q emacs)" == "package emacs is not installed" ]]; then
             yum -y install emacs
         fi
     fi

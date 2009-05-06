@@ -1,21 +1,32 @@
-function mailcheck() {
-ip=`curl -s www.whatismyip.com/automation/n09230945.asp`
-ptr=`dig -x $ip +short |sed s/\.$//`;
-adata=`dig $ptr +short`;
-helo=`echo "helo rackspace.com" |nc localhost 25 |tail -n 1 |cut -f 2 -d ' '`;
+function 3waymailcheck () {
+    if [[ -n $1 ]]; then
+        if [[ $1 != [0-9]* ]]; then
+            echo "Argument should be an IP."
+            return
+        fi
+        ip="$1"
+        helo="$(echo "helo itsme.com"|nc -q1 $ip 25|awk '$1 ~ /220/ {print $2}')"
+    else
+        ip="$(curl -s www.whatismyip.com/automation/n09230945.asp)"
+        helo="$(echo "helo itsme.com"|nc -q1 localhost 25|awk '$1 ~ /220/ {print $2}')"
+    fi
+    ptr="$(dig -x $ip +short |sed s/\.$//)"
+    adata="$(dig $ptr +short)"
+    
+    if ! [[ $ip ]]; then echo "No Public IP Obtained"; return; fi
+    if ! [[ $ptr ]]; then echo "No PTR Obtained"; return; fi
+    if ! [[ $adata ]]; then echo "PTR does not forward resolve"; return; fi
+    if ! [[ $helo ]]; then echo "No HELO data obtained"; return; fi
 
-if ! [[ $ip ]]; then echo "No Public IP Obtained";return; fi
-if ! [[ $ptr ]]; then echo "No PTR Obtained"; return; fi
-if ! [[ $adata ]]; then echo "PTR does not forward resolve"; return; fi
-if ! [[ $helo ]]; then echo "No HELO data obtained"; return; fi
-
-if [[ $ptr == $helo ]] && [[ $adata == $ip ]]; then echo "*** 3-way Passed ***";
-else echo "*** 3-way failed ***";
-fi
-
-echo "IP is $ip"
-echo "PTR is $ptr"
-echo "Hostname resolves to $adata"
-echo "SMTP HELO is $helo"
+    if [[ "$ptr" == "$helo" && "$adata" == "$ip" ]]; then
+        echo "*** 3-way passed ***";
+    else
+        echo "*** 3-way failed ***";
+    fi
+    
+    echo "IP is $ip"
+    echo "PTR is $ptr"
+    echo "Hostname resolves to $adata"
+    echo "SMTP HELO is $helo"
 }
-mailcheck
+3waymailcheck
