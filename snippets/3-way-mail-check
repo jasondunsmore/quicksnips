@@ -1,18 +1,21 @@
 function 3waymailcheck () {
+    unset ip helo ptr adata
     if [[ -n $1 ]]; then
         if [[ $1 != [0-9]* ]]; then
             echo "Argument should be an IP."
             return
         fi
         ip="$1"
-        
         helo="$(echo "helo itsme.com"|nc -w1 $ip 25|awk '$1 ~ /220/ {print $2}')"
     else
         ip="$(curl -s www.whatismyip.com/automation/n09230945.asp)"
         helo="$(echo "helo itsme.com"|nc -w1 localhost 25|awk '$1 ~ /220/ {print $2}')"
     fi
+
     ptr="$(dig -x $ip +short |sed s/\.$//)"
-    adata="$(dig $ptr +short)"
+    if [[ -n "$ptr" ]]; then
+        adata="$(dig $ptr +short)"
+    fi
     
     if ! [[ $ip ]]; then
         echo "No Public IP Obtained"
@@ -27,7 +30,7 @@ function 3waymailcheck () {
     fi
 
     if ! [[ $adata ]]; then
-        echo "PTR does not forward resolve"
+        echo "PTR does not forward resolve or no PTR to lookup"
     else
         echo "Hostname resolves to $adata"
     fi
