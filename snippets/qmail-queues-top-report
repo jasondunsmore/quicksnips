@@ -1,0 +1,22 @@
+function reportq () {
+    for i in "Subject:" "From:" "To:"; do
+        echo "Top instances of $i"
+        cat "$1"|strings|grep "$i"|sort|uniq -c|sort -n|tail
+    done
+}
+function qmailtopreport () {
+    if [[ ! -e $(which qmHandle) ]]; then
+        yum -y install qmHandle || up2date -i qmHandle
+    fi
+    localq=$(mktemp)
+    remoteq=$(mktemp)
+    qmHandle -s
+    qmHandle -L > $localq 2>/dev/null
+    qmHandle -R > $remoteq 2>/dev/null
+    echo -e "\nLOCALE QUEUE:\n"
+    reportq $localq
+    echo -e "\nREMOTE QUEUE:\n"
+    reportq $remoteq
+    rm -f $localq $remoteq
+}
+qmailtopreport

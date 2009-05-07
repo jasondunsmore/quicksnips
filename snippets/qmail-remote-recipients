@@ -1,3 +1,0 @@
-# Shows statistics on To: header for messages in the remote queue.
-
-qmHandle -R|grep "  To: "|sort|uniq -c|sort -n
