@@ -1,9 +1,8 @@
 # Starts screen with server-healthcheck running in a background terminal.
 
 if [[ -n "$(find /var/run/screen/S-root/ /tmp/screens/S-root/ -type p 2>/dev/null)" ]]; then
-    echo "There's already a root screen session running, attaching..."
-    sleep 2
-    screen -x
+    echo "There's already a root screen session running..."
+    screen -ls
 else
     cat > /tmp/.screenrc <<EOF
 defscrollback 10000

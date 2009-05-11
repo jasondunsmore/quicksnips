@@ -75,11 +75,16 @@ else
 
     # Check for Webmin
     if [[ "$( rpm -q webmin )" != "package webmin is not installed" ]]; then
-	webminport=$(netstat -ltnp|grep "$(ps ax|grep miniserv.pl|grep -v grep|awk '{print $1}')"|awk '{print $4}'|sed 's/.*:\(.*\)$/\1/')
-	if [[ -n "$webminport" ]]; then
-	    infomsg "Webmin is installed and running."
-	    infomsg "Webmin URL: https://$PUBLICIP:$webminport/"
-	    infomsg "Primary Webmin user: $(head -n1 /etc/webmin/miniserv.users | cut -d: -f1)"
+	webminproc="$(ps ax|grep miniserv.pl|grep -v grep|awk '{print $1}')"
+	if [[ -n "$webminproc" ]]; then
+	    webminport=$(netstat -ltnp|grep "$webminproc"|awk '{print $4}'|sed 's/.*:\(.*\)$/\1/')
+	    if [[ -n "$webminport" ]]; then
+		infomsg "Webmin is installed and running."
+		infomsg "Webmin URL: https://$PUBLICIP:$webminport/"
+		infomsg "Primary Webmin user: $(head -n1 /etc/webmin/miniserv.users | cut -d: -f1)"
+	    fi
+	else
+	    infomsg "Webmin is installed, but not running."
 	fi
     fi
 
