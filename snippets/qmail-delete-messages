@@ -1,0 +1,6 @@
+function qmaildeletemessages () {
+    for i in "$@"; do
+        qmHandle -S"$i"
+    done
+}
+qmaildeletemessages 

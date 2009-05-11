@@ -8,15 +8,20 @@ function qmailtopreport () {
     if [[ ! -e $(which qmHandle) ]]; then
         yum -y install qmHandle || up2date -i qmHandle
     fi
-    localq=$(mktemp)
-    remoteq=$(mktemp)
     qmHandle -s
-    qmHandle -L > $localq 2>/dev/null
-    qmHandle -R > $remoteq 2>/dev/null
-    echo -e "\nLOCALE QUEUE:\n"
-    reportq $localq
-    echo -e "\nREMOTE QUEUE:\n"
-    reportq $remoteq
-    rm -f $localq $remoteq
+    if [[ $1 == "local" || $# -eq 0 ]]; then
+        localq=$(mktemp)
+        qmHandle -L > $localq 2>/dev/null
+        echo -e "\nLOCAL QUEUE:\n"
+        reportq $localq
+        rm -f $localq
+    fi
+    if [[ $1 == "remote" || $# -eq 0 ]]; then
+        remoteq=$(mktemp)
+        qmHandle -R > $remoteq 2>/dev/null
+        echo -e "\nREMOTE QUEUE:\n"
+        reportq $remoteq
+        rm -f $remoteq
+    fi
 }
 qmailtopreport
