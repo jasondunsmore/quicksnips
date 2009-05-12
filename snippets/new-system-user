@@ -1,19 +1,21 @@
-# Adds an FTP user to a server.
-# Usage: newftp user [homedir]
+# Adds a user account to a server.
+# Usage: newsystemuser user [homedir] [shell]
 
-function newftp () {
+function newsystemuser () {
     if [ ! -e /usr/bin/mkpasswd ]; then
         yum -y install expect || up2date -i expect
     fi &&
-    pass=`mkpasswd`
-    if [ -n $2 ]; then
+    if [[ -n "$2" && -n "$3" ]]; then
+        useradd -d $2 -s $3 $1
+    elif [[ -n "$2" ]]; then
         useradd -d $2 -s /bin/false $1
     else
         useradd -s /bin/false $1
     fi &&
     echo "User: $1"
-    echo $pass|passwd --stdin $1 && echo "Pass: $pass"
+    pass="$(mkpasswd "$1")"
+    echo "Pass: $pass"
     echo
     echo "Test with: ncftp -u$1 -p\"$pass\" $(curl -s www.whatismyip.com/automation/n09230945.asp)"
 }
-newftp 
+newsystemuser 

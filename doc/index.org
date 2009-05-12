@@ -60,7 +60,7 @@ or =~/.bash_profile= file might contain:
 ** Determine how you will run the quicksnips command
 
 : Usage: ./quicksnips [-e] [-i] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
-: 
+:
 : Optional arguments.
 :   -h  Print this help message.
 :   -e  Show documentation in Emacs.
@@ -109,6 +109,15 @@ To use that sawfish configuration, simply add the following to your
 Example configuration:
 
 : bind d exec quicksnips
+
+*** Windowmaker
+- Edit ~/GNUstep/Defaults/WMRootMenu
+- Add a line like this:
+
+: ("Quicksnips", SHORTCUT, F10, EXEC, "~/quicksnips/bin/quicksnips"),
+
+- You must execute it once through the menu, from there on out use
+  F10.
 
 ** Configuration for Emacs users
 *** Shell-mode
@@ -186,7 +195,7 @@ snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 : file-backup                 - Copies and renames a file for backup.
 : file-top                    - Like top, but for files
 : find-broken-symlinks        - Finds broken symlinks in working directory
-: find-large-files            - Finds largest 50 files backed up by CommVault. 
+: find-large-files            - Finds largest 50 files backed up by CommVault.
 : ftp-bandwidth-day           - Displays the FTP bandwidth use each day over the cur...
 : ftp-bandwidth-month         - Prints the amount of FTP bandwidth used for each day...
 : ftp-new-user                - Adds an FTP user to a server.
@@ -227,7 +236,7 @@ snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 : plesk-ftp-passwords         - Shows all Plesk FTP passwords.
 : plesk-list-forwards         - shows email accounts that are forwarding and the add...
 : plesk-mysql-dotmydotcnf     - Creates a .my.cnf file in /root with Plesk MySQL cre...
-: plesk-qmail-top-remote      - 
+: plesk-qmail-top-remote      -
 : plesk-reset-email-passwords - Resets all Plesk email passwords.
 : plesk-reset-ftp-passwords   - Resets all Plesk FTP passwords.
 : plesk-smtp-auth-attempts    - Looks in the Plesk maillog to see where the most smt...
@@ -275,7 +284,7 @@ If you're interested in contributing to quicksnips, email
 file:jason.png or file:matt.png
 
 ** Scope
-A script should be 
+A script should be
 
 ** Naming convention
 Scripts should be named with the most general descriptor
