@@ -1,13 +1,23 @@
 # Starts screen with server-healthcheck running in a background terminal.
 
-if [[ -n "$(find /var/run/screen/S-root/ /tmp/screens/S-root/ -type p 2>/dev/null)" ]]; then
-    echo "There's already a root screen session running..."
-    screen -ls
-else
+function newscreen () {
     cat > /tmp/.screenrc <<EOF
 defscrollback 10000
 screen -t healthcheck 0 bash -c 'curl -s http://quicksnips.org/remote/server-healthcheck | bash; bash -l'
 screen 1 bash -l
 EOF
     screen -c /tmp/.screenrc
+}
+if [[ -n "$(find /var/run/screen/S-root/ /tmp/screens/S-root/ -type p 2>/dev/null)" ]]; then
+    echo "There's already a root screen session running..."
+    screen -ls
+    echo "Type \"a\" to attach or \"c\" to create a new session."
+    read
+    if [[ "$REPLY" == "a" ]]; then
+	screen -x
+    elif [[ "$REPLY" == "c" ]]; then
+	newscreen
+    fi
+else
+    newscreen
 fi
