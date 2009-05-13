@@ -1,6 +1,8 @@
 function qmaildeletemessages () {
+    /etc/init.d/qmail stop
     for i in "$@"; do
         qmHandle -S"$i"
     done
+    /etc/init.d/qmail start
 }
 qmaildeletemessages 

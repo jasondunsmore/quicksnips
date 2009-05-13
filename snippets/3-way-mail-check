@@ -14,7 +14,7 @@ function 3waymailcheck () {
 
     ptr="$(dig -x $ip +short |sed s/\.$//)"
     if [[ -n "$ptr" ]]; then
-        adata="$(dig $ptr +short)"
+        adata="$(dig $ptr +short|tail -n1)"
     fi
     
     if ! [[ $ip ]]; then

@@ -35,9 +35,9 @@ function 3waymailcheck () {
     unset helo ptr adata
     helo="$(echo "helo itsme.com"|nc -w1 localhost 25|awk '$1 ~ /220/ {print $2}')"
 
-    ptr="$(dig -x $PUBLICIP +short |sed s/\.$//)"
+    ptr="$(dig -x $PUBLICIP +short|sed s/\.$//)"
     if [[ -n "$ptr" ]]; then
-        adata="$(dig $ptr +short)"
+        adata="$(dig $ptr +short|tail -n1)"
     fi
     
     if ! [[ $PUBLICIP ]]; then
@@ -136,9 +136,9 @@ timeoffset=$(ntpdate -q pool.ntp.org|head -n1|awk '{print $6}'|sed 's/-\?\(.*\)\
 # Check for interesting syslog messages
 msgssize=$(stat -c%s "/var/log/messages")
 if [[ $msgssize -lt 1073741824 ]]; then
-    printcmdout 'grep "$(date "+%b %d")" /var/log/messages|egrep "error|Error|Out of Memory|segfault|DriveReady SeekComplete|BUG"' "The following was logged today in /var/log/messages"
+    printcmdout 'grep "$(date "+%b %d")" /var/log/messages|egrep "error|Error|Out of Memory|segfault|DriveReady SeekComplete|BUG"|uniq -f3' "The following was logged today in /var/log/messages"
 else
-    pmsg "Skipping /var/log/messages check, file larger than 1 GB."
+    warningmsg "Skipping /var/log/messages check, file larger than 1 GB."
 fi
 
 # Check for a running iptables firewall
@@ -227,7 +227,9 @@ else
     let amaxmemkb=$aclargestkb*$actotal
     let acrecommend=$memkbavail/$aclargestkb
     if [[ $amaxmemkb -gt $memkbavail ]]; then
-	warningmsg "Apache is configured to use $amaxmemkb kB of memory.  Only $memkbavail kB of memory are installed.  Consider lowering MaxClients from $actotal to $acrecommend."
+	warningmsg "Apache is configured to use $amaxmemkb kB of memory.
+         Only $memkbavail kB of memory are installed.
+         Consider lowering MaxClients from $actotal to $acrecommend."
     fi
 fi
 
