@@ -7,7 +7,7 @@
 (bind-keys global-keymap
 	   "M-S-s" (lambda () (system "quicksnips &"))
 	   "M-S-p" (lambda () (system "quicksnips -p -s prefabs &"))
-	   "M-S-r" (lambda () (system "quicksnips -p -s rackspace &"))
+	   "M-S-r" (lambda () (system "quicksnips -s rackspace &"))
 	   "C-z" quicksnips-keymap)
 
 (bind-keys quicksnips-keymap "e" (lambda () (system "quicksnips install-emacs")))

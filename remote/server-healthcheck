@@ -31,6 +31,41 @@ function printiptables () {
     printcmdout "$1" "$2" "$1|sed -e '/^target/d' -e '/Chain/d' -e '/^$/d'"
 }
 
+function 3waymailcheck () {
+    unset helo ptr adata
+    helo="$(echo "helo itsme.com"|nc -w1 localhost 25|awk '$1 ~ /220/ {print $2}')"
+
+    ptr="$(dig -x $PUBLICIP +short |sed s/\.$//)"
+    if [[ -n "$ptr" ]]; then
+        adata="$(dig $ptr +short)"
+    fi
+    
+    if ! [[ $PUBLICIP ]]; then
+        warningmsg "No Public IP Obtained"
+    fi
+
+    if ! [[ $ptr ]]; then
+        warningmsg "No PTR Obtained"
+    fi
+
+    if ! [[ $adata ]]; then
+        warningmsg "PTR does not forward resolve or no PTR to lookup"
+    fi
+
+    if ! [[ $helo ]]; then
+        warningmsg "No HELO data obtained"
+    fi
+
+    if ! [[ "$ptr" == "$helo" && "$adata" == "$PUBLICIP" ]]; then
+        warningmsg "3-way mail check failed.
+         IP is $PUBLICIP
+         PTR is $ptr
+         Hostname resolves to $adata
+         SMTP HELO is $helo"
+    fi
+    
+}
+
 # Make sure script is being run as root.
 if [[ $( whoami ) != "root" ]]; then
     pmsg "server-healthcheck should be run as root."
@@ -45,7 +80,7 @@ fi
 
 # Check OS version
 if [[ ! -e /etc/issue ]]; then
-    echo "Server doesn't have an /etc/issue file.  That's weird."
+    warningmsg "Server doesn't have an /etc/issue file.  That's weird."
 else
     if [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 3" /etc/issue) ]]; then
 	infomsg "Server is running RHEL3."
@@ -119,9 +154,10 @@ for i in $( sar -q|tail -n6|sed '$d'|awk '{print $5}' ); do
 	break
     fi
 done
-if [[ $(who|sed -n '$=') -gt 1 ]]; then
+whonotme="$(who|grep -v "fw1-aus1:S.[01]")"
+if [[ "$whonotme" ]]; then
     warningmsg "Other users are logged in."
-    who
+    echo "$whonotme"
 fi
 
 # Check if server has been swapping
@@ -194,5 +230,7 @@ else
 	warningmsg "Apache is configured to use $amaxmemkb kB of memory.  Only $memkbavail kB of memory are installed.  Consider lowering MaxClients from $actotal to $acrecommend."
     fi
 fi
+
+3waymailcheck
 
 exit 0
