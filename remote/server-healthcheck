@@ -103,9 +103,9 @@ if [[ -z $( which rpm ) ]]; then
 else
     # Check for Plesk
     if [[ "$( rpm -q psa )" != "package psa is not installed" ]]; then
-	infomsg "This server is running Plesk $(awk '{print $1}' /usr/local/psa/version)."
-	infomsg "Plesk URL: https://$PUBLICIP:8443/"
-	infomsg "Plesk admin password: $(cat /etc/psa/.psa.shadow)"
+	infomsg "This server is running Plesk $(awk '{print $1}' /usr/local/psa/version).
+      Plesk URL: https://$PUBLICIP:8443/
+      Plesk admin password: $(cat /etc/psa/.psa.shadow)"
     fi
 
     # Check for Webmin
@@ -114,9 +114,9 @@ else
 	if [[ -n "$webminproc" ]]; then
 	    webminport=$(netstat -ltnp|grep "$webminproc"|awk '{print $4}'|sed 's/.*:\(.*\)$/\1/')
 	    if [[ -n "$webminport" ]]; then
-		infomsg "Webmin is installed and running."
-		infomsg "Webmin URL: https://$PUBLICIP:$webminport/"
-		infomsg "Primary Webmin user: $(head -n1 /etc/webmin/miniserv.users | cut -d: -f1)"
+		infomsg "Webmin is installed and running.
+      Webmin URL: https://$PUBLICIP:$webminport/
+      Primary Webmin user: $(head -n1 /etc/webmin/miniserv.users | cut -d: -f1)"
 	    fi
 	else
 	    infomsg "Webmin is installed, but not running."
@@ -136,7 +136,7 @@ timeoffset=$(ntpdate -q pool.ntp.org|head -n1|awk '{print $6}'|sed 's/-\?\(.*\)\
 # Check for interesting syslog messages
 msgssize=$(stat -c%s "/var/log/messages")
 if [[ $msgssize -lt 1073741824 ]]; then
-    printcmdout 'grep "$(date "+%b %d")" /var/log/messages|egrep "error|Error|Out of Memory|segfault|DriveReady SeekComplete|BUG"|uniq -f3' "The following was logged today in /var/log/messages"
+    printcmdout 'grep "$(date "+%b %d")" /var/log/messages|egrep "error|Error|Out of Memory|segfault|DriveReady SeekComplete|BUG"|uniq -f6' "The following was logged today in /var/log/messages"
 else
     warningmsg "Skipping /var/log/messages check, file larger than 1 GB."
 fi
@@ -200,7 +200,7 @@ if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
 	warningmsg "MySQL connections used/total: $mcused/$mctotal"
     fi
 else
-    warningmsg "root can't login to mysql."
+    warningmsg "root can't login to MySQL or MySQL not running."
 fi
 
 # Check Apache
