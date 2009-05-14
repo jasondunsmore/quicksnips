@@ -20,9 +20,9 @@ function printcmdout () {
 	echo "$cmdout" | head -n10
 	nlines=$( echo "$cmdout"|sed -n '$=' )
 	if [[ $nlines -gt 10 ]]; then
-	    pmsg "[...]"
-	    pmsg "Only showing first 10 of $nlines lines."
-	    pmsg "To see the full output, run \"$1\"."
+	    pmsg "[...]
+Only showing first 10 of $nlines lines.
+To see the full output, run \"$1\"."
 	fi
     fi
 }
@@ -58,10 +58,10 @@ function 3waymailcheck () {
 
     if ! [[ "$ptr" == "$helo" && "$adata" == "$PUBLICIP" ]]; then
         warningmsg "3-way mail check failed.
-         IP is $PUBLICIP
-         PTR is $ptr
-         Hostname resolves to $adata
-         SMTP HELO is $helo"
+      IP is $PUBLICIP
+      PTR is $ptr
+      Hostname resolves to $adata
+      SMTP HELO is $helo"
     fi
     
 }
@@ -228,8 +228,8 @@ else
     let acrecommend=$memkbavail/$aclargestkb
     if [[ $amaxmemkb -gt $memkbavail ]]; then
 	warningmsg "Apache is configured to use $amaxmemkb kB of memory.
-         Only $memkbavail kB of memory are installed.
-         Consider lowering MaxClients from $actotal to $acrecommend."
+      Only $memkbavail kB of memory are installed.
+      Consider lowering MaxClients from $actotal to $acrecommend."
     fi
 fi
 
