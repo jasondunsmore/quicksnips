@@ -2,7 +2,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 PUBLICIP="$(curl -s www.whatismyip.com/automation/n09230945.asp)"
 
-function warningmsg () { tput setaf 1; echo "WARNING: $1"; tput sgr0; }
+function warningmsg () { tput setaf 1; echo "WARN: $1"; tput sgr0; }
 function infomsg () { tput setaf 2; echo "INFO: $1"; tput sgr0; }
 function pmsg () { tput setaf 3; echo "$1"; tput sgr0; }
 
