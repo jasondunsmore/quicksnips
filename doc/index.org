@@ -119,6 +119,15 @@ Example configuration:
 - You must execute it once through the menu, from there on out use
   F10.
 
+*** Xmonad
+- Edit ~/.xmonad/xmonad.hs
+- Add the following line under the Key bindings section:
+
+: -- launch quicksnips        
+: , ((modMask,               xK_s     ), spawn "exe=`~/quicksnips/bin/quicksnips` && eval \"exec $exe\"")
+
+- Restart xmonad (mod-q)
+
 ** Configuration for Emacs users
 *** Shell-mode
 Since the snippet files don't end in .sh, the following should be
