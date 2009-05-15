@@ -233,6 +233,13 @@ else
     fi
 fi
 
+if [[ -e /var/log/httpd/error_log ]]; then
+    maxclientserr="$(tail -n1000 /var/log/httpd/error_log|grep MaxClients)"
+    if [[ -n $maxclientserr ]]; then
+	printcmdout "tail -n1000 /var/log/httpd/error_log|grep MaxClients" "Apache has recently reached MaxClients"
+    fi
+fi
+
 3waymailcheck
 
 exit 0
