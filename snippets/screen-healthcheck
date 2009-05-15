@@ -12,7 +12,7 @@ if [[ -n "$(find /var/run/screen/S-root/ /tmp/screens/S-root/ /root/.screen/ -ty
     echo "There's already a root screen session running..."
     screen -ls
     echo "Type \"a\" to attach or \"c\" to create a new session."
-    read
+    read -n1
     if [[ "$REPLY" == "a" ]]; then
 	screen -x
     elif [[ "$REPLY" == "c" ]]; then
