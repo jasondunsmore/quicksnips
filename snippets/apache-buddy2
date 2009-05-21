@@ -1,0 +1,31 @@
+# Check Apache's memory usage and make a recommendation on MaxClients
+
+function apachebuddy2 () {
+    abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
+    if [[ -z "$($abin -V 2>&1|egrep "^Server version.*Apache\/[0-9].*")" ]]; then
+        echo "Apache is not listening on port 80."
+    else
+        aroot=$($abin -V|grep "HTTPD_ROOT"|sed 's/.*=\"\(.*\)\"/\1/')
+        aconf=$($abin -V|grep "SERVER_CONFIG_FILE"|sed 's/.*=\"\(.*\)\"/\1/')
+        amode=$($abin -l|egrep "worker.c|prefork.c"|sed 's/ *\(.*\)\.c/\1/')
+        if [[ -n $aroot ]]; then
+            aconfpath=$aroot/$aconf
+        else
+            aconfpath=$aconf
+        fi
+        actotal=$(sed -n "/<IfModule.*$amode/,/<\/IfModule/p" $aconfpath|grep -i "MaxClients"|sed '/^#.*/d'|awk '{print $2}')
+        acused=$( pgrep $abin|sed -n '$=' )
+        let acleft=$actotal-$acused
+        if [[ $acleft -lt 10 ]]; then
+            echo "Apache MaxClients used/total: $acused/$actotal"
+        fi
+        aclargestkb=$(for pid in $(pgrep $abin); do printf "%d\n" "$(pmap -d $pid|awk '$3 ~ /private/ { print $4 }'|sed 's/K//')"; done | sort -nr | head -n1)
+        memkbavail=$(free|sed -n 2p|awk '{ print $2 }')
+        let amaxmemkb=$aclargestkb*$actotal
+        let acrecommend=$memkbavail/$aclargestkb
+        echo "Apache is configured to use $amaxmemkb kB of memory.
+Only $memkbavail kB of memory are installed.
+Consider lowering MaxClients from $actotal to $acrecommend."
+    fi
+}
+apachebuddy2

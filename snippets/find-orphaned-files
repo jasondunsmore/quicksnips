@@ -1,0 +1,17 @@
+# Shows all files owned by a non-existant user or group
+# Usage: findorphanedfiles ROOTDIR
+
+function findorphanedfiles () {
+    uids=$(mktemp)
+    gids=$(mktemp)
+    sed -e '/^#/d' -e '/^$/d' /etc/passwd|cut -f3 -d: > $uids
+    sed -e '/^#/d' -e '/^$/d' /etc/group|cut -f3 -d: > $gids
+    find "$1" | while read file; do
+        if [[ $(grep -xc $(stat -c%g $file) $gids) -eq 0 || $(grep -xc $(stat -c%u $file) $uids) -eq 0 ]]; then
+            echo $file
+        fi
+    done
+    rm -f $uids
+    rm -f $gids
+}
+findorphanedfiles /
