@@ -1,17 +1,24 @@
 # Blocks IPs with more than a specified number of login attempts.
 # Usage: sshblockattackers NUMTRIES LOGFILE
 
+attackfile="/tmp/sshdictattack-$(date "+%Y-%m-%d")"
+blocked=$(mktemp)
+toblock=$(mktemp)
 function sshdictattack () {
-    zgrep -E "Failed password|Illegal user|Invalid user" $* |
-    egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |
-    sort -n|uniq -c|sort -n
+    if [[ -z $1 ]]; then
+        echo "Usage: sshdictattack FILE1 [FILE2] [...]"
+        return
+    fi
+    if [[ -e $attackfile ]]; then
+        cat $attackfile
+    else
+        zgrep -E "Failed password|Illegal user|Invalid user" $* |
+        egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |
+        sort -n|uniq -c|sort -n > $attackfile
+        cat $attackfile
+    fi
 }
-function sshblockattackers () {
-    attackers=$(mktemp)
-    blocked=$(mktemp)
-    tries=$1
-    shift
-    sshdictattack "$@"|awk -v tries="$tries" '{ if( $1 >= tries ) print $2 }' > $attackers
+function sshiptablesrules () {
     iptables -nL INPUT|awk '$1 ~ /DROP/ { print $4 }'|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' > $blocked
     echo "iptables rules before:"
     iptables -nL
@@ -20,8 +27,18 @@ function sshblockattackers () {
             echo iptables -I INPUT -s $ip -j DROP
             iptables -I INPUT -s $ip -j DROP
         fi
-    done < $attackers
+    done < $toblock
     echo "iptables rules after:"
     iptables -nL
+}
+function sshblockattackers () {
+    tries=$1
+    shift
+    if [[ -e $attackfile ]]; then
+        cat $attackfile|awk -v tries="$tries" '{ if( $1 >= tries ) print $2 }' > $toblock
+    else
+        sshdictattack "$@"|awk -v tries="$tries" '{ if( $1 >= tries ) print $2 }' > $toblock
+    fi
+    sshiptablesrules
 }
 sshblockattackers 1000 /var/log/secure*
