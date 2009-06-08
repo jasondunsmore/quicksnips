@@ -9,21 +9,21 @@ function pmsg () { tput setaf 3; echo "$1"; tput sgr0; }
 function printcmdout () {
     # Usage: printcmdout COMMAND WARNINGMSG [TESTCOMMAND]
     if [[ -n $3 ]]; then
-	cmdtest=$(eval "$3")
-	cmdout=$(eval "$1")
+        cmdtest=$(eval "$3")
+        cmdout=$(eval "$1")
     else
-	cmdtest=$(eval "$1")
-	cmdout="$cmdtest"
+        cmdtest=$(eval "$1")
+        cmdout="$cmdtest"
     fi
     if [[ -n $cmdtest ]]; then
-	warningmsg "$2..."
-	echo "$cmdout" | head -n10
-	nlines=$( echo "$cmdout"|sed -n '$=' )
-	if [[ $nlines -gt 10 ]]; then
-	    pmsg "[...]
+        warningmsg "$2..."
+        echo "$cmdout" | head -n10
+        nlines=$( echo "$cmdout"|sed -n '$=' )
+        if [[ $nlines -gt 10 ]]; then
+            pmsg "[...]
 Only showing first 10 of $nlines lines.
 To see the full output, run \"$1\"."
-	fi
+        fi
     fi
 }
 
@@ -83,16 +83,16 @@ if [[ ! -e /etc/issue ]]; then
     warningmsg "Server doesn't have an /etc/issue file.  That's weird."
 else
     if [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 3" /etc/issue) ]]; then
-	infomsg "Server is running RHEL3."
+        infomsg "Server is running RHEL3."
     elif [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 4" /etc/issue) ]]; then
-	infomsg "Server is running RHEL4."
+        infomsg "Server is running RHEL4."
     elif [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
-	infomsg "Server is running RHEL5."
+        infomsg "Server is running RHEL5."
     elif [[ -n $(grep "Debian GNU/Linux" /etc/issue) ]]; then
-	infomsg "Server is running Debian."
+        infomsg "Server is running Debian."
     else
-	infomsg "Server isn't running RHEL{3,4,5} or Debian.  From /etc/issue..."
-	head -n1 /etc/issue
+        infomsg "Server isn't running RHEL{3,4,5} or Debian.  From /etc/issue..."
+        head -n1 /etc/issue
     fi
 fi
 
@@ -103,29 +103,29 @@ if [[ -z $( which rpm ) ]]; then
 else
     # Check for Plesk
     if [[ "$( rpm -q psa )" != "package psa is not installed" ]]; then
-	infomsg "This server is running Plesk $(awk '{print $1}' /usr/local/psa/version).
+        infomsg "This server is running Plesk $(awk '{print $1}' /usr/local/psa/version).
       Plesk URL: https://$PUBLICIP:8443/
       Plesk admin password: $(cat /etc/psa/.psa.shadow)"
     fi
 
     # Check for Webmin
     if [[ "$( rpm -q webmin )" != "package webmin is not installed" ]]; then
-	webminproc="$(ps ax|grep miniserv.pl|grep -v grep|awk '{print $1}')"
-	if [[ -n "$webminproc" ]]; then
-	    webminport=$(netstat -ltnp|grep "$webminproc"|awk '{print $4}'|sed 's/.*:\(.*\)$/\1/')
-	    if [[ -n "$webminport" ]]; then
-		infomsg "Webmin is installed and running.
+        webminproc="$(ps ax|grep miniserv.pl|grep -v grep|awk '{print $1}')"
+        if [[ -n "$webminproc" ]]; then
+            webminport=$(netstat -ltnp|grep "$webminproc"|awk '{print $4}'|sed 's/.*:\(.*\)$/\1/')
+            if [[ -n "$webminport" ]]; then
+                infomsg "Webmin is installed and running.
       Webmin URL: https://$PUBLICIP:$webminport/
       Primary Webmin user: $(head -n1 /etc/webmin/miniserv.users | cut -d: -f1)"
-	    fi
-	else
-	    infomsg "Webmin is installed, but not running."
-	fi
+            fi
+        else
+            infomsg "Webmin is installed, but not running."
+        fi
     fi
 
     # Check for rs-sysmon
     if [[ "$( rpm -q rs-sysmon )" != "package rs-sysmon is not installed" ]]; then
-	infomsg "rs-sysmon is installed."
+        infomsg "rs-sysmon is installed."
     fi
 fi
 
@@ -149,9 +149,9 @@ printiptables "iptables -nL -t mangle" "There are rules in the iptables mangle t
 # Check the load average in the past hour
 for i in $( sar -q|tail -n6|sed '$d'|awk '{print $5}' ); do
     if [[ ${i/\.*} -gt 5 ]]; then
-	warningmsg "The load average has been above 5 in the past hour."
-	sar -q | head -n3 | tail -n1 && sar -q | tail
-	break
+        warningmsg "The load average has been above 5 in the past hour."
+        sar -q | head -n3 | tail -n1 && sar -q | tail
+        break
     fi
 done
 whonotme="$(who|grep -v "fw1-aus1:S.[01]")"
@@ -168,14 +168,14 @@ else
     swapdat=$(mktemp)
     sar -r|sed -e 's/^Average.*//' -e 's/.*RESTART.*//' -e 's/.*kbmemfree.*//' -e '/^$/d'|tail -n$swappts|awk '{ print $10 }' > $swapdat
     if [[ $(cat $swapdat|sed -n '$=') -ge 3 ]]; then
-	sdsh=$(mktemp)
-	curl -s http://quicksnips.org/sd.sh > $sdsh
-	swapsd=$(sh $sdsh $swapdat)
-	rm -f $swapdat $sdsh
-	if [[ ${swapsd/\.*} -gt 5 ]]; then
-	    warningmsg "Server has been actively swapping in the past half hour."
-	    sar -r | head -n3 | tail -n1 && sar -r | tail
-	fi
+        sdsh=$(mktemp)
+        curl -s http://quicksnips.org/sd.sh > $sdsh
+        swapsd=$(sh $sdsh $swapdat)
+        rm -f $swapdat $sdsh
+        if [[ ${swapsd/\.*} -gt 5 ]]; then
+            warningmsg "Server has been actively swapping in the past half hour."
+            sar -r | head -n3 | tail -n1 && sar -r | tail
+        fi
     fi
 fi
 
@@ -197,7 +197,7 @@ if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
     mctotal=$( mysql -Bse "show variables like '%max_connections%'" | awk '{ print $2 }' )
     let mcleft=$mctotal-$mcused
     if [[ $mcleft -lt 10 ]]; then
-	warningmsg "MySQL connections used/total: $mcused/$mctotal"
+        warningmsg "MySQL connections used/total: $mcused/$mctotal"
     fi
 else
     warningmsg "root can't login to MySQL or MySQL not running."
@@ -212,22 +212,22 @@ else
     aconf=$($abin -V|grep "SERVER_CONFIG_FILE"|sed 's/.*=\"\(.*\)\"/\1/')
     amode=$($abin -l|egrep "worker.c|prefork.c"|sed 's/ *\(.*\)\.c/\1/')
     if [[ -n $aroot ]]; then
-	aconfpath=$aroot/$aconf
+        aconfpath=$aroot/$aconf
     else
-	aconfpath=$aconf
+        aconfpath=$aconf
     fi
     actotal=$(sed -n "/<IfModule.*$amode/,/<\/IfModule/p" $aconfpath|grep -i "MaxClients"|sed '/^#.*/d'|awk '{print $2}')
     acused=$( pgrep $abin|sed -n '$=' )
     let acleft=$actotal-$acused
     if [[ $acleft -lt 10 ]]; then
-	warningmsg "Apache MaxClients used/total: $acused/$actotal"
+        warningmsg "Apache MaxClients used/total: $acused/$actotal"
     fi
     aclargestkb=$(for pid in $(pgrep $abin); do printf "%d\n" "$(pmap -d $pid|awk '$3 ~ /private/ { print $4 }'|sed 's/K//')"; done | sort -nr | head -n1)
     memkbavail=$(free|sed -n 2p|awk '{ print $2 }')
     let amaxmemkb=$aclargestkb*$actotal
     let acrecommend=$memkbavail/$aclargestkb
     if [[ $amaxmemkb -gt $memkbavail ]]; then
-	warningmsg "Apache is configured to use $amaxmemkb kB of memory.
+        warningmsg "Apache is configured to use $amaxmemkb kB of memory.
       Only $memkbavail kB of memory are installed.
       Consider lowering MaxClients from $actotal to $acrecommend."
     fi
@@ -236,7 +236,7 @@ fi
 if [[ -e /var/log/httpd/error_log ]]; then
     maxclientserr="$(tail -n1000 /var/log/httpd/error_log|grep MaxClients)"
     if [[ -n $maxclientserr ]]; then
-	printcmdout "tail -n1000 /var/log/httpd/error_log|grep MaxClients" "Apache has recently reached MaxClients"
+        printcmdout "tail -n1000 /var/log/httpd/error_log|grep MaxClients" "Apache has recently reached MaxClients"
     fi
 fi
 
