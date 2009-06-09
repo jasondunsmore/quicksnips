@@ -53,6 +53,10 @@ if [[ ! $exe ]]; then
     exit 1
 fi
 
+# Dump the current contents of the x selection buffer before manipulating it
+dumpfile=($mktemp)
+xclip -o > $dumpfile
+
 # Paste the script
 if [[ $preserve ]]; then
     cat $exe | xclip
@@ -66,6 +70,10 @@ else
     xdotool mousedown 2
     xdotool mouseup 2
 fi
+
+# Restore the original contents of the x selection buffer
+xclip -i $dumpfile
+rm -f $dumpfile
 
 # Show the documentation in Emacs
 if [[ $edoc ]]; then

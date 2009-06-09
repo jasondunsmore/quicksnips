@@ -28,6 +28,8 @@ qccmds=(
     "omreport storage vdisk controller=0"
     "hpacucli controller slot=0 logicaldrive all show status"
     "hpacucli controller slot=0 physicaldrive all show status"
+    "hpacucli controller slot=1 logicaldrive all show status"
+    "hpacucli controller slot=1 physicaldrive all show status"
     )
 for (( i = 0 ; i <= ${#qccmds[@]} ; i++ )); do
     qcprint "${qccmds[$i]}"
