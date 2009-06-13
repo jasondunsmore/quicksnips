@@ -10,9 +10,11 @@ function addusers () {
         fi &&
         for user in $*; do
             pas=`mkpasswd`
-            useradd -s /bin/false $user
+            useradd -s /bin/false $user &&
+            (
             echo "User: $user"
             echo $pas|passwd --stdin $user >/dev/null && echo "Password: $pas"
+            )
         done 
     fi
 }

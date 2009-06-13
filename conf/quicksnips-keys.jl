@@ -38,6 +38,7 @@
 (define quicksnips-p-keymap (make-keymap))
 (bind-keys quicksnips-keymap "p" quicksnips-p-keymap)
 (bind-keys quicksnips-p-keymap "p" (lambda () (system "quicksnips plesk-admin-password &")))
+(bind-keys quicksnips-p-keymap "m" (lambda () (system "quicksnips plesk-maillog &")))
 
 (define quicksnips-q-keymap (make-keymap))
 (bind-keys quicksnips-keymap "q" quicksnips-q-keymap)
