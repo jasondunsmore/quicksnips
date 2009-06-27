@@ -229,7 +229,7 @@ else
     if [[ $amaxmemkb -gt $memkbavail ]]; then
         warningmsg "Apache is configured to use $amaxmemkb kB of memory.
       Only $memkbavail kB of memory are installed.
-      Consider lowering MaxClients from $actotal to $acrecommend."
+      MaxClients shouled be lowered from $actotal to $acrecommend."
     fi
 fi
 
