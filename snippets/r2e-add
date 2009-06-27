@@ -1,0 +1,4 @@
+function r2eadd () {
+    r2e add "$1" && r2e run --no-send $(r2e list|tail -n1|cut -d: -f1)
+}
+r2eadd 
