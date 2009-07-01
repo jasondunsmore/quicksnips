@@ -33,4 +33,4 @@ qccmds=(
     )
 for (( i = 0 ; i <= ${#qccmds[@]} ; i++ )); do
     qcprint "${qccmds[$i]}"
-done > /tmp/screen-exchange
+done | tee /tmp/screen-exchange
