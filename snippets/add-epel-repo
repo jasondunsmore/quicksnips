@@ -1,0 +1,1 @@
+if [[ `grep 5.3 /etc/redhat-release` ]]; then rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm ;else echo "Snippet is for RHEL5.3 Only"; fi;
