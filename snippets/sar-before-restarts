@@ -3,7 +3,7 @@
 function sarbeforerestarts () {
     i=0
     for file in $( grep -l RESTART /var/log/sa/sar* ); do
-        i=i+=1
+        i=$((i+=1))
         file="${file/sar/sa}"
         echo; echo $file; echo
         sar|head -n3|tail -n1 && sar -f $file|grep -B8 RESTART|grep -v Average; echo
