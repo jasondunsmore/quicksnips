@@ -240,8 +240,8 @@ if [[ -e /var/log/httpd/error_log ]]; then
     fi
 fi
 
-if [[ -n $(netstat -lpnt|awk '{print $4}'|grep ":25$") ]]; then
-    3waymailcheck
-fi
+#if [[ -n $(netstat -lpnt|awk '{print $4}'|grep ":25$") ]]; then
+#    3waymailcheck
+#fi
 
 exit 0
