@@ -1,0 +1,7 @@
+function infomsg () { tput setaf 2; echo "$1"; tput sgr0; }
+function dumptrafficfromip () {
+    infomsg "Type Control-C to stop capturing traffic."
+    tcpdump -i eth0 host $1 -w /tmp/dumptrafficfromip -s 1600 -vv
+    infomsg "Output in /tmp/dumptrafficfromip."
+}
+dumptrafficfromip 
