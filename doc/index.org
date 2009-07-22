@@ -42,7 +42,7 @@ http://quicksnips.org/snippets/
 If you're using Debian or Ubuntu, all dependencies can be installed
 with apt-get:
 
-: apt-get install dmenu xdotool xclip git-core
+: apt-get install dwm-tools xdotool xclip git-core
 
 For Fedora, you may have to download the packages from the project
 websites.

@@ -1,0 +1,1 @@
+tar cvzf /tmp/rpmdb-backup.tar.gz /var/lib/rpm && mkdir /tmp/rpmdbfiles && mv /var/lib/rpm/__db.00* /tmp/rpmdbfiles && rpm --rebuilddb
