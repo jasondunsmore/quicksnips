@@ -4,7 +4,7 @@
 function mailtracker () {
 rm -f /tmp/mailpath; touch /tmp/mailpath;
 rm -f /tmp/test; touch /tmp/test;
-grep $1 /usr/local/psa/var/log/maillog |grep "info msg" |awk '{print $9,$15}' |tr ":" " " >/tmp/test; while read mid dp ; do grepStr=$mid\|$dp; cat maillog |awk "/$mid/ && /$dp/,/end msg $mid/" >/tmp/mailpath; 
+grep $1 /usr/local/psa/var/log/maillog |grep "info msg" |awk '{print $9,$15}' |tr ":" " " >/tmp/test; while read mid dp ; do grepStr=$mid\|$dp; cat /usr/local/psa/var/log/maillog |awk "/$mid/ && /$dp/,/end msg $mid/" >/tmp/mailpath; 
 echo "############### Message ID $mid ###############"
 qids=( $(for x in `grep "starting delivery" /tmp/mailpath | grep $mid |awk '{print $9}' |tr ":" " "`; do echo $x ; done;) )
 grepStr=$grepStr\|${qids[@]}
