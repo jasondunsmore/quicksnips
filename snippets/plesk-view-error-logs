@@ -1,0 +1,1 @@
+tail /var/log/httpd/error_log /var/www/vhosts/*/statistics/logs/error_log
