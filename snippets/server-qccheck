@@ -16,6 +16,8 @@ qccmds=(
     "fdisk -l"
     "grep name /proc/cpuinfo"
     "cat /proc/scsi/scsi"
+    "ifconfig|grep -A1 eth"
+    "netstat -lpnt|egrep \":21|:22|:25|:80|:110|:143|:443|:993|:995|:3306|:8443\""
     "rpm -q psa"
     "head -n50 /etc/psa/psa.key"
     "up2date --show-channels"
