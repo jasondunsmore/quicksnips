@@ -1,0 +1,1 @@
+for pid in $(pgrep httpd); do ls -al /proc/$pid/{cwd,exe}; done

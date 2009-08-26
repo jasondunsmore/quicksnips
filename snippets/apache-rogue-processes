@@ -1,0 +1,13 @@
+function apacherougeprocesses () {
+    pnames=$(mktemp)
+    children=$(mktemp)
+    ppid=$(ps axo pid,ppid,command|awk '$3 ~ /httpd/ && $2 ~ /^1$/ {print $1}')
+    echo $ppid > $children
+    ps --ppid $ppid|awk '{print $1}'|sed '1d' >> $children
+    pgrep httpd > $pnames
+    if [[ diff -q $pnames $children ]]; then
+        echo "There are possible rogue httpd processes running, check these pids..."
+        comm -23 $pnames $children
+    fi
+}
+apacherougeprocesses

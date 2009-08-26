@@ -1,0 +1,1 @@
+for pid in /proc/[0-9]*; do ls -al $pid/{cwd,exe} 2>/dev/null; done|less -S
