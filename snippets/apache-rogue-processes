@@ -5,7 +5,7 @@ function apacherougeprocesses () {
     echo $ppid > $children
     ps --ppid $ppid|awk '{print $1}'|sed '1d' >> $children
     pgrep httpd > $pnames
-    if [[ diff -q $pnames $children ]]; then
+    if [[ $(diff -q $pnames $children) ]]; then
         echo "There are possible rogue httpd processes running, check these pids..."
         for pid in $(comm -23 $pnames $children); do
             echo $pid
