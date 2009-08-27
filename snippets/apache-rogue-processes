@@ -1,6 +1,6 @@
 function apacherougeprocesses () {
-    pnames=$(mktemp)
-    children=$(mktemp)
+    pnames=$(mktemp /tmp/tmp.XXXXXXXXXX)
+    children=$(mktemp /tmp/tmp.XXXXXXXXXX)
     ppid=$(ps axo pid,ppid,command|awk '$3 ~ /httpd/ && $2 ~ /^1$/ {print $1}')
     echo $ppid > $children
     ps --ppid $ppid|awk '{print $1}'|sed '1d' >> $children
