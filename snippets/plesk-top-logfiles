@@ -1,0 +1,1 @@
+for i in `ls /var/www/vhosts | egrep -i ".com|.org|.net"` ; do ls -l /var/www/vhosts/$i/statistics/logs/access_log ; done | sort -rnk5
