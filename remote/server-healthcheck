@@ -2,9 +2,34 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 PUBLICIP="$(curl -s www.whatismyip.com/automation/n09230945.asp)"
 
+usage="Usage: server-healthcheck [-h] [-m] [-s] [-v]
+
+Optional arguments.
+  -h  Print this help message.
+  -m  Do a 3-way mail check.
+  -s  Examine sar logs from the past week.
+  -v  Print verbose messages about each thing checked."
+
+while getopts "msvh" options; do
+    case $options in
+        m ) mailcheck=1;;
+        s ) sar=1;;
+        v ) verbose=1;;
+	h ) echo "$usage"
+	    exit 1;;
+	* ) echo "$usage"
+	    exit 1;;
+    esac
+done
+
 function warningmsg () { tput setaf 1; echo "WARN: $1"; tput sgr0; }
 function infomsg () { tput setaf 2; echo "INFO: $1"; tput sgr0; }
 function pmsg () { tput setaf 3; echo "$1"; tput sgr0; }
+function vmsg () {
+    if [[ $verbose ]]; then
+        tput setaf 4; echo "OKAY: $1"; tput sgr0
+    fi
+}
 
 function printcmdout () {
     # Usage: printcmdout COMMAND WARNINGMSG [TESTCOMMAND]
@@ -23,6 +48,8 @@ function printcmdout () {
             pmsg "[...]
 Only showing first 10 of $nlines lines.
 To see the full output, run \"$1\"."
+        elif [[ $nlines -eq 0 ]]; then
+            vmsg "$1 had no output."
         fi
     fi
 }
@@ -62,6 +89,12 @@ function 3waymailcheck () {
       PTR is $ptr
       Hostname resolves to $adata
       SMTP HELO is $helo"
+    else
+        vmsg "3-way mail check succeeded.
+      IP is $PUBLICIP
+      PTR is $ptr
+      Hostname resolves to $adata
+      SMTP HELO is $helo"
     fi
     
 }
@@ -84,12 +117,16 @@ if [[ ! -e /etc/issue ]]; then
 else
     if [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 3" /etc/issue) ]]; then
         infomsg "Server is running RHEL3."
+        distro="redhat"
     elif [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 4" /etc/issue) ]]; then
         infomsg "Server is running RHEL4."
+        distro="redhat"
     elif [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
         infomsg "Server is running RHEL5."
+        distro="redhat"
     elif [[ -n $(grep "Debian GNU/Linux" /etc/issue) ]]; then
         infomsg "Server is running Debian."
+        distro="debian"
     else
         infomsg "Server isn't running RHEL{3,4,5} or Debian.  From /etc/issue..."
         head -n1 /etc/issue
@@ -131,7 +168,11 @@ fi
 
 # Check system time
 timeoffset=$(ntpdate -q pool.ntp.org|head -n1|awk '{print $6}'|sed 's/-\?\(.*\)\..*/\1/')
-[[ $timeoffset -gt 300 ]] && warningmsg "Server time is over 5 minutes off."
+if [[ $timeoffset -gt 300 ]]; then
+    warningmsg "Server time is over 5 minutes off."
+else
+    vmsg "System time is within 5 minutes of NTP server."
+fi
 
 # Check for interesting syslog messages
 msgssize=$(stat -c%s "/var/log/messages")
@@ -151,13 +192,20 @@ for i in $( sar -q|tail -n6|sed '$d'|awk '{print $5}' ); do
     if [[ ${i/\.*} -gt 5 ]]; then
         warningmsg "The load average has been above 5 in the past hour."
         sar -q | head -n3 | tail -n1 && sar -q | tail
+        highload=1
         break
     fi
 done
-whonotme="$(who|grep -v "fw1-aus1:S.[01]")"
+if [[ -z $highload ]]; then
+    vmsg "The load average has not been above 5 in the past hour."
+fi
+
+whonotme="$(who|grep -v "fw1-aus1:S.[0-9]")"
 if [[ "$whonotme" ]]; then
     warningmsg "Other users are logged in."
     echo "$whonotme"
+else
+    vmsg "There are no other users logged in."
 fi
 
 # Check if server has been swapping
@@ -176,6 +224,8 @@ else
             warningmsg "Server has been actively swapping in the past half hour."
             sar -r | head -n3 | tail -n1 && sar -r | tail
         fi
+    else
+        vmsg "Server has not been actively swapping in the past half hour."
     fi
 fi
 
@@ -183,12 +233,16 @@ fi
 memavail=$( free -m|sed -n 3p|awk '{ print $4 }' )
 if [[ $memavail -lt 50 ]]; then
     warningmsg "There are only $memavail MB of free memory"
+else
+    vmsg "There are $memavail MB of free memory."
 fi
 
 # Checking available disk space
 dfroot=$( df -Pm|sed 1d|awk '$6 ~ /^\/$/ { print $4 }' )
 if [[ $dfroot -lt 1024 ]]; then
-    warningmsg "The root partition only has $dfroot MB available"
+    warningmsg "The root partition only has $dfroot MB available."
+else
+    vmsg "The root partition has $dfroot MB available."
 fi
 
 # Check MySQL
@@ -198,6 +252,8 @@ if [[ ! $( mysql -e exit 2>/dev/null || echo denied ) == "denied" ]]; then
     let mcleft=$mctotal-$mcused
     if [[ $mcleft -lt 10 ]]; then
         warningmsg "MySQL connections used/total: $mcused/$mctotal"
+    else
+        vmsg "MySQL connections used/total: $mcused/$mctotal"
     fi
 else
     warningmsg "root can't login to MySQL or MySQL not running."
@@ -229,7 +285,10 @@ else
     if [[ $amaxmemkb -gt $memkbavail ]]; then
         warningmsg "Apache is configured to use $amaxmemkb kB of memory.
       Only $memkbavail kB of memory are installed.
-      MaxClients shouled be lowered from $actotal to $acrecommend."
+      MaxClients should be lowered from $actotal to $acrecommend."
+    else
+        vmsg "Apache is configured to use $amaxmemkb kB of memory.
+      $memkbavail kB of memory are installed."
     fi
 fi
 
@@ -237,11 +296,41 @@ if [[ -e /var/log/httpd/error_log ]]; then
     maxclientserr="$(tail -n1000 /var/log/httpd/error_log|grep MaxClients)"
     if [[ -n $maxclientserr ]]; then
         printcmdout "tail -n1000 /var/log/httpd/error_log|grep MaxClients" "Apache has recently reached MaxClients"
+    else
+        vmsg "Apache has not recently reached MaxClients."
     fi
 fi
 
-#if [[ -n $(netstat -lpnt|awk '{print $4}'|grep ":25$") ]]; then
-#    3waymailcheck
-#fi
+if [[ $mailcheck ]]; then
+    if [[ -n $(netstat -lpnt|awk '{print $4}'|grep ":25$") ]]; then
+        3waymailcheck
+    else
+        warningmsg "3-way mail check failed.  There is nothing listening on port 25."
+    fi
+fi
+
+if [[ $sar ]]; then
+    if [[ $distro == "redhat" ]]; then
+        sardir="/var/log/sa"
+    elif [[ $distro == "debian" ]]; then
+        sardir="/var/log/sysstat"
+    fi
+    procs=$(grep processor /proc/cpuinfo|wc -l)
+    highestload=$(for file in $(ls -tr $sardir/sa[0-9][0-9]); do sar -q -f $file; done|sed '/^$/d'|egrep -v "Linux|ldavg-1|Average"|sort -nk5|tail -n1|awk '{print $5}'|cut -d. -f1)
+    relativeload=$(echo $highestload/$procs|bc)
+    if [[ $relativeload -gt 3 ]]; then
+        warningmsg "Load has been up to $highestload in the past week."
+        if [[ $verbose ]]; then
+            pmsg "Max daily load average over the past week:\n"
+            for file in $(ls -tr $sardir/sa[0-9][0-9]); do
+                echo Day $(echo ${file}|cut -c15-)
+                sar -q -f ${file} | sort -nk5 | egrep -v '^(.*CPU.*)$' |
+                egrep '^[0-9]{2}\:[0-9]{2}\:[0-9]{2}.*' | tail -n3 | sort -rnk5
+            done
+        fi
+    else
+        vmsg "Max load over the past week was ${highestload}.  There are $procs CPUs."
+    fi
+fi
 
 exit 0

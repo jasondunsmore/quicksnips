@@ -5,7 +5,7 @@ basedir=~/quicksnips                           # Path to quicksnips directory
 snipdir=snippets                               # Default snipdir
 # End user variable(s)
 
-usage="Usage: ./quicksnips [-e] [-i] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
+usage="Usage: ./quicksnips [-h] [-e] [-i] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
 
 Optional arguments.
   -h  Print this help message.
