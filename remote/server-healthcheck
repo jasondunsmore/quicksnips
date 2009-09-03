@@ -8,7 +8,8 @@ Optional arguments.
   -h  Print this help message.
   -m  Do a 3-way mail check.
   -s  Examine sar logs from the past week.
-  -v  Print verbose messages about each thing checked."
+  -v  Print verbose messages about each thing checked.
+      Default is \"no news is good news\"."
 
 while getopts "msvh" options; do
     case $options in
@@ -329,7 +330,7 @@ if [[ $sar ]]; then
             done
         fi
     else
-        vmsg "Max load over the past week was ${highestload}.  There are $procs CPUs."
+        vmsg "Max load over the past week was ${highestload}.  There are $procs CPU(s)."
     fi
 fi
 

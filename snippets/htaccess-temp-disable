@@ -1,0 +1,1 @@
+mv .htaccess .htaccess.tmp; sleep 5; mv .htaccess.tmp .htaccess
