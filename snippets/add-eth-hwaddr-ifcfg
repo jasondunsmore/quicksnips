@@ -1,9 +1,11 @@
-addethhwaddrifcfg () {
+function addethhwaddrifcfg () {
     for eth in $*; do
         ifcfg="/etc/sysconfig/network-scripts/ifcfg-$eth"
         if [[ -e $ifcfg ]]; then
             if [[ -n $(grep -i hwaddr $ifcfg) ]]; then
-                echo "HWADDR already in $ifcfg"
+                echo "HWADDR already in ${ifcfg}:"
+                grep -i hwaddr $ifcfg
+                echo
             else
                 echo "HWADDR not in ${ifcfg}, adding..."
                 echo HWADDR=$(ifconfig $eth|grep HWaddr|awk '{print $NF}') >> $ifcfg
