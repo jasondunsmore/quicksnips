@@ -1,5 +1,5 @@
 if [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 3" /etc/issue) || -n $(egrep "Red Hat Enterprise Linux [EA]S release 4" /etc/issue) ]]; then
     rpm -qa|grep kernel|sed 's/-[0-9].*//'|sort|uniq|while read pkg; do up2date -i -f $pkg; done
 elif [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
-    rpm -qa|grep kernel|sed 's/-[0-9].*//'|sort|uniq|while read pkg; do yum install --disableexcludes=all $pkg; done
+    rpm -qa|grep kernel|sed 's/-[0-9].*//'|sort|uniq|while read pkg; do yum -y install --disableexcludes=all $pkg; done
 fi
