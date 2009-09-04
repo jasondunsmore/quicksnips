@@ -1,0 +1,1 @@
+echo HWADDR=$(ifconfig eth0|grep HWaddr|awk '{print $NF}') >> /etc/sysconfig/network-scripts/ifcfg-eth0 && echo HWADDR=$(ifconfig eth1|grep HWaddr|awk '{print $NF}') >> /etc/sysconfig/network-scripts/ifcfg-eth1 && cat /etc/sysconfig/network-scripts/ifcfg-eth{0,1}

@@ -31,6 +31,11 @@ http://quicksnips.org/snippets/
 | [[qs:snippets/][snippets/]] | Code snippets                    |
 | [[qs:remote][remote/]]   | Scripts that are called remotely |
 
+* Demo
+file:demo1.png
+file:demo2.png
+file:demo3.png
+file:demo4.png
 * Installation
 ** Requirements
 - [[http://www.suckless.org/programs/dmenu.html][dmenu]]
@@ -164,6 +169,8 @@ snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 | C-z s l | quicksnips sar-recent-load    |
 | C-z s m | quicksnips sar-recent-memory  |
 
+** Cron job for new updates
+: 0 0 * * * cd ~/quicksnips  && git pull
 * Documentation
 
 : add-users                   - Adds multiple users.
