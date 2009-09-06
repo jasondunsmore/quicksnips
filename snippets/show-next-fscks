@@ -1,0 +1,1 @@
+egrep '^/dev/sd.*ext3.* 1 [0-9]$' /etc/fstab | awk '{ print $1 }' | while read part; do echo "${part}:"; dumpe2fs -h $part 2>/dev/null|egrep "Last checked|Check interval|Mount count|Maximum mount count"; echo; done
