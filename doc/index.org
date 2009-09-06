@@ -307,18 +307,17 @@ Scripts should be named with the most general descriptor
 first. Descriptors should be separated by hyphens.
 
 ** Scripting conventions
-Multi-line scripts should end with "\" (backslash) so bash treats them
-as the same line. This will prevent scripts from executing
-automatically.
-
-Comments should describe what the script does and give an example of
-the script output (when applicable).
+Scripts that would be too convoluted as a one-liner should be put in a
+bash function so they will not execute automatically.  Example:
+[[qs:snippets/qmail-queues-top-report.html][qmail-queues-top-report]].
 
 Scripts with arguments that are buried in the middle of the line
 should use a bash function to move arguments to the end of the line.
-For example:
+Example: [[qs:snippets/iptables-drop-ips.html][iptables-drop-ips]].
 
-: function dropips () { for ip in $*; do iptables -I INPUT -s $ip -j DROP; done && iptables -L }; dropips
+Comments should describe what the script does and give an example of
+the script output (when applicable).  Example:
+[[qs:snippets/apache-accesses-per-day.html][apache-accesses-per-day]].
 
 * Feedback
 Send suggestions or bug reports to file:feedback.png
