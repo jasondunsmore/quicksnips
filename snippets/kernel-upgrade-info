@@ -33,7 +33,7 @@ then
 echo "up2date -f -i $PKG2UPGRADE"
 elif [ "$OS" == "RHEL5" ];
 then
-echo "yum --disableexcludes=all update $PKG2UPGRADE"
+echo "yum -y install --disableexcludes=all $PKG2UPGRADE"
 fi;
 
 for x in $( ifconfig |egrep -o "eth[0-9] "); do
