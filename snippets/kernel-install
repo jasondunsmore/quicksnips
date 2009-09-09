@@ -12,7 +12,7 @@ then
 else
     OS=`cat /etc/redhat-release`
     echo "Non RHEL OS: $OS"
-    exit 1; # os does not match
+    return 1; # os does not match
 fi;
 
 
@@ -39,7 +39,7 @@ fi;
 for x in $( ifconfig |egrep -o "eth[0-9] "); do
 	if ! [ $( grep HWADDR /etc/sysconfig/network-scripts/ifcfg-$x) ];
 	then echo -e "\033[1;31mHWADDR does not exist\033[0m"
-	HWADDR=$( ifconfig |egrep "eth[0-9] " |awk {'print $NF'} ); 
+	HWADDR=$( ifconfig |egrep "$x" |awk {'print $NF'} ); 
 	echo "echo \"HWADDR=$HWADDR\" >>/etc/sysconfig/network-scripts/ifcfg-$x";
 	fi;
 done;
