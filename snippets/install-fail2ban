@@ -1,0 +1,35 @@
+# Install fail2ban from the EPEL repo
+
+function installfail2ban () {
+    if [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
+        if [[ ! -e /etc/yum.repos.d/epel.repo ]]; then
+            cat >/etc/yum.repos.d/epel.repo<<EOF
+[epel]
+name=Extra Packages for Enterprise Linux 5 - $basearch
+#baseurl=http://mirror.rackspace.com/epel/5/$basearch
+mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=epel-5&arch=$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL
+includepkgs=fail2ban*,shorewall*
+EOF
+        else
+            echo "/etc/yum.repos.d/epel.repo already exists."
+            if [[ $(grep fail2ban /etc/yum.repos.d/epel.repo) ]]; then
+                echo "fail2ban config is already in /etc/yum.repos.d/epel.repo."
+            else
+                echo "Adding includepkgs=fail2ban*,shorewall*' to /etc/yum.repos.d/epel.repo."
+                sed -i '6i\includepkgs=fail2ban*,shorewall*' /etc/yum.repos.d/epel.repo
+            fi
+        fi
+        yum -y install fail2ban
+        chkconfig fail2ban on
+        echo "Configured fail2ban to start upon boot..."
+        chkconfig --list fail2ban
+        service fail2ban start
+    else
+        echo "It is better to only use the EPEL repo on RHEL5."
+    fi
+}
+installfail2ban
