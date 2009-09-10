@@ -1,1 +1,3 @@
+# Shows the working directory and path to the executable of httpd processes
+
 for pid in $(pgrep httpd); do ls -al /proc/$pid/{cwd,exe}; done

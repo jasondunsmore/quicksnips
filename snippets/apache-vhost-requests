@@ -1,1 +1,3 @@
+# Shows the current requests for each of the Apache child processes.
+
 apachectl fullstatus|awk '{print $12}'|sed '/^$/d'|sort|uniq -c|sort -n

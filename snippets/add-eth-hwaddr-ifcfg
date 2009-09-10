@@ -1,3 +1,5 @@
+# Checks to see if there are HWADDR configs in ifcfg file & adds if needed 
+
 function bak () {
     cp -a $1 $1.bak.`date +%Y%m%d.%H%M%S`
 }
