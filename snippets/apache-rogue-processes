@@ -1,3 +1,5 @@
+# Looks for rogue Apache processes that could point to a compromise.
+
 function apacherougeprocesses () {
     pnames=$(mktemp /tmp/tmp.XXXXXXXXXX)
     children=$(mktemp /tmp/tmp.XXXXXXXXXX)

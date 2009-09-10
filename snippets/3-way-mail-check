@@ -1,3 +1,6 @@
+# Performs a 3-way mail check on a mail server
+# Usage: 3waymailcheck [IPADDRESS]
+
 function 3waymailcheck () {
     unset ip helo ptr adata
     if [[ -n $1 ]]; then

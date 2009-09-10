@@ -16,6 +16,7 @@ while getopts "msvh" options; do
         m ) mailcheck=1;;
         s ) sar=1;;
         v ) verbose=1;;
+        u ) updates=1;;
 	h ) echo "$usage"
 	    exit 1;;
 	* ) echo "$usage"
@@ -119,12 +120,15 @@ else
     if [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 3" /etc/issue) ]]; then
         infomsg "Server is running RHEL3."
         distro="redhat"
+        rhversion="3"
     elif [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 4" /etc/issue) ]]; then
         infomsg "Server is running RHEL4."
         distro="redhat"
+        rhversion="4"
     elif [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
         infomsg "Server is running RHEL5."
         distro="redhat"
+        rhversion="5"
     elif [[ -n $(grep "Debian GNU/Linux" /etc/issue) ]]; then
         infomsg "Server is running Debian."
         distro="debian"
@@ -331,6 +335,17 @@ if [[ $sar ]]; then
         fi
     else
         vmsg "Max load over the past week was ${highestload}.  There are $procs CPU(s)."
+    fi
+fi
+
+if [[ $updates ]]; then
+    if [[ $distro == "redhat" ]]; then
+        if [[ $rhversion == "3" || $rhversion == "4" ]]; then
+            #up2date --dry-run | sed -e '1,13d' -e '/\n\n/,$d'
+        elif
+            [[ $rhversion == "5" ]]; then
+            #yum list --disableexcludes=all updates
+        fi
     fi
 fi
 

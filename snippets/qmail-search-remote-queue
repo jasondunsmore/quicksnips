@@ -1,0 +1,22 @@
+# Search the qmail remote queue for a regexp.  Print message IDs for matches.
+# Usage: qmailsearchremotequeue REGEXP
+
+function pmsgid () { tput setaf 1; echo "$1"; tput sgr0; echo "$2"; }
+function qmailsearchremotequeue () {
+    if [[ -z $1 ]]; then
+        echo "Usage: qmailsearchremotequeue REGEXP"
+    else
+        echo "Searching for messages that contain regexp..."
+        find /var/qmail/queue/remote/ -type f|
+        while read line; do
+            basename $line
+        done|sort -n|uniq|
+        while read msgid; do
+            match="$(egrep "$1" /var/qmail/queue/mess/*/$msgid)"
+            if [[ $match ]]; then
+                pmsgid $msgid "$match"
+            fi
+        done
+    fi
+}
+qmailsearchremotequeue
