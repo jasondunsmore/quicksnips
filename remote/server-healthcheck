@@ -12,7 +12,7 @@ Optional arguments.
   -v  Print verbose messages about each thing checked.
       Default is \"no news is good news\"."
 
-while getopts "msvh" options; do
+while getopts "msuvh" options; do
     case $options in
         m ) mailcheck=1;;
         s ) sar=1;;
