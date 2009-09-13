@@ -352,6 +352,7 @@ if [[ $updates ]]; then
                 echo "$rhel5updates"
             else
                 vmsg "There are no new package updates available."
+            fi
         fi
     fi
 fi
