@@ -348,7 +348,7 @@ if [[ $updates ]]; then
             [[ $rhversion == "5" ]]; then
             rhel5updates=$(yum list --disableexcludes=all updates|sed -n '/Updated Packages/,$p')
             if [[ -n $rhel5updates ]]; then
-                echo "The following package updates are available:"
+                warningmsg "The following package updates are available:"
                 echo "$rhel5updates"
             else
                 vmsg "There are no new package updates available."
