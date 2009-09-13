@@ -2,12 +2,13 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 PUBLICIP="$(curl -s www.whatismyip.com/automation/n09230945.asp)"
 
-usage="Usage: server-healthcheck [-h] [-m] [-s] [-v]
+usage="Usage: server-healthcheck [-h] [-m] [-s] [-u] [-v]
 
 Optional arguments.
   -h  Print this help message.
   -m  Do a 3-way mail check.
   -s  Examine sar logs from the past week.
+  -u  See if any package updates are available.
   -v  Print verbose messages about each thing checked.
       Default is \"no news is good news\"."
 
@@ -341,10 +342,16 @@ fi
 if [[ $updates ]]; then
     if [[ $distro == "redhat" ]]; then
         if [[ $rhversion == "3" || $rhversion == "4" ]]; then
-            #up2date --dry-run | sed -e '1,13d' -e '/\n\n/,$d'
+            #up2date --dry-run -f | sed -e '1,13d' -e '/\n\n/,$d'
+            echo "Check for package updates is currently only implemented for RHEL5."
         elif
             [[ $rhversion == "5" ]]; then
-            #yum list --disableexcludes=all updates
+            rhel5updates=$(yum list --disableexcludes=all updates|sed -n '/Updated Packages/,$p')
+            if [[ -n $rhel5updates ]]; then
+                echo "The following package updates are available:"
+                echo "$rhel5updates"
+            else
+                vmsg "There are no new package updates available."
         fi
     fi
 fi
