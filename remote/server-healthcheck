@@ -172,6 +172,18 @@ else
     fi
 fi
 
+# See if HWADDR is in the eth0 and eth1 ifcfg scripts
+hwaddrs=0
+for hw in $(grep -cih HWADDR /etc/sysconfig/network-scripts/ifcfg-eth[0-9]); do
+    let hwaddrs=$hwaddrs+$hw
+done
+if [[ $hwaddrs -n $(grep -i HWADDR /etc/sysconfig/network-scripts/ifcfg-eth{0,1}) ]]; then
+    vmsg "HWADDR is configured in the ifcfg scripts:"
+    grep -i HWADDR /etc/sysconfig/network-scripts/ifcfg-eth{0,1}
+else
+    warningmsg "HWADDR is not configured in the ifcfg scripts.  Run add-eth-hwaddr-ifcfg"
+fi
+
 # Check system time
 timeoffset=$(ntpdate -q pool.ntp.org|head -n1|awk '{print $6}'|sed 's/-\?\(.*\)\..*/\1/')
 if [[ $timeoffset -gt 300 ]]; then
@@ -265,7 +277,7 @@ else
     warningmsg "root can't login to MySQL or MySQL not running."
 fi
 
-# Check Apache
+# Check Apache's memory usage
 abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
 if [[ -z "$($abin -V 2>&1|egrep "^Server version.*Apache\/[0-9].*")" ]]; then
     warningmsg "Apache is not listening on port 80."
@@ -298,6 +310,7 @@ else
     fi
 fi
 
+# Look for Apache reaching MaxClients
 if [[ -e /var/log/httpd/error_log ]]; then
     maxclientserr="$(tail -n1000 /var/log/httpd/error_log|grep MaxClients)"
     if [[ -n $maxclientserr ]]; then
@@ -307,6 +320,7 @@ if [[ -e /var/log/httpd/error_log ]]; then
     fi
 fi
 
+# See if server passes 3-way mail check.
 if [[ $mailcheck ]]; then
     if [[ -n $(netstat -lpnt|awk '{print $4}'|grep ":25$") ]]; then
         3waymailcheck
@@ -315,6 +329,7 @@ if [[ $mailcheck ]]; then
     fi
 fi
 
+# Check for high relative load.
 if [[ $sar ]]; then
     if [[ $distro == "redhat" ]]; then
         sardir="/var/log/sa"
@@ -339,6 +354,7 @@ if [[ $sar ]]; then
     fi
 fi
 
+# Check for packages needing update.
 if [[ $updates ]]; then
     if [[ $distro == "redhat" ]]; then
         if [[ $rhversion == "3" || $rhversion == "4" ]]; then
