@@ -1,0 +1,1 @@
+for dir in /var/qmail/mailnames/*/*/Maildir/{cur,new,tmp}; do echo $(find $dir -type f|wc -l) "$(echo $dir|cut -d/ -f6,5,8)"; done | tee /tmp/qmail-most-maildir-files && echo -e "\n\nSorting by number of files...\n" && sort -n /tmp/qmail-most-maildir-files
