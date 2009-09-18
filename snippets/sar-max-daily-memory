@@ -6,7 +6,7 @@
 # (total memory 2026 MB)
 # ===============================
 # 
-# /var/log/sa/sa08
+#   17 Sep 2009
 #     Time RAM used
 # 06:30:01 1099.78 MB
 # 06:10:01 1098.70 MB
@@ -19,7 +19,7 @@
 # 23:00:01 1065.48 MB
 # 04:40:01 1065.20 MB
 # 
-# /var/log/sa/sa09
+#   18 Sep 2009
 #     Time RAM used
 # 06:10:02 1081.86 MB
 # 06:30:01 1081.68 MB
@@ -28,4 +28,4 @@
 # 02:10:01 1017.07 MB
 # [...]
 
-memavail=`free -m | grep "Mem:" | awk '{print $2 " MB"}'` && printf "Max Daily Memory Usage\n(total memory $memavail)\n===============================\n" && for file in /var/log/sa/sa[0-9]*; do printf "\n$file\n    Time RAM used\n"; if [ -e "/usr/bin/sadf" ]; then exe="sadf -d -- -r $file"; else exe="sar -r -H -f $file"; fi && eval $exe | cut -d";" -f3,5,8 | sed 's/;/ /g' | awk '{printf "%s %.2f MB\n", $2, ($4-$5)/1024}' | sort -k2 -nr | head -n5; done
+memavail=`free -m | grep "Mem:" | awk '{print $2 " MB"}'` && printf "Max Daily Memory Usage\n(total memory $memavail)\n===============================\n" && for file in /var/log/sa/sa[0-9]*; do date=$( date -d`stat $file | awk '/Change/ {print $2}'` +"%d %b %Y" ); printf "\n  $date\n    Time RAM used\n"; if [ -e "/usr/bin/sadf" ]; then exe="sadf -d -- -r $file"; else exe="sar -r -H -f $file"; fi && eval $exe | cut -d";" -f3,5,8 | sed 's/;/ /g' | awk '{printf "%s %.2f MB\n", $2, ($4-$5)/1024}' | sort -k2 -nr | head -n5; done

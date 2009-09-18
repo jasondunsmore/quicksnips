@@ -5,7 +5,7 @@
 # Max Daily Processor
 # Utilization
 # ===============================
-# /var/log/sa/sa01
+# 17 Sep 2009
 #        Time       CPU     %user     %nice   %system   %iowait     %idle
 # 02:20:02 PM       all     15.95      0.00      2.24      0.21     81.60
 # 11:50:01 AM       all     16.72      0.00      1.44      0.15     81.68
@@ -13,7 +13,7 @@
 # 03:40:01 PM       all     14.51      0.00      1.90      0.33     83.26
 # 09:10:01 PM       all     11.50      0.00      2.37      0.96     85.18
 # 
-# /var/log/sa/sa02
+# 18 Sep 2009
 #        Time       CPU     %user     %nice   %system   %iowait     %idle
 # 03:00:01 PM       all     32.27      0.00      5.52      0.49     61.73
 # 09:50:02 AM       all     31.04      0.00      5.00      0.28     63.69
@@ -22,4 +22,4 @@
 # 09:40:01 AM       all     26.72      0.00      4.19      0.59     68.50
 # [...]
 
-START=( $(ls /var/log/sa/sa[0-9][0-9]) ) && for FILE in ${START[@]}; do if [ "${FILE}" == "${START[0]}" ]; then echo -en "Max Daily Processor Utilization\n===============================\n"; fi && echo ${FILE}; sar|head -n3|tail -n1 && sar -f ${FILE} | sort -rnk8 | egrep -v '^(.*CPU.*)$' | egrep '^[0-9]{2}\:[0-9]{2}\:[0-9]{2}.*' | tail -n5 | sort -nk8 && echo; done
+START=( $(ls /var/log/sa/sa[0-9][0-9]) ) && for FILE in ${START[@]}; do if [ "${FILE}" == "${START[0]}" ]; then echo -en "Max Daily Processor Utilization\n===============================\n"; fi && date -d`stat ${FILE} | awk '/Change/ {print $2}'` +"%d %b %Y"; sar|head -n3|tail -n1 && sar -f ${FILE} | sort -rnk8 | egrep -v '^(.*CPU.*)$' | egrep '^[0-9]{2}\:[0-9]{2}\:[0-9]{2}.*' | tail -n5 | sort -nk8 && echo; done
