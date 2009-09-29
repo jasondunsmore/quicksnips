@@ -1,4 +1,3 @@
-# Shows the number of times that the number of Apache processes were running
-# based on the rs-sysmon logs.
+# Shows the number of times that the number of Apache processes were running.
 
 for file in /var/log/rs-sysmon/ps.log*; do grep httpd $file|wc -l; done|sort -n|uniq -c && echo "Total $(ls /var/log/rs-sysmon/ps.log*|wc -l)"

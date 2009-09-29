@@ -1,4 +1,4 @@
 function searchcronjobs () {
-    egrep --color "$1" /etc/cron.* /etc/crontab /etc/cron.d/* /var/spool/cron/*
+    egrep -n --color "$1" /etc/cron.* /etc/crontab /etc/cron.d/* /var/spool/cron/*
 }
 searchcronjobs 
