@@ -31,6 +31,13 @@
 (bind-keys quicksnips-keymap "g" quicksnips-g-keymap)
 (bind-keys quicksnips-g-keymap "c" (lambda () (system "quicksnips git-commit-push &")))
 
+(define quicksnips-k-keymap (make-keymap))
+(bind-keys quicksnips-keymap "k" quicksnips-k-keymap)
+(bind-keys quicksnips-k-keymap "u" (lambda () (system "quicksnips kernel-upgrade &")))
+(bind-keys quicksnips-k-keymap "b" (lambda () (system "quicksnips kernel-boot-order &")))
+(bind-keys quicksnips-k-keymap "h" (lambda () (system "quicksnips add-eth-hwaddr-ifcfg &")))
+(bind-keys quicksnips-k-keymap "f" (lambda () (system "quicksnips show-next-fscks &")))
+
 (define quicksnips-m-keymap (make-keymap))
 (bind-keys quicksnips-keymap "m" quicksnips-m-keymap)
 (bind-keys quicksnips-m-keymap "m" (lambda () (system "quicksnips mysql-memory &")))

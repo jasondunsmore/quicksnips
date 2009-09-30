@@ -25,12 +25,12 @@ while getopts "msuvh" options; do
     esac
 done
 
-function warningmsg () { tput setaf 1; echo "WARN: $1"; tput sgr0; }
-function infomsg () { tput setaf 2; echo "INFO: $1"; tput sgr0; }
-function pmsg () { tput setaf 3; echo "$1"; tput sgr0; }
+function warningmsg () { tput setaf 1; echo -e "WARN: $1"; tput sgr0; }
+function infomsg () { tput setaf 2; echo -e "INFO: $1"; tput sgr0; }
+function pmsg () { tput setaf 3; echo -e "$1"; tput sgr0; }
 function vmsg () {
     if [[ $verbose ]]; then
-        tput setaf 4; echo "OKAY: $1"; tput sgr0
+        tput setaf 4; echo -e "OKAY: $1"; tput sgr0
     fi
 }
 
@@ -340,9 +340,9 @@ if [[ $sar ]]; then
     highestload=$(for file in $(ls -tr $sardir/sa[0-9][0-9]); do sar -q -f $file; done|sed '/^$/d'|egrep -v "Linux|ldavg-1|Average"|sort -nk5|tail -n1|awk '{print $5}'|cut -d. -f1)
     relativeload=$(echo $highestload/$procs|bc)
     if [[ $relativeload -gt 3 ]]; then
-        warningmsg "Load has been up to $highestload in the past week."
+        warningmsg "Load has been up to $highestload in the past week.  There are $procs CPU(s)."
         if [[ $verbose ]]; then
-            pmsg "Max daily load average over the past week:\n"
+            pmsg "Max daily load average over in the past week:\n"
             for file in $(ls -tr $sardir/sa[0-9][0-9]); do
                 echo Day $(echo ${file}|cut -c15-)
                 sar -q -f ${file} | sort -nk5 | egrep -v '^(.*CPU.*)$' |
@@ -358,8 +358,8 @@ fi
 if [[ $updates ]]; then
     if [[ $distro == "redhat" ]]; then
         if [[ $rhversion == "3" || $rhversion == "4" ]]; then
-            #up2date --dry-run -f | sed -e '1,13d' -e '/\n\n/,$d'
-            echo "Check for package updates is currently only implemented for RHEL5."
+            #up2date --dry-run -f | sed -n '/^Name/,/^$/{p;/^$/q;}'
+            pmsg "Check for package updates is currently only implemented for RHEL5."
         elif
             [[ $rhversion == "5" ]]; then
             rhel5updates=$(yum list --disableexcludes=all updates|sed -n '/Updated Packages/,$p')

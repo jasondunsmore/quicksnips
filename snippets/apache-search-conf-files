@@ -2,7 +2,7 @@
 
 function apachesearchconffiles () {
     (echo /etc/httpd/conf/httpd.conf; httpd -S 2>&1|egrep "\/.*\/"|sed 's/.*(\(.*\):.*).*/\1/')|sort|uniq|while read file; do
-    egrep -H "$1" $file
+    egrep -nH "$1" $file
     done
 }
 apachesearchconffiles 
