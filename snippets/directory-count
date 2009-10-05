@@ -1,0 +1,12 @@
+function directory_count () {
+echo "Thinking..."
+echo "--------------------"
+find . -maxdepth 1 -type d ! -fstype proc ! -fstype nfs | grep -v "^.$" | while read i
+do
+   dir=`echo $i | sed 's/^\.\///g'` 
+   count=`find "$i" -mount 2>/dev/null | wc -l`
+   echo "$dir:$count"
+   
+done | column -t -s":"
+}
+directory_count
