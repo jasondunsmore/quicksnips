@@ -54,7 +54,7 @@ if [[ ! $exe ]]; then
 fi
 
 # Dump the current contents of the x selection buffer before manipulating it
-dumpfile=($mktemp)
+dumpfile=$(mktemp)
 xclip -o > $dumpfile
 
 # Paste the script
@@ -79,7 +79,7 @@ rm -f $dumpfile
 
 # Show the documentation in Emacs
 if [[ $edoc ]]; then
-    doc=`cat $snipdir/$exe | sed -n '/^#/p'|sed 's/^# *//'`
+    doc=$(cat $snipdir/$exe | sed -n '/^#/p'|sed 's/^# *//')
     if [[ -n "$doc" ]]; then
 	emacsclient -e "(quicksnips-doc \"$doc\")"
     fi
@@ -87,7 +87,7 @@ fi
 
 # Show the documentation in Xdialog
 if [[ $xdoc ]]; then
-    tmp=`mktemp`
+    tmp=$(mktemp)
     cat ~/$snipdir/$exe | sed -n '/^#/p'|sed 's/^# *//' > $tmp
     if [[ -s $tmp ]]; then
 	Xdialog --fixed-font --textbox $tmp 15 60
