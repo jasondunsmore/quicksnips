@@ -1,0 +1,7 @@
+# Searches a file from bottom up.
+# Usage: grepfrombottomup REGEX
+
+function grepfrombottomup () {
+    tac /var/log/httpd/access_log|egrep "$*"
+}
+grepfrombottomup
