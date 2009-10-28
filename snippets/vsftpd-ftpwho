@@ -1,0 +1,45 @@
+# Like ftpwho for vsftpd (Source: http://ur1.ca/ensp)
+# Usage: vsftpdftpwho
+
+function vsftpdftpwho () {
+    ftpwho=$(mktemp)
+    cat >$ftpwho<<'EOF'
+#!/usr/bin/perl
+use strict; use warnings;
+use List::Util qw[max];
+open my $stderr_bk, '>&', STDERR;
+close STDERR;
+open STDERR, '>', '/dev/null';
+open my $lsof_pipe, '-|', qw(lsof -F pRLufn -a -c vsftpd)
+    or my $dead=$!;
+close STDERR;
+open STDERR, '>&', $stderr_bk;
+die "Can't run 'lsof': $dead -- quit" if $dead;
+my (%uid_of, %user_of, %parent_of, %net_of, %has_childs, $pid, $fd);
+while (<$lsof_pipe>) {
+    chomp;
+    /^p(\d+)$/    and $pid = $1, next;
+    /^R(\d+)$/    and $parent_of{$pid} = $1, $has_childs{$1} = 1, next;
+    /^L(.+)$/     and $user_of{$pid} = $1, next;
+    /^u(.+)$/     and $uid_of{$pid} = $1, next;
+    /^f(\d+)$/    and $fd = $1, next;
+    /^n.+->(.+)$/ and $fd eq '0' and $net_of{$pid} = $1, next;
+}
+close $lsof_pipe or die "Error running 'lsof'";
+my $maxuserlen = max map {length $_} (keys %user_of, '[login]');
+for my $pid (sort keys %user_of) {
+    my $uppid = $uid_of{$parent_of{$pid}};
+    if (!$has_childs{$pid} and defined $uppid) {
+        $net_of{$pid} ||= '';
+        printf "%2s %-${maxuserlen}s  %s\n",
+                    $uppid == 0
+                        ? ('  ', '[login]')
+                        : ('->', $user_of{$pid}),
+                    $net_of{$pid};
+    }
+}
+EOF
+    perl $ftpwho
+    rm -f $ftpwho
+}
+vsftpdftpwho
