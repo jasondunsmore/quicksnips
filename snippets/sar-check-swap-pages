@@ -1,0 +1,1 @@
+for file in $(ls -tr /var/log/sa/sa[0-9][0-9]); do sar -W -f $file |egrep 'AM|PM' |egrep -v '0.00|pswpin'; done
