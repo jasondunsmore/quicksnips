@@ -5,6 +5,7 @@
 # fullstatus is slow or inaccessible.  Do a sanity check on the access
 # log names, this may need to be edited to accomodate logfiles
 # withouth access_log in the name.
+# Usage: apacheloggrowers SECONDS
 
 function apacheloggrowers () {
     logs=$(lsof -p `cat /var/run/httpd.pid`|egrep "access.log"|awk '{if ($7 > 0) print $9}')
@@ -12,8 +13,8 @@ function apacheloggrowers () {
     for x in $logs; do
         du -s $x >>/tmp/firstcheck
     done
-    echo "Waiting for 30 seconds for traffic to be logged..."
-    sleep 30
+    echo "Waiting for $1 seconds for traffic to be logged..."
+    sleep $1
     rm -f /tmp/secondcheck
     for x in $logs; do
         du -s $x >>/tmp/secondcheck
@@ -24,4 +25,4 @@ function apacheloggrowers () {
     sort -k 2 /tmp/secondcheck > /tmp/secondchecknew
     join -j 2 /tmp/firstchecknew /tmp/secondchecknew | grep -v ^0 | awk '{print $3-$2, $1}' | grep -v ^0 | sort -rn | uniq
 }
-apacheloggrowers
+apacheloggrowers 30
