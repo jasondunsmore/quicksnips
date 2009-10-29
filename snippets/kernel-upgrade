@@ -1,3 +1,5 @@
+# Upgrades installed kernel packages.
+
 if [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 3" /etc/issue) || -n $(egrep "Red Hat Enterprise Linux [EA]S release 4" /etc/issue) ]]; then
     up2date -i -f $(rpm -qa|grep kernel|sed 's/-[0-9].*//'|sort|uniq|sed -e :a -e '$!N;s/\n/ /;ta')
 elif [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then

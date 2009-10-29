@@ -1,8 +1,6 @@
-#+TITLE: 
+#+TITLE: Quicksnips
 #+LINK: qs http://quicksnips.org/quicksnips/
 #+OPTIONS: toc:2
-
-file:logo.png
 
 * Intro
 Quicksnips allows you to have access to a large number of one-liners

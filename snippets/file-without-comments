@@ -1,1 +1,3 @@
+# Shows contents of a file without comment lines or empty lines
+
 egrep -v " *#|^$" 

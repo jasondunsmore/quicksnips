@@ -1,3 +1,6 @@
+# Collects statistics on processes in "uninterruptable sleep" state, which is usually caused by high I/O
+# Usage: ioboundprocessstats SEC
+
 function ioboundprocessstats () {
     echo "Collecting stats on I/O bound processes for ~$1 seconds..."
     n=0
