@@ -1,7 +1,11 @@
 # Searches a file from bottom up.
-# Usage: grepfrombottomup REGEX
+# Usage: grepfrombottomup REGEX FILE
 
 function grepfrombottomup () {
-    tac /var/log/httpd/access_log|egrep "$*"
+    if [[ $# -ne 2 ]]; then
+        echo "Usage: grepfrombottomup REGEX FILE"
+    else
+        tac "$2"|egrep --color "$1"
+    fi
 }
 grepfrombottomup
