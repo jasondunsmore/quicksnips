@@ -1,5 +1,8 @@
-#+TITLE: quicksnips
+#+TITLE: 
 #+LINK: qs http://quicksnips.org/quicksnips/
+#+OPTIONS: toc:2
+
+file:logo.png
 
 * Intro
 Quicksnips allows you to have access to a large number of one-liners
@@ -10,6 +13,8 @@ results based on your keystrokes.  Dmenu cats the output of the
 one-liners into xclip, then xdotool mimics the middle mouse button to
 paste the output of your one-liner into the remote server without
 executing it, so that you can modify it before executing.
+
+[TABLE-OF-CONTENTS]
 
 * Obtaining quicksnips
 To download the latest development version, use:
@@ -32,9 +37,16 @@ http://quicksnips.org/snippets/
 | [[qs:remote][remote/]]   | Scripts that are called remotely |
 
 * Demo
+Run quicksnips:
 file:demo1.png
+
+...and a menu will appear with all the quicksnips for you to choose from:
 file:demo2.png
+
+Start typing a word in the quicksnip name and hit Enter:
 file:demo3.png
+
+The quicksnip will appear in the terminal:
 file:demo4.png
 * Installation
 ** Requirements
@@ -85,16 +97,11 @@ is selected using =quicksnips -x=.
 
 ** Bind the quicksnips command to a global keybinding
 *** Gnome (Metacity)
-Install and run gconf-editor, then create a keybinding for the
-=quicksnips= command under:
+Create a keybinding for the =quicksnips= command by running
+=~/quicksnips/bin/quickconfig=.  For example, run the following to
+bind quicksnips to F1:
 
-: apps -> metacity -> keybinding_commands
-
-...and bind it to a key under:
-
-: apps -> metacity -> global keybindings
-
-[[http://www.electricmonk.nl/log/2007/08/02/gnomemetacity-keybindings-and-other-customizations/][More detailed instructions]]
+: quickconfig F1
 
 *** KDE
 Use kmenuedit to create a new menu item which calls the quicksnips
@@ -298,9 +305,6 @@ snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 * Contributing
 If you're interested in contributing to quicksnips, email
 file:jason.png or file:matt.png
-
-** Scope
-A script should be
 
 ** Naming convention
 Scripts should be named with the most general descriptor
