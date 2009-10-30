@@ -1,0 +1,3 @@
+# Lists all IP addresses and virtual interface name on eth0
+
+ip addr | awk '/inet.*eth0/ { print $2 " " $7 }' | sed 's/\/[0-9]\+//'

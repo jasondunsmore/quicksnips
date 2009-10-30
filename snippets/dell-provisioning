@@ -1,0 +1,8 @@
+cat /etc/redhat-release ;\
+uname -m ;\
+dmidecode | grep -m1 -A4 "System Information" ;\
+dmidecode | grep -m1 -A40 "Processor Information" | grep -e "Processor" -e "Manufacturer" -e "Version" -e "Max Speed" ;\
+cat /proc/cpuinfo | grep "model name" | uniq -c ;\
+free ;\
+omreport storage vdisk controller=0 | egrep '^(ID|Status|Name|State|Layout|Size|Device Name|Type)' ;\
+omreport storage pdisk controller=0 | egrep '^(ID|Status|State|Capacity)'
