@@ -1,0 +1,1 @@
+for dir in /var/qmail/mailnames/*/*/Maildir/{cur,new,tmp}; do echo $(stat -c"%s" "$dir/$(ls -AlSrh $dir|tail -n1|awk '{print $9}')") "$(echo $dir|cut -d/ -f6,5,8)"; done | tee /tmp/qmail-show-largest-messages && echo -e "\n\nSorting by size...\n" && sort -n /tmp/qmail-show-largest-messages

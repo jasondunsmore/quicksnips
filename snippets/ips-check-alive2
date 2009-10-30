@@ -1,3 +1,10 @@
 # Checks a list of IPs and reports if they are up or down.
+# Usage: ipscheckalive2 IP1 [IP2] [...]
 
-function ips () { for i in $*; do echo -n "$i ";ping -c 1 -q -W 1 $i |grep received |awk '{ if ($4 == 1) print "is online"; else print "NOT RESPONDING" }';done } && ips 
+function ipscheckalive2 () {
+    for i in $*; do
+        echo -n "$i "
+        ping -c 1 -q -W 1 $i | grep received | awk '{ if ($4 == 1) print "is online"; else print "NOT RESPONDING" }'
+    done
+}
+ipscheckalive2 

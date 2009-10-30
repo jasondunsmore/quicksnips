@@ -1,1 +1,3 @@
+# Shows the kernel boot order.
+
 egrep "^default|^title" /boot/grub/menu.lst

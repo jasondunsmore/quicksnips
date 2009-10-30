@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Configures a quicksnips keybinding for Metacity.
+# Usage: quickconfig KEY
+
+pgrep metacity || echo "You do not appear to be running metacity.  This configuration script is for metacity only."; exit 1
+if [[ -z $1 ]]; then
+    echo "Usage: quickconfig KEY"
+    exit 1
+fi
+n=1
+isset=0
+quickdir="$HOME/quicksnips/bin/quicksnips"
+if [[ ! -e $quickdir ]]; then
+    echo $quickdir does not exist.
+    exit 1
+fi
+while [[ $isset -eq 0 ]]; do
+    if [[ $(gconftool-2 --get /apps/metacity/keybinding_commands/command_$n 2>&1) == No\ value* ]]; then
+        gconftool-2 --set /apps/metacity/keybinding_commands/command_$n --type string "$quickdir"
+        gconftool-2 --set /apps/metacity/global_keybindings/run_command_$n --type string "$1"
+        echo "New Metacity keybinding:"
+        echo "gconftool-2 --get /apps/metacity/keybinding_commands/command_$n"
+        gconftool-2 --get /apps/metacity/keybinding_commands/command_$n
+        echo "gconftool-2 --get /apps/metacity/global_keybindings/run_command_$n"
+        gconftool-2 --get /apps/metacity/global_keybindings/run_command_$n
+        isset=1
+    else
+        n=$((n+=1))
+    fi
+done
