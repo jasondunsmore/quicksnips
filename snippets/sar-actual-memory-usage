@@ -1,0 +1,25 @@
+# sar-actual-memory-usage takes the Used Memory via sar and subtracts Buffers and Cache to show Actual Memory usage
+# Usage: saractualmemory
+
+function saractualmemory () {
+for i in `sar -r | egrep -v "Average|RESTART|swpused|Linux|^$" | awk '{print $4"-"$6"-"$7"-"$1}'`
+  do 
+   date=`echo $i | awk -F- '{print $4}'`
+   echo " "
+   echo "---------$date------------"
+   used=`echo $i | awk -F- '{print $1}'`
+   buffer=`echo $i | awk -F- '{print $2}'`
+   cache=`echo $i | awk -F- '{print $3}'`
+
+   usedMB=`echo $i | awk -F- '{print $1/1024" MB"}'`
+   bufferMB=`echo $i | awk -F- '{print $2/1024" MB"}'`
+   cacheMB=`echo $i | awk -F- '{print $3/1024" MB"}'`
+
+   total=`echo "$used - $buffer - $cache" | bc | awk '{print $1/1024" MB"}'`
+   echo "Used Memory: $usedMB"
+   echo "Buffers: $bufferMB"
+   echo "Cache: $cacheMB"
+   echo "Actucal Memory Usage: $total"
+done
+} 
+saractualmemory
