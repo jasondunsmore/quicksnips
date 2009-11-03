@@ -2,24 +2,32 @@
 # Usage: saractualmemory
 
 function saractualmemory () {
-for i in `sar -r | egrep -v "Average|RESTART|swpused|Linux|^$" | awk '{print $4"-"$6"-"$7"-"$1}'`
-  do 
+ for i in `sar -r | egrep -v "Average|RESTART|swpused|Linux|^$" | awk '{print $4"-"$6"-"$7"-"$1}'`
+  do
    date=`echo $i | awk -F- '{print $4}'`
    echo " "
-   echo "---------$date------------"
+   echo "=========================================="
+   echo "          `date +'%B %d'` $date           "
+   echo "          ---------------------           "
+   echo " "
    used=`echo $i | awk -F- '{print $1}'`
    buffer=`echo $i | awk -F- '{print $2}'`
    cache=`echo $i | awk -F- '{print $3}'`
 
-   usedMB=`echo $i | awk -F- '{print $1/1024" MB"}'`
-   bufferMB=`echo $i | awk -F- '{print $2/1024" MB"}'`
-   cacheMB=`echo $i | awk -F- '{print $3/1024" MB"}'`
+   usedMB=`echo $i | awk -F- '{print $1/1024}' | awk -F\. '{print $1" MB"}'`
+   bufferMB=`echo $i | awk -F- '{print $2/1024}' | awk -F\. '{print $1" MB"}'`
+   cacheMB=`echo $i | awk -F- '{print $3/1024}' | awk -F\. '{print $1" MB"}'`
 
-   total=`echo "$used - $buffer - $cache" | bc | awk '{print $1/1024" MB"}'`
-   echo "Used Memory: $usedMB"
-   echo "Buffers: $bufferMB"
-   echo "Cache: $cacheMB"
-   echo "Actucal Memory Usage: $total"
-done
+   total=`echo "$used - $buffer - $cache" | bc | awk '{print $1/1024}' |  awk -F\. '{print $1" MB"}'`
+
+  for i in `seq 1`
+     do
+      echo "Used_Memory: $usedMB"
+      echo "Buffers: $bufferMB"
+      echo "Cache: $cacheMB"
+      echo "-----"
+      echo "Actucal_Usage: $total"
+     done | column -t
+done | less
 } 
 saractualmemory
