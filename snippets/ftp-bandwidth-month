@@ -3,4 +3,13 @@
 #
 # The files can be a list of gzipped or uncompressed files.
 
-function ftpbandwidth () { if [ -e /var/log/xferlog ]; then for day in `seq 01 31`; do echo -n "`date +%B` $day: "; zgrep -E " `date +%b`space: {1,2}$day " $* | awk '  $12 ~ /o/  { SUM +=$8 } END {print SUM/1024/1024, "M"}'; done; else echo "/var/log/xferlog doesn't exist"; fi; }; ftpbandwidth /var/log/xferlog*
+function ftpbandwidthmonth () {
+    if [ -e /var/log/xferlog ]; then
+        for day in `seq 01 31`; do
+            echo -n "`date +%B` $day: "
+            zgrep -E " `date +%b`space: {1,2}$day " $* | awk '  $12 ~ /o/  { SUM +=$8 } END {print SUM/1024/1024, "M"}'
+        done
+    else echo "/var/log/xferlog doesn't exist"
+    fi
+}
+ftpbandwidthmonth /var/log/xferlog*

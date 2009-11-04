@@ -1,0 +1,6 @@
+#!/bin/bash
+
+find ~/quicksnips/snippets/ -type f | egrep -v "/\.|~$" | sort |
+while read file; do
+    sed -e '/^[^# ]/,$!d' -n -e '/^function.* () {/,/^}$/p' $file
+done

@@ -1,3 +1,9 @@
 # Disables the count and interval based standard fsck's for ext3 filesystems
 
-function tune2fs-disable-checks () { egrep '^/dev/sd.*ext3.* 1 [0-9]$' /etc/fstab | awk '{ print $1 }' | while read line; do tune2fs -c0 -i0 $line; done } ; tune2fs-disable-checks
+function tune2fs-disable-checks () {
+    egrep '^/dev/sd.*ext3.* 1 [0-9]$' /etc/fstab | awk '{ print $1 }' |
+    while read line; do
+        tune2fs -c0 -i0 $line
+    done
+}
+tune2fs-disable-checks

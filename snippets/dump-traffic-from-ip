@@ -2,7 +2,9 @@
 # Usage: dumptrafficfromip IFACE IPADDRESS
 # Example: dumptrafficfromip eth0 74.125.67.100
 
-function infomsg () { tput setaf 2; echo "$1"; tput sgr0; }
+function infomsg () {
+    tput setaf 2; echo "$1"; tput sgr0
+}
 function dumptrafficfromip () {
     if [[ -z $2 ]]; then
         echo "Usage: dumptrafficfromip IFACE IPADDRESS"

@@ -24,7 +24,7 @@ while (<$lsof_pipe>) {
     /^u(.+)$/     and $uid_of{$pid} = $1, next;
     /^f(\d+)$/    and $fd = $1, next;
     /^n.+->(.+)$/ and $fd eq '0' and $net_of{$pid} = $1, next;
-}
+} 
 close $lsof_pipe or die "Error running 'lsof'";
 my $maxuserlen = max map {length $_} (keys %user_of, '[login]');
 for my $pid (sort keys %user_of) {
@@ -37,7 +37,7 @@ for my $pid (sort keys %user_of) {
                         : ('->', $user_of{$pid}),
                     $net_of{$pid};
     }
-}
+} 
 EOF
     perl $ftpwho
     rm -f $ftpwho

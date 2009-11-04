@@ -29,5 +29,5 @@ function saractualmemory () {
       echo "Actucal_Usage: $total"
      done | column -t
 done | less
-} 
+}
 saractualmemory

@@ -1,7 +1,12 @@
 # Search the qmail remote queue for a regexp.  Print message IDs for matches.
 # Usage: qmailsearchremotequeue REGEXP
 
-function pmsgid () { tput setaf 1; echo "$1"; tput sgr0; echo "$2"; }
+function pmsgid () {
+    tput setaf 1
+    echo "$1"
+    tput sgr0
+    echo "$2"
+}
 function qmailsearchremotequeue () {
     if [[ -z $1 ]]; then
         echo "Usage: qmailsearchremotequeue REGEXP"

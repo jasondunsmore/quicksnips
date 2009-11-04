@@ -1,47 +1,40 @@
 function kernelinstall () {
-# Get RHEL version or exit with unsupported OS
-if   egrep -qi 'Red Hat Enterprise Linux (AS|ES) release 3' /etc/redhat-release;
-then
-    OS='RHEL3'
-elif egrep -qi 'Red Hat Enterprise Linux (AS|ES) release 4' /etc/redhat-release;
-then
-    OS='RHEL4'
-elif egrep -qi 'Red Hat Enterprise Linux Server release 5' /etc/redhat-release;
-then
-    OS='RHEL5'
-else
-    OS=`cat /etc/redhat-release`
-    echo "Non RHEL OS: $OS"
-    return 1; # os does not match
-fi;
+    # Get RHEL version or exit with unsupported OS
+    if egrep -qi 'Red Hat Enterprise Linux (AS|ES) release 3' /etc/redhat-release; then
+        OS='RHEL3'
+    elif egrep -qi 'Red Hat Enterprise Linux (AS|ES) release 4' /etc/redhat-release; then
+        OS='RHEL4'
+    elif egrep -qi 'Red Hat Enterprise Linux Server release 5' /etc/redhat-release; then
+        OS='RHEL5'
+    else
+        OS=`cat /etc/redhat-release`
+        echo "Non RHEL OS: $OS"
+        return 1; # os does not match
+    fi
 
+    KERN=`uname -r`
+    FILE="/boot/vmlinuz-$KERN"
+    PKG=`rpm -qf $FILE`
+    PKG2UPGRADE=$(echo $PKG | sed 's/-[0-9].*//')
 
-KERN=`uname -r`;
-FILE="/boot/vmlinuz-$KERN";
-PKG=`rpm -qf $FILE`;
-PKG2UPGRADE=$(echo $PKG | sed 's/-[0-9].*//');
+    echo -e "\033[1;31muname -r:\t$KERN\033[0m"
+    echo -e "\033[1;31mUpdating:\t$PKG2UPGRADE\033[0m"
 
-echo -e "\033[1;31muname -r:\t$KERN\033[0m"
-echo -e "\033[1;31mUpdating:\t$PKG2UPGRADE\033[0m"
+    # Compare versions and install/reboot if necessary
+    if [ "$OS" == "RHEL3" ]; then
+        echo "up2date -f -i $PKG2UPGRADE"
+    elif [ "$OS" == "RHEL4" ]; then
+        echo "up2date -f -i $PKG2UPGRADE"
+    elif [ "$OS" == "RHEL5" ]; then
+        echo "yum -y install --disableexcludes=all $PKG2UPGRADE"
+    fi
 
-# Compare versions and install/reboot if necessary
-if [ "$OS" == "RHEL3" ];
-then
-echo "up2date -f -i $PKG2UPGRADE"
-elif [ "$OS" == "RHEL4" ];
-then
-echo "up2date -f -i $PKG2UPGRADE"
-elif [ "$OS" == "RHEL5" ];
-then
-echo "yum -y install --disableexcludes=all $PKG2UPGRADE"
-fi;
-
-for x in $( ifconfig |egrep -o "eth[0-9] "); do
-	if ! [ $( grep HWADDR /etc/sysconfig/network-scripts/ifcfg-$x) ];
-	then echo -e "\033[1;31mHWADDR does not exist\033[0m"
-	HWADDR=$( ifconfig |egrep "$x" |awk {'print $NF'} ); 
-	echo "echo \"HWADDR=$HWADDR\" >>/etc/sysconfig/network-scripts/ifcfg-$x";
-	fi;
-done;
+    for x in $( ifconfig |egrep -o "eth[0-9] "); do
+	if ! [ $( grep HWADDR /etc/sysconfig/network-scripts/ifcfg-$x) ]; then
+            echo -e "\033[1;31mHWADDR does not exist\033[0m"
+	    HWADDR=$( ifconfig |egrep "$x" |awk {'print $NF'} )
+	    echo "echo \"HWADDR=$HWADDR\" >>/etc/sysconfig/network-scripts/ifcfg-$x"
+	fi
+    done
 }
 kernelinstall
