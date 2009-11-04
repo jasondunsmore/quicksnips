@@ -1,14 +1,19 @@
 # Tracks Message Delivery by Sender
 # Enter from address after mailtracker. Use your favorite pager.
+# Usage: qmaildeliverytracking john.doe@domain.com
 
-function mailtracker () {
-rm -f /tmp/mailpath; touch /tmp/mailpath;
-rm -f /tmp/test; touch /tmp/test;
-grep $1 /usr/local/psa/var/log/maillog |grep "info msg" |awk '{print $9,$15}' |tr ":" " " >/tmp/test; while read mid dp ; do grepStr=$mid\|$dp; cat /usr/local/psa/var/log/maillog |awk "/$mid/ && /$dp/,/end msg $mid/" >/tmp/mailpath; 
-echo "############### Message ID $mid ###############"
-qids=( $(for x in `grep "starting delivery" /tmp/mailpath | grep $mid |awk '{print $9}' |tr ":" " "`; do echo $x ; done;) )
-grepStr=$grepStr\|${qids[@]}
-grepStr=`echo $grepStr |tr " " "\|"`
-egrep "$grepStr" /tmp/mailpath;
-done </tmp/test
-}; mailtracker 
+function qmaildeliverytracking () {
+    rm -f /tmp/mailpath; touch /tmp/mailpath
+    rm -f /tmp/test; touch /tmp/test
+    grep $1 /usr/local/psa/var/log/maillog|grep "info msg"|awk '{print $9,$15}'|tr ":" " " >/tmp/test
+    while read mid dp; do
+        grepStr=$mid\|$dp
+        cat /usr/local/psa/var/log/maillog |awk "/$mid/ && /$dp/,/end msg $mid/" >/tmp/mailpath
+        echo "############### Message ID $mid ###############"
+        qids=( $(for x in `grep "starting delivery" /tmp/mailpath | grep $mid |awk '{print $9}' |tr ":" " "`; do echo $x ; done;) )
+        grepStr=$grepStr\|${qids[@]}
+        grepStr=`echo $grepStr |tr " " "\|"`
+        egrep "$grepStr" /tmp/mailpath
+    done </tmp/test
+}
+qmaildeliverytracking
