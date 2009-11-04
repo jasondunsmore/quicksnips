@@ -1,0 +1,3 @@
+# Creates graphical plots of sar output.
+
+curl -s http://flip-edesign.com/scripts/allGraph|bash
