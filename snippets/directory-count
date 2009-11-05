@@ -1,7 +1,7 @@
 # Show the number of files and directories in each directory under DIR
-# Usage: directorycount DIR
+# Usage: directory_count DIR
 
-function directorycount () {
+function directory_count () {
     echo "Thinking..."
     echo "--------------------"
     find "$1" -maxdepth 1 -type d ! -fstype proc ! -fstype nfs | grep -v "^.$" | while read i
@@ -11,4 +11,4 @@ function directorycount () {
         echo "$dir:$count"
     done | column -t -s":"
 }
-directorycount
+directory_count

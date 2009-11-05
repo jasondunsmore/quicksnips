@@ -1,6 +1,6 @@
 # Install fail2ban from the EPEL repo
 
-function installfail2ban () {
+function install_fail2ban () {
     if [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
         if [[ ! -e /etc/yum.repos.d/epel.repo ]]; then
             cat >/etc/yum.repos.d/epel.repo<<EOF
@@ -32,4 +32,4 @@ EOF
         echo "It is better to only use the EPEL repo on RHEL5."
     fi
 }
-installfail2ban
+install_fail2ban

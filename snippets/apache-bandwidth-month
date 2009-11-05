@@ -1,9 +1,9 @@
 # Displays Apache bandwidth for each day of the current month.
 
-function apachebandwidthmonth () {
+function apache_bandwidth_month () {
     for day in `seq -w 01 31`; do
         echo -n "`date +%B` $day: "
         zgrep -E "$day/`date +%b`" $* | awk '{ SUM += $10 } END {print SUM/1024/1024, "M"}'
     done
 }
-apachebandwidthmonth /var/log/httpd/access_log*
+apache_bandwidth_month /var/log/httpd/access_log*

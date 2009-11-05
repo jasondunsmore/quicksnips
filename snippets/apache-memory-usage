@@ -1,3 +1,6 @@
 # Shows the amount of resident memory being used by httpd processes.
 
-ps aux|grep httpd|awk '{ sum += $6 } END { print sum/1024 " MB" }'
+function apache_memory_usage () {
+    ps aux|grep httpd|awk '{ sum += $6 } END { print sum/1024 " MB" }'
+}
+apache_memory_usage

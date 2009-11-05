@@ -3,7 +3,7 @@
 #
 # The files can be a list of gzipped or uncompressed files.
 
-function ftpbandwidthmonth () {
+function ftp_bandwidth_month () {
     if [ -e /var/log/xferlog ]; then
         for day in `seq 01 31`; do
             echo -n "`date +%B` $day: "
@@ -12,4 +12,4 @@ function ftpbandwidthmonth () {
     else echo "/var/log/xferlog doesn't exist"
     fi
 }
-ftpbandwidthmonth /var/log/xferlog*
+ftp_bandwidth_month /var/log/xferlog*

@@ -1,5 +1,5 @@
 # Blocks IPs with more than a specified number of login attempts.
-# Usage: sshblockattackers NUMTRIES LOGFILE
+# Usage: ssh_block_attackers NUMTRIES LOGFILE
 
 attackfile="/tmp/sshdictattack-$(date "+%Y-%m-%d")"
 blocked=$(mktemp)
@@ -31,7 +31,7 @@ function sshiptablesrules () {
     echo "iptables rules after:"
     iptables -nL
 }
-function sshblockattackers () {
+function ssh_block_attackers () {
     tries=$1
     shift
     if [[ -e $attackfile ]]; then
@@ -41,4 +41,4 @@ function sshblockattackers () {
     fi
     sshiptablesrules
 }
-sshblockattackers 1000 /var/log/secure*
+ssh_block_attackers 1000 /var/log/secure*

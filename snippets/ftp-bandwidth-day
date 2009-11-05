@@ -1,11 +1,11 @@
 # Displays the FTP bandwidth use each day over the current month.
-# Usage: ftpbandwidthday [logfile1] [logfile2] [...]
+# Usage: ftp_bandwidth_day [logfile1] [logfile2] [...]
 #
 # The files can be a list of gzipped or uncompressed files.
 
-function ftpbandwidthday () {
+function ftp_bandwidth_day () {
     for day in `seq 01 31`; do
         echo -n "January $day: "; egrep " Jan[[:space:]]{1,2}$day " $* | awk '  $12 ~ /o/  { SUM +=$8 } END {print SUM/1024/1024, "M"}'
     done
 }
-ftpbandwidthday /var/log/xferlog*
+ftp_bandwidth_day /var/log/xferlog*

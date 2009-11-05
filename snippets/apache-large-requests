@@ -4,5 +4,7 @@
 #
 # exampledomain.com-access_log ... /wget?cmd.exe+3040FFIJEIJGE...30r9jf09jffe
 
-perl -n -e '@a=split; $r=$a[6]; print "$ARGV ... $r\n" if length($r)>300;' \
-*/statistics/logs/access_log | less
+function apache_large_requests () {
+    perl -n -e '@a=split; $r=$a[6]; print "$ARGV ... $r\n" if length($r)>300;' "$@"
+}
+apache_large_requests /var/log/httpd/access_log*

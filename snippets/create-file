@@ -1,7 +1,7 @@
 # Creates an empty file.  Takes number of MB as argument.
-# Usage: createfile NUMBER
+# Usage: create_file NUMBER
 
-function createfile () {
+function create_file () {
     dd if=/dev/zero of=$1M_testfile bs=1048576 count=$1
 }
-createfile 
+create_file 

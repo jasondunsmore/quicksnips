@@ -1,13 +1,13 @@
 # Set group permissions on a directory.
-# Usage: developergrouppermissions GROUP DIRECTORY
+# Usage: developer_group_permissions GROUP DIRECTORY
 
-function developergrouppermissions () {
+function developer_group_permissions () {
     if [[ -z "$1" || -z "$2" ]]; then
-        echo "Usage: developergrouppermissions GROUP DIRECTORY"
+        echo "Usage: developer_group_permissions GROUP DIRECTORY"
     else
         chgrp -R "$1" "$2"
         chmod -R g+w "$2"
         find "$2" -type d -exec chmod g+s '{}' \;
     fi
 }
-developergrouppermissions   
+developer_group_permissions   

@@ -1,7 +1,7 @@
 # Verify that a private key was used to generate an SSL certificate.
-# Usage: sslverifycrtkey2 KEYFILE CERTFILE
+# Usage: ssl_verify_crt_key2 KEYFILE CERTFILE
 
-function sslverifycrtkey2 () {
+function ssl_verify_crt_key2 () {
     keymd5="$(openssl rsa -noout -modulus -in "$1" | openssl md5)"
     crtmd5="$(openssl x509 -noout -modulus -in "$2" | openssl md5)"
     if [[ $keymd5 == $crtmd5 ]]; then
@@ -10,4 +10,4 @@ function sslverifycrtkey2 () {
         echo "Key and cert files DO NOT match."
     fi
 }
-sslverifycrtkey2
+ssl_verify_crt_key2

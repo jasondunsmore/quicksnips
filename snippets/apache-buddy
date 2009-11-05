@@ -9,4 +9,7 @@
 #         than 54.
 #         (max potential memory usage: 1172.48MB)
 
-curl -L -s http://quicksnips.org/remote/apachebuddy.pl | perl
+function apache_buddy {
+    curl -L -s http://quicksnips.org/remote/apachebuddy.pl | perl
+}
+apache_buddy

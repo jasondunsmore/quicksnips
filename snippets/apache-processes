@@ -1,11 +1,11 @@
 # Shows the apache processes running, sorted by resident memory usage
-# Usage: apacheprocesses [FILE]
+# Usage: apache_processes [FILE]
 
-function apacheprocesses () {
+function apache_processes () {
     if [[ -n "$1" ]]; then
         head -n2 $1 && grep httpd $1 | sort -k6 -n
     else
         ps ax | grep httpd | sort -k6 -n
     fi
 }
-apacheprocesses 
+apache_processes 

@@ -1,4 +1,4 @@
-function webminadduser () {
+function webmin_add_user () {
     if [[ $(grep -c $1 /etc/passwd) -eq 0 ]]; then
         echo "$1 is not a system user."
     else
@@ -8,4 +8,4 @@ function webminadduser () {
         ) && echo "Added $1 to /etc/webmin/miniserv.users and /etc/webmin/webmin.acl."
     fi
 }
-webminadduser
+webmin_add_user

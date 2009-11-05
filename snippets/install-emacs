@@ -1,6 +1,6 @@
 # Installs Emacs.
 
-function installemacs () {
+function install_emacs () {
     if [[ -n "`cat /etc/redhat-release|egrep 'Red Hat Enterprise Linux [AE]S release [234]'`" ]]; then
         if [[ "$(rpm -q emacs-nox)" == "package emacs-nox is not installed" ]]; then
             up2date -i emacs-nox &&
@@ -16,4 +16,4 @@ function installemacs () {
         curl -s http://quicksnips.org/remote/.emacs > ~/.emacs
     fi
 }
-installemacs
+install_emacs

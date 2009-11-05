@@ -1,8 +1,8 @@
-function sslselfsignedcert () {
+function ssl_self_signed_cert () {
     if [[ $# -ne 2 ]]; then
-        echo "Usage: sslselfsignedcert KEY CERT"
+        echo "Usage: ssl_self_signed_cert KEY CERT"
     else
         openssl req -new -newkey rsa:1024 -days 365 -nodes -x509 -keyout $1 -out $2
     fi
 }
-sslselfsignedcert 
+ssl_self_signed_cert 

@@ -1,7 +1,7 @@
 # Performs a 3-way mail check on a mail server
-# Usage: 3waymailcheck [IPADDRESS]
+# Usage: 3_way_mail_check [IPADDRESS]
 
-function 3waymailcheck () {
+function 3_way_mail_check () {
     unset ip helo ptr adata
     if [[ -n $1 ]]; then
         if [[ $1 != [0-9]* ]]; then
@@ -51,4 +51,4 @@ function 3waymailcheck () {
     fi
     
 }
-3waymailcheck
+3_way_mail_check

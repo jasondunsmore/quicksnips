@@ -1,8 +1,8 @@
 # Continuously shows processes using files.
 
-function processesusingfiles () {
+function processes_using_files () {
     while [ 1 ]; do
         fuser -v $*
     done
 }
-processesusingfiles
+processes_using_files

@@ -1,11 +1,11 @@
 # Updates statistics for one or all domains.
-# Usage: pleskupdatestatistics [DOMAIN]
+# Usage: plesk_update_statistics [DOMAIN]
 
-function pleskupdatestatistics () {
+function plesk_update_statistics () {
     if [[ -n "$1" ]]; then
         /usr/local/psa/admin/sbin/statistics --calculate-one --domain-name=$1
     else
         /usr/local/psa/admin/sbin/statistics
     fi
 }
-pleskupdatestatistics 
+plesk_update_statistics 

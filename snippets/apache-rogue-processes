@@ -1,6 +1,6 @@
 # Looks for rogue Apache processes that could point to a compromise.
 
-function apacherougeprocesses () {
+function apache_rogue_processes () {
     pnames=$(mktemp /tmp/tmp.XXXXXXXXXX)
     children=$(mktemp /tmp/tmp.XXXXXXXXXX)
     ppid=$(ps axo pid,ppid,command|awk '$3 ~ /httpd/ && $2 ~ /^1$/ {print $1}')
@@ -18,4 +18,4 @@ function apacherougeprocesses () {
     fi
     rm -f $pnames $children
 }
-apacherougeprocesses
+apache_rogue_processes

@@ -1,6 +1,6 @@
 # Checks a list of IPs and reports if they are up or down.
 
-function ipscheckalive () {
+function ips_check_alive () {
     echo "Enter IPs, one per line. Exit with CTRL-D:" &&
     cat > /tmp/ips.txt &&
     ips=`cat /tmp/ips.txt` &&
@@ -10,4 +10,4 @@ function ipscheckalive () {
     done
     rm /tmp/ips.txt
 }
-ipscheckalive
+ips_check_alive

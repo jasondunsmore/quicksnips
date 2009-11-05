@@ -1,6 +1,6 @@
 # Lowers TTL for every domain in Plesk
 
-function plesklowerallttls () {
+function plesk_lower_all_ttls () {
     if [[ -n $(mysql -uadmin -p`cat /etc/psa/.psa.shadow` psa -e "select * from misc where param='SOA_TTL';") ]]; then
         mysql -uadmin -p`cat /etc/psa/.psa.shadow` psa -e "update misc set val='300' where param='SOA_TTL';"
     else
@@ -15,4 +15,4 @@ function plesklowerallttls () {
         /usr/local/psa/admin/sbin/dnsmng update $domain
     done
 }
-plesklowerallttls
+plesk_lower_all_ttls

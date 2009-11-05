@@ -1,8 +1,8 @@
 # Tracks Message Delivery by Sender
 # Enter from address after mailtracker. Use your favorite pager.
-# Usage: qmaildeliverytracking john.doe@domain.com
+# Usage: qmail_delivery_tracking john.doe@domain.com
 
-function qmaildeliverytracking () {
+function qmail_delivery_tracking () {
     rm -f /tmp/mailpath; touch /tmp/mailpath
     rm -f /tmp/test; touch /tmp/test
     grep $1 /usr/local/psa/var/log/maillog|grep "info msg"|awk '{print $9,$15}'|tr ":" " " >/tmp/test
@@ -16,4 +16,4 @@ function qmaildeliverytracking () {
         egrep "$grepStr" /tmp/mailpath
     done </tmp/test
 }
-qmaildeliverytracking
+qmail_delivery_tracking

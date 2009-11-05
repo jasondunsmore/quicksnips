@@ -3,7 +3,7 @@
 function bak () {
     cp -a $1 $1.bak.`date +%Y%m%d.%H%M%S`
 }
-function addethhwaddrifcfg () {
+function add_eth_hwaddr_ifcfg () {
     for eth in $*; do
         ifcfg="/etc/sysconfig/network-scripts/ifcfg-$eth"
         if [[ -e $ifcfg ]]; then
@@ -25,4 +25,4 @@ function addethhwaddrifcfg () {
         fi
     done
 }
-addethhwaddrifcfg eth0 eth1
+add_eth_hwaddr_ifcfg eth0 eth1

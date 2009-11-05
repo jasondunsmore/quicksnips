@@ -1,7 +1,7 @@
 # Sends test message to external account.
-# Usage: emailtest <from address> <to address>
+# Usage: email_test <from address> <to address>
 
-function emailtest () {
+function email_test () {
     echo "test message" | mail -s "test message" $2 -- -f $1
 }
-emailtest
+email_test

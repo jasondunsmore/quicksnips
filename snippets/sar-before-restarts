@@ -1,6 +1,6 @@
 # Shows previous hour of sar data before each restart over the last week.
 
-function sarbeforerestarts () {
+function sar_before_restarts () {
     i=0
     for file in $( grep -l RESTART /var/log/sa/sar* ); do
         i=$((i+=1))
@@ -21,4 +21,4 @@ function sarbeforerestarts () {
         echo "No system restarts were logged in the last week."
     fi
 }
-sarbeforerestarts
+sar_before_restarts

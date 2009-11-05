@@ -1,6 +1,6 @@
 # Prints the amount of SMTP bandwidth used for each day of the month.
 
-function smtpbandwidth () {
+function smtp_bandwidth () {
     if [ -e $1 ]; then
         for day in $(seq 01 $(date +%d)); do
             echo -n "$(date +%B) $day: "
@@ -10,4 +10,4 @@ function smtpbandwidth () {
         echo "/var/log/maillog doesn't exist."
     fi
 }
-smtpbandwidth /var/log/maillog*
+smtp_bandwidth /var/log/maillog*

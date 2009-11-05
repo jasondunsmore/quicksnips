@@ -1,7 +1,7 @@
 # Shows all files owned by a non-existant user or group
-# Usage: findorphanedfiles ROOTDIR
+# Usage: find_orphaned_files ROOTDIR
 
-function findorphanedfiles () {
+function find_orphaned_files () {
     uids=$(mktemp)
     gids=$(mktemp)
     sed -e '/^#/d' -e '/^$/d' /etc/passwd|cut -f3 -d: > $uids
@@ -14,4 +14,4 @@ function findorphanedfiles () {
     rm -f $uids
     rm -f $gids
 }
-findorphanedfiles /
+find_orphaned_files /

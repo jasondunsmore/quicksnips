@@ -1,6 +1,6 @@
 # Check Apache's memory usage and make a recommendation on MaxClients
 
-function apachebuddy2 () {
+function apache_buddy2 () {
     abin=$(netstat -ltnp|awk '$4 ~ /:80$/ { print $7 }'|cut -d / -f 2)
     if [[ -z "$($abin -V 2>&1|egrep "^Server version.*Apache\/[0-9].*")" ]]; then
         echo "Apache is not listening on port 80."
@@ -28,4 +28,4 @@ Only $memkbavail kB of memory are installed.
 Consider lowering MaxClients from $actotal to $acrecommend."
     fi
 }
-apachebuddy2
+apache_buddy2

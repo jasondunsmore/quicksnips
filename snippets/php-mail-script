@@ -1,6 +1,6 @@
 # Creates mail script called mailtest.php if none exists
 
-function phpmailscript () {
+function php_mail_script () {
     file="mailtest.php"
     if [ ! -e $file ]; then
 	cat > $file <<EOF
@@ -14,4 +14,4 @@ if (mail("$1", "Hi!", "Hi,\n\nHow are you?")) {
 EOF
     fi
 }
-phpmailscript 
+php_mail_script 

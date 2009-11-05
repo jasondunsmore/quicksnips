@@ -7,7 +7,7 @@
 # Users recently logged in
 # Last 10 kernel messages
 
-function serveroverview () {
+function server_overview () {
 top
 (
 echo -e "\nIPTABLES FIREWALL:"
@@ -44,4 +44,4 @@ echo -e "\nPUBLIC IP:"
 wget -qO - www.whatismyip.com/automation/n09230945.asp; echo
 )|more
 }
-serveroverview
+server_overview

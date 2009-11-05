@@ -1,11 +1,11 @@
 # Displays bandwidth used by Apache for each hour of the current day.
-# The apachebandwidthhour function takes the log files (gzipped or
+# The apache_bandwidth_hour function takes the log files (gzipped or
 # not) as arguments.
 
-function apachebandwidthhour () {
+function apache_bandwidth_hour () {
     for x in `seq -w 01 24`; do
         echo -n "Hour $x: "
         egrep `date +%d/%b/%Y:$x` $* |awk '{ SUM += $10 } END {print SUM/1024/1024, "M"}'
     done
 }
-apachebandwidthhour /var/log/httpd/access_log*
+apache_bandwidth_hour /var/log/httpd/access_log*

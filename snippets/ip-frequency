@@ -1,7 +1,7 @@
 # Shows the frequency of each unique IP in a file
-# Usage: ipfrequency FILE
+# Usage: ip_frequency FILE
 
-function ipfrequency () {
+function ip_frequency () {
     egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' $1|sort -n|uniq -c|sort -n
 }
-ipfrequency
+ip_frequency

@@ -1,7 +1,7 @@
 # Like ftpwho for vsftpd (Source: http://ur1.ca/ensp)
-# Usage: vsftpdftpwho
+# Usage: vsftpd_ftpwho
 
-function vsftpdftpwho () {
+function vsftpd_ftpwho () {
     ftpwho=$(mktemp)
     cat >$ftpwho<<'EOF'
 #!/usr/bin/perl
@@ -42,4 +42,4 @@ EOF
     perl $ftpwho
     rm -f $ftpwho
 }
-vsftpdftpwho
+vsftpd_ftpwho

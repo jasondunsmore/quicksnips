@@ -1,9 +1,9 @@
 # Adds multiple users.
-# Usage: addusers USER1 [USER2] [USER3] [...]
+# Usage: add_users USER1 [USER2] [USER3] [...]
 
-function addusers () {
+function add_users () {
     if [[ -z "$1" ]]; then
-        echo "Usage: addusers USER1 [USER2] [USER3] [...]"
+        echo "Usage: add_users USER1 [USER2] [USER3] [...]"
     else
         if [[ ! -e /usr/bin/mkpasswd ]]; then
             yum -y install expect || up2date -i expect
@@ -18,4 +18,4 @@ function addusers () {
         done 
     fi
 }
-addusers 
+add_users 

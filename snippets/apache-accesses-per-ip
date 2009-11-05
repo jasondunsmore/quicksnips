@@ -9,7 +9,7 @@ function smartcat () {
         fi
     done
 }
-function apacheaccessesperip () {
+function apache_accesses_per_ip () {
     smartcat $* | gawk '{print $1}' | sort | uniq -c | sort -n
 }
-apacheaccessesperip /var/log/httpd/access_log*
+apache_accesses_per_ip /var/log/httpd/access_log*

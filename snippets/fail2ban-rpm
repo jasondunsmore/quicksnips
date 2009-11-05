@@ -1,7 +1,7 @@
 # Downloads the needed RPM packages from EPEL to install fail2ban
-# Usage: fail2banrpm
+# Usage: fail2ban_rpm
 
-function fail2banrpm () {
+function fail2ban_rpm () {
     release=`cat /etc/redhat-release | sed 's/[^0-9]//g' | cut -b1`
     arch=`uname -m`
     fail2ban=`curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/fail2ban.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g'`
@@ -15,4 +15,4 @@ function fail2banrpm () {
     wget http://download.fedora.redhat.com/pub/epel/$release/$arch/$shorewall_perl
     wget http://download.fedora.redhat.com/pub/epel/$release/$arch/$shorewall_shell
 }
-fail2banrpm
+fail2ban_rpm

@@ -1,11 +1,11 @@
 # Searches a file from bottom up.
-# Usage: grepfrombottomup REGEX FILE
+# Usage: grep_from_bottom_up REGEX FILE
 
-function grepfrombottomup () {
+function grep_from_bottom_up () {
     if [[ $# -ne 2 ]]; then
-        echo "Usage: grepfrombottomup REGEX FILE"
+        echo "Usage: grep_from_bottom_up REGEX FILE"
     else
         tac "$2"|egrep --color "$1"
     fi
 }
-grepfrombottomup
+grep_from_bottom_up

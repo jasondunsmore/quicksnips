@@ -1,3 +1,9 @@
 # Shows the working directory and path to the executable of httpd processes
 
-for pid in $(pgrep httpd); do ls -al /proc/$pid/{cwd,exe}; done
+function apache_processes_cwd_exe () {
+    for pid in $(pgrep httpd); do
+        ls -al /proc/$pid/{cwd,exe}
+    done
+}
+apache_processes_cwd_exe
+

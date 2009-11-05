@@ -1,7 +1,7 @@
 # Finds world-writable scripts under the specified directory.
 # Usage: find-world-writable-scripts DIR
 
-function findworldwritablescripts () {
+function find_world_writable_scripts () {
     find "$1" -perm 777|egrep "\.cgi$|\.php$|\.pl$|\.py$|\.sh$"
 }
-findworldwritablescripts /var/www/
+find_world_writable_scripts /var/www/

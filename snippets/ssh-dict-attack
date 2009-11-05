@@ -1,5 +1,5 @@
 # Displays the IP addresses that have had the most failed SSH logins.
-# Usage: sshdictattack FILE1 [FILE2] [...]
+# Usage: ssh_dict_attack FILE1 [FILE2] [...]
 #
 # Example output:
 #
@@ -14,10 +14,10 @@
 #   3255 203.190.0.29
 #   4328 61.155.9.5
 
-attackfile="/tmp/sshdictattack-$(date "+%Y-%m-%d")"
-function sshdictattack () {
+attackfile="/tmp/ssh_dict_attack-$(date "+%Y-%m-%d")"
+function ssh_dict_attack () {
     if [[ -z $1 ]]; then
-        echo "Usage: sshdictattack FILE1 [FILE2] [...]"
+        echo "Usage: ssh_dict_attack FILE1 [FILE2] [...]"
         return
     fi
     if [[ -e $attackfile ]]; then
@@ -29,4 +29,4 @@ function sshdictattack () {
         cat $attackfile
     fi
 }
-sshdictattack /var/log/secure*
+ssh_dict_attack /var/log/secure*
