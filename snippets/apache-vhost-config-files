@@ -1,3 +1,6 @@
 # Shows all Apache vhost configuration files.
 
-httpd -S 2>&1|egrep "\/.*\/"|sed 's/.*(\(.*\):.*).*/\1/'|sort|uniq
+function apache_vhost_config_files () {
+    httpd -S 2>&1|egrep "\/.*\/"|sed 's/.*(\(.*\):.*).*/\1/'|sort|uniq
+}
+apache_vhost_config_files

@@ -1,3 +1,6 @@
 # Shows all tables with storage engine type specified.
 
-mysql -e 'select table_schema, table_name from information_schema.tables where engine="MyISAM";'
+function mysql_table_engines () {
+    mysql -e 'select table_schema, table_name, engine from information_schema.tables;'
+}
+mysql_table_engines

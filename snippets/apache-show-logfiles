@@ -1,3 +1,6 @@
 # Displays apache logfiles and their size.
 
-printf "%12s %s\n" SIZE FILE; lsof -p `cat /var/run/httpd.pid`|egrep "log$"|awk '{printf "%12d %s\n", $7, $9 }'|sort -nk1|uniq
+function apache_show_logfiles () {
+    printf "%12s %s\n" SIZE FILE; lsof -p `cat /var/run/httpd.pid`|egrep "log$"|awk '{printf "%12d %s\n", $7, $9 }'|sort -nk1|uniq
+}
+apache_show_logfiles

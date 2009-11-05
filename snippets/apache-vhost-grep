@@ -1,3 +1,6 @@
 # Grep through all vhosts configured in Apache.
 
-httpd -S 2>&1|grep 
+function apache_vhost_grep () {
+    httpd -S 2>&1|egrep -i "$1"
+}
+apache_vhost_grep
