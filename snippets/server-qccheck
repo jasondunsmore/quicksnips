@@ -1,6 +1,6 @@
 # Performs a QC check on a server
 
-function qcprint () {
+function qc_print () {
     cmdout="$(eval "$1 2>/dev/null")"
     if [[ -n "$cmdout" ]]; then
         echo "$ $1"
@@ -8,31 +8,34 @@ function qcprint () {
         echo
     fi
 }
-qccmds=(
-    "cat /etc/redhat-release"
-    "uname -a"
-    "free -m"
-    "df -h"
-    "fdisk -l"
-    "grep name /proc/cpuinfo"
-    "cat /proc/scsi/scsi"
-    "ifconfig|grep -A1 eth"
-    "netstat -lpnt|egrep \":21|:22|:25|:80|:110|:143|:443|:993|:995|:3306|:8443\""
-    "rpm -q psa"
-    "head -n50 /etc/psa/psa.key"
-    "up2date --show-channels"
-    "echo \"repo list\" | yum shell"
-    "rpm -q mysqlbackup"
-    "rpm -q sophosav-installer"
-    "/opt/sophos-av/bin/savconfig -v"
-    "megacli -cfgdsply -aAll"
-    "omreport storage pdisk controller=0"
-    "omreport storage vdisk controller=0"
-    "hpacucli controller slot=0 logicaldrive all show status"
-    "hpacucli controller slot=0 physicaldrive all show status"
-    "hpacucli controller slot=1 logicaldrive all show status"
-    "hpacucli controller slot=1 physicaldrive all show status"
+function server_qccheck () {
+    qc_cmds=(
+        "cat /etc/redhat-release"
+        "uname -a"
+        "free -m"
+        "df -h"
+        "fdisk -l"
+        "grep name /proc/cpuinfo"
+        "cat /proc/scsi/scsi"
+        "ifconfig|grep -A1 eth"
+        "netstat -lpnt|egrep \":21|:22|:25|:80|:110|:143|:443|:993|:995|:3306|:8443\""
+        "rpm -q psa"
+        "head -n50 /etc/psa/psa.key"
+        "up2date --show-channels"
+        "echo \"repo list\" | yum shell"
+        "rpm -q mysqlbackup"
+        "rpm -q sophosav-installer"
+        "/opt/sophos-av/bin/savconfig -v"
+        "megacli -cfgdsply -aAll"
+        "omreport storage pdisk controller=0"
+        "omreport storage vdisk controller=0"
+        "hpacucli controller slot=0 logicaldrive all show status"
+        "hpacucli controller slot=0 physicaldrive all show status"
+        "hpacucli controller slot=1 logicaldrive all show status"
+        "hpacucli controller slot=1 physicaldrive all show status"
     )
-for (( i = 0 ; i <= ${#qccmds[@]} ; i++ )); do
-    qcprint "${qccmds[$i]}"
-done | tee /tmp/screen-exchange | less
+    for (( i = 0 ; i <= ${#qc_cmds[@]} ; i++ )); do
+        qc_print "${qc_cmds[$i]}"
+    done | tee /tmp/screen-exchange
+}
+server_qccheck

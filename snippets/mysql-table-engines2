@@ -1,0 +1,1 @@
+for file in /var/lib/mysql/*/*.frm; do echo $file $(strings $file|egrep "MyISAM|Innodb"); done|sed "s|/var/lib/mysql/||"

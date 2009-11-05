@@ -14,13 +14,14 @@
 #   3255 203.190.0.29
 #   4328 61.155.9.5
 
-attackfile="/tmp/ssh_dict_attack-$(date "+%Y-%m-%d")"
 function ssh_dict_attack () {
+    attackfile="/tmp/ssh_dict_attack-$(date "+%Y-%m-%d")"
     if [[ -z $1 ]]; then
         echo "Usage: ssh_dict_attack FILE1 [FILE2] [...]"
         return
     fi
     if [[ -e $attackfile ]]; then
+        echo "$attackfile exists..."
         cat $attackfile
     else
         zgrep -E "Failed password|Illegal user|Invalid user" $* |
