@@ -1,8 +1,12 @@
-cat /etc/redhat-release ;\
-uname -m ;\
-dmidecode | grep -m1 -A4 "System Information" ;\
-cat /proc/cpuinfo | grep "model name" | uniq -c ;\
-free ;\
-hpacucli ctrl slot=1 logicaldrive all show status ;\
-hpacucli ctrl slot=1 pd all show status
+# Shows system information on an HP server
 
+function hp_provisioning () {
+    cat /etc/redhat-release
+    uname -m
+    dmidecode | grep -m1 -A4 "System Information"
+    cat /proc/cpuinfo | grep "model name" | uniq -c
+    free
+    hpacucli ctrl slot=1 logicaldrive all show status
+    hpacucli ctrl slot=1 pd all show status
+}
+hp_provisioning

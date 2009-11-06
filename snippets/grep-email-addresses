@@ -1,1 +1,6 @@
-egrep "\w+([._-]\w)*@\w+([._-]\w)*\.\w{2,4}"
+# Searches for email addresses in standard input.
+
+function grep_email_addresses () {
+    egrep "\w+([._-]\w)*@\w+([._-]\w)*\.\w{2,4}"
+}
+grep_email_addresses

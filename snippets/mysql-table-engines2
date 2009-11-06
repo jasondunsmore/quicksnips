@@ -1,1 +1,8 @@
-for file in /var/lib/mysql/*/*.frm; do echo $file $(strings $file|egrep "MyISAM|Innodb"); done|sed "s|/var/lib/mysql/||"
+# Shows tables that have .frm files with their storage engine type.
+
+function mysql_table_engines2 () {
+    for file in /var/lib/mysql/*/*.frm; do
+        echo $file $(strings $file|egrep "MyISAM|Innodb")
+    done|sed "s|/var/lib/mysql/||"
+}
+mysql_table_engines2

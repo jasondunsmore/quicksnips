@@ -1,8 +1,9 @@
 # Search all Apache configuration files
 
 function apache_search_conf_files () {
-    (echo /etc/httpd/conf/httpd.conf; httpd -S 2>&1|egrep "\/.*\/"|sed 's/.*(\(.*\):.*).*/\1/')|sort|uniq|while read file; do
-    egrep -nH "$1" $file
+    (echo /etc/httpd/conf/httpd.conf; httpd -S 2>&1|grep -v "^Warning:"|egrep "\/.*\/"|sed 's/.*(\(.*\):.*).*/\1/')|sort|uniq|
+    while read file; do
+        egrep -nH "$1" $file
     done
 }
 apache_search_conf_files 

@@ -1,3 +1,6 @@
 # Dumps all MySQL databases to a file.
 
-mysqldump -Q --all-databases > mysql-backup-`date +%Y%m%d.%H%M%S`.sql
+function mysql_backup_all_dbs () {
+    mysqldump -Q --all-databases > mysql-backup-$(date +%Y%m%d.%H%M%S).sql
+}
+mysql_backup_all_dbs

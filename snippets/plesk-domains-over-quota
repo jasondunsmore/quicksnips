@@ -1,3 +1,6 @@
 # Shows domains that are over their disk space quota on a Plesk box.
 
-mysql -uadmin -p`cat /etc/psa/.psa.shadow` psa -e "SELECT domains.name, domains.real_size, Limits.value FROM domains, Limits WHERE domains.limits_id = Limits.id AND domains.real_size > Limits.value AND limit_name = 'disk_space' AND Limits.value != -1 ORDER BY domains.name ASC;"
+function plesk_domains_over_quota () {
+    mysql -uadmin -p$(cat /etc/psa/.psa.shadow) psa -e "SELECT domains.name, domains.real_size, Limits.value FROM domains, Limits WHERE domains.limits_id = Limits.id AND domains.real_size > Limits.value AND limit_name = 'disk_space' AND Limits.value != -1 ORDER BY domains.name ASC;"
+}
+plesk_domains_over_quota

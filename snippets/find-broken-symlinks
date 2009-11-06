@@ -1,3 +1,6 @@
 # Finds broken symlinks in working directory
 
-find . -type l ! -exec test -e {} \; -print
+function find_broken_symlinks () {
+    find . -type l ! -exec test -e {} \; -print
+}
+find_broken_symlinks

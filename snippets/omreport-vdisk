@@ -1,3 +1,6 @@
 # Shows all virtual storage devices on controller 0 on Dells.
 
-omreport storage vdisk controller=0
+function omreport_vdisk () {
+    omreport storage vdisk controller=0
+}
+omreport_vdisk

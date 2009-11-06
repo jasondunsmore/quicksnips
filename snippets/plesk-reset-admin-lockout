@@ -1,3 +1,3 @@
 # Resets the psa lockout table for admin.
 
-mysql -uadmin -p`cat /etc/psa/.psa.shadow` psa -e "delete from lockout where login = 'admin';"
+mysql -uadmin -p$(cat /etc/psa/.psa.shadow) psa -e "delete from lockout where login = 'admin';"

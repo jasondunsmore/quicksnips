@@ -1,3 +1,6 @@
 # Shows the "slow" queries that ran the most.
 
-mysqldumpslow -s c -r /var/lib/mysqllogs/slow-log
+function mysql_analyze_slowlog_count () {
+    mysqldumpslow -s c -r /var/lib/mysqllogs/slow-log
+}
+mysql_analyze_slowlog_count

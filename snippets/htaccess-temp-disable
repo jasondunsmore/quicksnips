@@ -1,3 +1,6 @@
 # Disables an htaccess file for 5 seconds for testing.
 
-mv .htaccess .htaccess.tmp; sleep 5; mv .htaccess.tmp .htaccess
+function htaccess_temp_disable () {
+    mv .htaccess .htaccess.tmp; sleep 5; mv .htaccess.tmp .htaccess
+}
+htaccess_temp_disable

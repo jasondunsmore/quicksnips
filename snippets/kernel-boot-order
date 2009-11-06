@@ -1,3 +1,7 @@
 # Shows the kernel boot order.
 
-egrep "^default|^title" /boot/grub/menu.lst
+function kernel_boot_order () {
+    egrep "^default|^title" /boot/grub/menu.lst
+}
+kernel_boot_order
+

@@ -9,7 +9,7 @@ function pleskbandwidthdomain () {
         date="$(date +%Y-%m)"
     fi
     statsfile=$(mktemp)
-    mysql psa -uadmin -p`cat /etc/psa/.psa.shadow` -Bse 'select name, date, http_out + ftp_out + smtp_out + pop3_imap_out from DomainsTraffic, domains where DomainsTraffic.dom_id=domains.id' > $statsfile
+    mysql psa -uadmin -p$(cat /etc/psa/.psa.shadow) -Bse 'select name, date, http_out + ftp_out + smtp_out + pop3_imap_out from DomainsTraffic, domains where DomainsTraffic.dom_id=domains.id' > $statsfile
     for dom in $( awk '{ print $1 }' $statsfile|sort|uniq ); do
         grep $dom $statsfile | awk -v date="$date" '$2 ~ date' |
         awk -v dom=$dom '{ sum+=$3 } END { printf "%7.2f GB %s\n", sum/1024/1024/1024, dom }'

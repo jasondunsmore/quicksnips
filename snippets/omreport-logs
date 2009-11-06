@@ -1,3 +1,6 @@
 # Displays the esm and alert logs from omreport.
 
-(omreport system esmlog; omreport system alertlog)|less
+function omreport_logs () {
+    (omreport system esmlog; omreport system alertlog)|less
+}
+omreport_logs

@@ -6,7 +6,7 @@
 #       4 17/Jan/2009
 #       2 22/Dec/2008
 
-function smartcat () {
+function smart_cat () {
     for file in $*; do
         if [ "$( file $file|awk '{ print $2 }' )" == "gzip" ]; then
             zcat $file
@@ -15,7 +15,7 @@ function smartcat () {
         fi
     done
 }
-function apacheaccessesday () {
-    smartcat $* | awk '{print $4}' | awk -F [ '{print $2}' | awk -F : '{print $1}' | sort | uniq -c 
+function apache_accesses_per_day () {
+    smart_cat $* | awk '{print $4}' | awk -F [ '{print $2}' | awk -F : '{print $1}' | sort | uniq -c 
 }
-apacheaccessesday /var/log/httpd/access_log*
+apache_accesses_per_day /var/log/httpd/access_log*

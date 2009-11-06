@@ -1,3 +1,9 @@
 # Shows the Horde resources that have been shared in Plesk.
 
-for ID in $( mysql -uadmin -p`cat /etc/psa/.psa.shadow ` horde -e "select t1.datatree_id from horde_datatree_attributes as t1 left join horde_datatree_attributes as t2 on t1.datatree_id=t2.datatree_id where t1.attribute_name='name' and t2.attribute_name='perm_default' and t2.attribute_value != 0" ); do mysql -uadmin -p`cat /etc/psa/.psa.shadow ` horde -e "select attribute_key, attribute_value from horde_datatree_attributes where ( attribute_name = 'perm_users' or attribute_name = 'name' ) and datatree_id = '$ID'"; done
+function horde_show_shares () {
+    for ID in $( mysql -uadmin -p$(cat /etc/psa/.psa.shadow) horde -e "select t1.datatree_id from horde_datatree_attributes as t1 left join horde_datatree_attributes as t2 on t1.datatree_id=t2.datatree_id where t1.attribute_name='name' and t2.attribute_name='perm_default' and t2.attribute_value != 0" ); do
+        mysql -uadmin -p$(cat /etc/psa/.psa.shadow) horde -e "select attribute_key, attribute_value from horde_datatree_attributes where ( attribute_name = 'perm_users' or attribute_name = 'name' ) and datatree_id = '$ID'"
+    done
+}
+horde_show_shares
+

@@ -1,3 +1,7 @@
 # Like top, but for files
 
-watch --differences -n 5 'df; ls -FlAt;'
+function file_top () {
+    watch --differences -n 5 'df; ls -FlAt;'
+}
+file_top
+

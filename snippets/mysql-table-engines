@@ -1,4 +1,4 @@
-# Shows all tables with storage engine type specified.
+# Shows all tables and their storage engine type.
 
 function mysql_table_engines () {
     mysql -e 'select table_schema, table_name, engine from information_schema.tables;'

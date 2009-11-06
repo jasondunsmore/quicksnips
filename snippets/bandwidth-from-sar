@@ -14,11 +14,14 @@
 # -------------------------------
 # ...
 
-for i in `sar -n DEV | grep ' eth0 ' | grep -v Average | awk '{print  $1 "-" $6 "-" $7}'`
-do echo $i | awk -F- '{print "---- Traffic at " $1 " ------"}'
-echo $i | awk -F- '{print $2 "+" $3}' | bc | awk '{print "Total: " $1}'
-echo $i | awk -F- '{print "Sent: " $3}'
-echo $i | awk -F- '{print "Recieved: " $2}'
-echo "-------------------------------"
-echo ''
-done
+function bandwidth_from_sar () {
+    for i in $(sar -n DEV | grep ' eth0 ' | grep -v Average | awk '{print  $1 "-" $6 "-" $7}'); do
+        echo $i | awk -F- '{print "---- Traffic at " bandwidth_from_sar " ------"}'
+        echo $i | awk -F- '{print  "+" }' | bc | awk '{print "Total: " bandwidth_from_sar}'
+        echo $i | awk -F- '{print "Sent: " }'
+        echo $i | awk -F- '{print "Recieved: " }'
+        echo "-------------------------------"
+        echo ''
+    done
+}
+bandwidth_from_sar

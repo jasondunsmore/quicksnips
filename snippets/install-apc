@@ -1,6 +1,7 @@
 # Installs APC PHP module.
 
-yum -y install php-devel httpd-devel || up2date -i php-devel httpd-devel && mount -o remount,exec /tmp && pecl install apc && cat >> /etc/php.ini <<EOF && php -i|grep -i apc && apachectl graceful && mount -o remount,noexec /tmp
+function install_apc () {
+    yum -y install php-devel httpd-devel || up2date -i php-devel httpd-devel && mount -o remount,exec /tmp && pecl install apc && cat >> /etc/php.ini <<EOF && php -i|grep -i apc && apachectl graceful && mount -o remount,noexec /tmp
 extension=apc.so
 apc.enabled=1
 apc.shm_size=33
@@ -10,3 +11,5 @@ apc.num_files_hint=1024
 apc.mmap_file_mask=/tmp/apc.XXXXXX
 apc.enable_cli=1
 EOF
+}
+install_apc

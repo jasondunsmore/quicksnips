@@ -1,3 +1,6 @@
 # Shows virtual and physical disk information for MegaRAID SCSI cards.
 
-megacli -cfgdsply -aAll
+function megaraid_config_display () {
+    megacli -cfgdsply -aAll
+}
+megaraid_config_display

@@ -1,3 +1,7 @@
 # Shows the "slow" queries that took the longest to run.
 
-mysqldumpslow -s t -r /var/lib/mysqllogs/slow-log
+function mysql_analyze_slowlog_time () {
+    mysqldumpslow -s t -r /var/lib/mysqllogs/slow-log
+    
+}
+mysql_analyze_slowlog_time

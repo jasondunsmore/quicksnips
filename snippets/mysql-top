@@ -1,2 +1,6 @@
 # Watches the mysql status summary and process list.
-watch -n1 "mysqladmin -r status && echo && mysqladmin processlist -v"
+
+function mysql_top () {
+    watch -n1 "mysqladmin -r status && echo && mysqladmin processlist -v"
+}
+mysql_top

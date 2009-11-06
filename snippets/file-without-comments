@@ -1,3 +1,6 @@
 # Shows contents of a file without comment lines or empty lines
 
-egrep -v " *#|^$" 
+function file_without_comments () {
+    egrep -v " *#|^$" 
+}
+file_without_comments
