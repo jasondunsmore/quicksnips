@@ -1,1 +1,8 @@
-tar cvzf /tmp/rpmdb-backup.tar.gz /var/lib/rpm && mkdir /tmp/rpmdbfiles && mv /var/lib/rpm/__db.00* /tmp/rpmdbfiles && rpm --rebuilddb
+# Rebuilds a corrupt RPM database
+
+function rebuild_rpm_database () {
+    tar cvzf /tmp/rpmdb-backup.tar.gz /var/lib/rpm &&
+    mkdir /tmp/rpmdbfiles && mv /var/lib/rpm/__db.00* /tmp/rpmdbfiles &&
+    rpm --rebuilddb
+}
+rebuild_rpm_database

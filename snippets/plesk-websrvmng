@@ -1,3 +1,6 @@
 # Creates configuration files for all domains in Plesk.
 
-/usr/local/psa/admin/bin/websrvmng -a && httpd -t
+function plesk_websrvmng () {
+    /usr/local/psa/admin/bin/websrvmng -a && httpd -t
+}
+plesk_websrvmng

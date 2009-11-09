@@ -1,2 +1,6 @@
-#shows email accounts that are forwarding and the addresses they are forwarding to.
-mysql -uadmin -p$(cat /etc/psa/.psa.shadow) psa -e "select name,mail_name,redir_addr from mail, domains where mail.dom_id = domains.id and postbox = 'true' and redirect = 'true';"
+# Shows email accounts that are forwarding and the addresses they are forwarding to
+
+function plesk_list_forwards () {
+    mysql -uadmin -p$(cat /etc/psa/.psa.shadow) psa -e "select name,mail_name,redir_addr from mail, domains where mail.dom_id = domains.id and postbox = 'true' and redirect = 'true';"
+}
+plesk_list_forwards

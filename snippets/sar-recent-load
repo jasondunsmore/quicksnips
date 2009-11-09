@@ -1,3 +1,6 @@
 # Shows recent server load with column titles via sar.
 
-sar -q | head -n3 | tail -n1 && sar -q | tail -n15
+function sar_recent_load () {
+    sar -q | head -n3 | tail -n1 && sar -q | tail -n15
+}
+sar_recent_load

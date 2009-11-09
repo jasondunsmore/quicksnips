@@ -1,1 +1,6 @@
-curl -s http://quicksnips.org/remote/server-healthcheck > /tmp/server-healthcheck && bash /tmp/server-healthcheck -v -m -s -u
+# Check on server health and report warnings.  Show progress.
+
+function thorough_healthcheck () {
+    curl -s http://quicksnips.org/remote/server-healthcheck > /tmp/server-healthcheck && bash /tmp/server-healthcheck -v -m -s -u
+}
+thorough_healthcheck

@@ -1,1 +1,5 @@
-grep "to remote" /usr/local/psa/var/log/maillog |awk '{print $14}' |sort |uniq -c |sort -rn |head
+
+function plesk_qmail_top_remote () {
+    grep "to remote" /usr/local/psa/var/log/maillog |awk '{print }' |sort |uniq -c |sort -rn |head
+}
+plesk_qmail_top_remote

@@ -1,3 +1,6 @@
 # Sorts processes by highest memory usage.
 
-ps -eo pmem,pcpu,rss,vsize,args | sort -k 1 -r | more
+function ps_sort_by_memory () {
+    ps -eo pmem,pcpu,rss,vsize,args | sort -k 1 -r | more
+}
+ps_sort_by_memory

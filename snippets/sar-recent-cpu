@@ -1,3 +1,6 @@
 # Shows recent CPU usage with column titles via sar.
 
-sar | head -n3 | tail -n1 && sar | tail -n15
+function sar_recent_cpu () {
+    sar | head -n3 | tail -n1 && sar | tail -n15
+}
+sar_recent_cpu

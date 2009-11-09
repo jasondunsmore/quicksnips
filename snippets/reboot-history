@@ -1,3 +1,6 @@
 # Lists commands used to reboot from all .bash_history files
 
-egrep --color -C1 -Hn "halt|reboot|shutdown|init 0|init 6" /home/*/.bash_history /root/.bash_history
+function reboot_history () {
+    egrep --color -C1 -Hn "halt|reboot|shutdown|init 0|init 6" /home/*/.bash_history /root/.bash_history
+}
+reboot_history

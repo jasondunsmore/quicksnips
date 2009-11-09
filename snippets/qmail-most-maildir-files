@@ -1,1 +1,11 @@
-for dir in /var/qmail/mailnames/*/*/Maildir/{cur,new,tmp}; do echo $(find $dir -type f|wc -l) "$(echo $dir|cut -d/ -f6,5,8)"; done | tee /tmp/qmail-most-maildir-files && echo -e "\n\nSorting by number of files...\n" && sort -n /tmp/qmail-most-maildir-files
+# Shows the mailboxes with the most files
+
+function qmail_most_maildir_files () {
+    for dir in /var/qmail/mailnames/*/*/Maildir/{cur,new,tmp}; do
+        echo $(find $dir -type f|wc -l) "$(echo $dir|cut -d/ -f6,5,8)"
+    done | tee /tmp/qmail-most-maildir-files
+    echo -e "\n\nSorting by number of files...\n"
+    sort -n /tmp/qmail-most-maildir-files
+    rm -f /tmp/qmail-most-maildir-files
+}
+qmail_most_maildir_files

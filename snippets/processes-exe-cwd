@@ -1,1 +1,6 @@
-for pid in /proc/[0-9]*; do ls -al $pid/{cwd,exe} 2>/dev/null; done|less -S
+# Shows the exe and cwd symbolic links in proc for all processes
+
+function processes_exe_cwd () {
+    for pid in /proc/[0-9]*; do ls -al $pid/{cwd,exe} 2>/dev/null; done|less -S
+}
+processes_exe_cwd

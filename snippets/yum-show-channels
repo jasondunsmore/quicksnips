@@ -1,3 +1,6 @@
 # Shows all repos used by Yum.
 
-echo "repo list" | yum shell
+function yum_show_channels () {
+    echo "repo list" | yum shell
+}
+yum_show_channels

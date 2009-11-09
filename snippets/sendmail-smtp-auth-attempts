@@ -1,3 +1,6 @@
 # Shows the number of Sendmail SMTP auth attempts per IP.
 
-grep AUTH=server /var/log/maillog*|sed 's/.*authid=\(.*\), mech.*/\1/'|sort|uniq -c|sort -n
+function sendmail_smtp_auth_attempts () {
+    grep AUTH=server /var/log/maillog*|sed 's/.*authid=\(.*\), mech.*/\1/'|sort|uniq -c|sort -n
+}
+sendmail_smtp_auth_attempts

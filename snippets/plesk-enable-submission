@@ -1,6 +1,7 @@
 # Enables the submission port on Plesk boxes
 
-file='/etc/xinetd.d/submission_psa'; if [ ! -e $file ]; then cat > $file <<EOF && /etc/init.d/xinetd restart; fi
+function plesk_enable_submission () {
+    file='/etc/xinetd.d/submission_psa'; if [ ! -e $file ]; then cat > $file <<EOF && /etc/init.d/xinetd restart; fi
 service submission
 {
         socket_type     = stream
@@ -11,5 +12,7 @@ service submission
         instances       = UNLIMITED
         server          = /var/qmail/bin/tcp-env
         server_args     = -Rt0 /var/qmail/bin/relaylock /var/qmail/bin/qmail-smtpd /var/qmail/bin/smtp_auth /var/qmail/bin/true /var/qmail/bin/cmd5checkpw /var/qmail/bin/true
-}
+} 
 EOF
+}
+plesk_enable_submission

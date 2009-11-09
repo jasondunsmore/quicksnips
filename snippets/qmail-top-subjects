@@ -1,2 +1,6 @@
 # Lists the top 20 subjects in the Qmail queue.
-find /var/qmail/queue/mess -type f -exec egrep "^Subject:" '{}' \; | sort | uniq -c | sort -rn | head -n 20
+
+function qmail_top_subjects () {
+    find /var/qmail/queue/mess -type f -exec egrep "^Subject:" '{}' \; | sort | uniq -c | sort -rn | head -n 20
+}
+qmail_top_subjects

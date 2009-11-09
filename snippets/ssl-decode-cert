@@ -1,4 +1,6 @@
 # Decodes an SSL certificate file.
-# Add path to file at end of command.
 
-openssl x509 -text -in 
+function ssl_decode_cert () {
+    openssl x509 -text -in $1
+}
+ssl_decode_cert

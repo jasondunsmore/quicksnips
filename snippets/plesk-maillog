@@ -1,3 +1,6 @@
 # View the Plesk maillog.  Useful to bind this quicksnip to a key.
 
-less /usr/local/psa/var/log/maillog
+function plesk_maillog () {
+    less /usr/local/psa/var/log/maillog
+}
+plesk_maillog

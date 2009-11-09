@@ -1,3 +1,6 @@
 # Shows recent memory usage with column titles via sar.
 
-sar -r | head -n3 | tail -n1 && sar -r | tail -n15
+function sar_recent_memory () {
+    sar -r | head -n3 | tail -n1 && sar -r | tail -n15
+}
+sar_recent_memory

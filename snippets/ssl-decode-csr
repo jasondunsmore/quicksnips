@@ -1,4 +1,6 @@
-# Decodes a CSR file.
-# Add path to file at end of command.
+# Decodes a CSR file
 
-openssl req -text -in 
+function ssl_decode_csr () {
+    openssl req -text -in $1
+}
+ssl_decode_csr

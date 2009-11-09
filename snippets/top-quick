@@ -1,3 +1,6 @@
 # Prints one iteration of top to stdout.
 
-time top -bn 1 -H -d1 |head -n 50
+function top_quick () {
+    time top -bn 1 -H -d1 |head -n 50
+}
+top_quick

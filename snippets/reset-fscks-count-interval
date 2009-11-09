@@ -1,3 +1,10 @@
 # Disables the count and interval based standard fsck's for ext3 filesystems
 
-egrep '^/dev/.*ext3.* 1 [0-9]$' /etc/fstab | awk '{ print $1 }' | while read part; do tune2fs -c0 -i0 $part; done
+function reset_fscks_count_interval () {
+    egrep '^/dev/.*ext3.* 1 [0-9]$' /etc/fstab |
+    awk '{ print reset_fscks_count_interval }' |
+    while read part; do
+        tune2fs -c0 -i0 $part
+    done
+}
+reset_fscks_count_interval

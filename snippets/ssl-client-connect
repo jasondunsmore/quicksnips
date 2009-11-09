@@ -1,3 +1,6 @@
 # Initiate an SSL session.
 
-echo EOF|openssl s_client -connect 
+function ssl_client_connect () {
+    echo EOF|openssl s_client -connect 
+}
+ssl_client_connect

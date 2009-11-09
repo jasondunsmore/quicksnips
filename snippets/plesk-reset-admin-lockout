@@ -1,3 +1,6 @@
 # Resets the psa lockout table for admin.
 
-mysql -uadmin -p$(cat /etc/psa/.psa.shadow) psa -e "delete from lockout where login = 'admin';"
+function plesk_reset_admin_lockout () {
+    mysql -uadmin -p$(cat /etc/psa/.psa.shadow) psa -e "delete from lockout where login = 'admin';"
+}
+plesk_reset_admin_lockout

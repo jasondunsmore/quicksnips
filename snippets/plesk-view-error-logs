@@ -1,1 +1,6 @@
-tail /var/log/httpd/error_log /var/www/vhosts/*/statistics/logs/error_log|less
+# View latest entries in Apache's error logs on a Plesk box
+
+function plesk_view_error_logs () {
+    tail /var/log/httpd/error_log /var/www/vhosts/*/statistics/logs/error_log|less
+}
+plesk_view_error_logs

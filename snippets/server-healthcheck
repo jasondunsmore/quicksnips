@@ -1,5 +1,6 @@
-# Check on server health and reports warnings.
-# Checks the following:
-# - 
+# Check on server health and report warnings.
 
-curl -s http://quicksnips.org/remote/server-healthcheck | bash
+function server_healthcheck () {
+    curl -s http://quicksnips.org/remote/server-healthcheck | bash
+}
+server_healthcheck
