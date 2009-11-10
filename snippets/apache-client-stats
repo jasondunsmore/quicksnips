@@ -1,9 +1,14 @@
 # Shows the number of times that the number of Apache processes were running.
 
 function apache_client_stats () {
-    for file in /var/log/rs-sysmon/ps.log*; do
-        grep httpd $file|wc -l
-    done|sort -n|uniq -c &&
+    stats=$(
+        for file in $(ls -tr /var/log/rs-sysmon/ps.log*); do
+            echo $(head -n1 $file) $(grep httpd $file|wc -l)
+        done
+    )
+    echo "$stats"
+    echo -e "\nSummary:\n Number Clients"
+    echo "$stats"|cut -d' ' -f2|sort -n|uniq -c
     echo "Total $(ls /var/log/rs-sysmon/ps.log*|wc -l)"
 }
 apache_client_stats
