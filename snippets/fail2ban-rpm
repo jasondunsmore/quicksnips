@@ -2,13 +2,13 @@
 # Usage: fail2ban_rpm
 
 function fail2ban_rpm () {
-    release=`cat /etc/redhat-release | sed 's/[^0-9]//g' | cut -b1`
-    arch=`uname -m`
-    fail2ban=`curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/fail2ban.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g'`
-    shorewall=`curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/shorewall.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g'`
-    shorewall_common=`curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/shorewall-common.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g'`
-    shorewall_perl=`curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/shorewall-perl.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g'`
-    shorewall_shell=`curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/shorewall-shell.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g'`
+    release=$(cat /etc/redhat-release | sed 's/[^0-9]//g' | cut -b1)
+    arch=$(uname -i)
+    fail2ban=$(curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/fail2ban.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g')
+    shorewall=$(curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/shorewall.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g')
+    shorewall_common=$(curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/shorewall-common.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g')
+    shorewall_perl=$(curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/shorewall-perl.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g')
+    shorewall_shell=$(curl -s http://download.fedora.redhat.com/pub/epel/$release/$arch/repoview/shorewall-shell.html | grep rpm | awk '{print $3}' | sed 's/href=//g' | sed 's/"//g' | sed 's/..\///g')
     wget http://download.fedora.redhat.com/pub/epel/$release/$arch/$fail2ban
     wget http://download.fedora.redhat.com/pub/epel/$release/$arch/$shorewall
     wget http://download.fedora.redhat.com/pub/epel/$release/$arch/$shorewall_common
