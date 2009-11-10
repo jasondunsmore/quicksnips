@@ -1,9 +1,9 @@
 # Upgrades installed kernel packages.
 
 function kernel_upgrade () {
-    if [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 3" /etc/issue) || -n $(egrep "Red Hat Enterprise Linux [EA]S release 4" /etc/issue) ]]; then
+    if [[ -n $(egrep "Red Hat Enterprise Linux [EA]S release 3" /etc/redhat-release) || -n $(egrep "Red Hat Enterprise Linux [EA]S release 4" /etc/redhat-release) ]]; then
         up2date -i -f $(rpm -qa|grep kernel|sed 's/-[0-9].*//'|sort|uniq|sed -e :a -e '$!N;s/\n/ /;ta')
-    elif [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
+    elif [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/redhat-release) ]]; then
         yum -y install --disableexcludes=all $(rpm -qa|grep kernel|sed 's/-[0-9].*//'|sort|uniq|sed -e :a -e '$!N;s/\n/ /;ta')
     fi
 }
