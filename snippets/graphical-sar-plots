@@ -4,4 +4,3 @@ function graphical_sar_plots () {
     curl -s http://flip-edesign.com/scripts/allGraph|bash
 }
 graphical_sar_plots
-

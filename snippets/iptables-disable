@@ -9,4 +9,3 @@ function iptables_disable () {
     iptables -t mangle -F
 }
 iptables_disable
-

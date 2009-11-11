@@ -7,3 +7,4 @@ function smart_cat () {
         fi
     done
 }
+smart_cat

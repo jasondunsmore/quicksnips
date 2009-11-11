@@ -6,4 +6,3 @@ function apache_processes_cwd_exe () {
     done
 }
 apache_processes_cwd_exe
-

@@ -4,4 +4,3 @@ function debian_largest_packages () {
     dpkg-query -W --showformat='Installed-Size Package Status\n'|sort -n|awk ' ~ /installed/ { printf "%6.2f MB  %s\n", debian_largest_packages/1024,  }'
 }
 debian_largest_packages
-

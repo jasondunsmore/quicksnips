@@ -6,4 +6,4 @@ function apache_search_conf_files () {
         egrep -nH "$1" $file
     done
 }
-apache_search_conf_files 
+apache_search_conf_files

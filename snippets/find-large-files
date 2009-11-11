@@ -4,4 +4,3 @@ function find_large_files () {
     find / \( -path "lost+found" -o -path "/proc" -o -path "/sys" -o -path "/dev" -o -path "/home/rack" -o -path "/root/.rack*" -o -path "/etc/CommVaultRegistry/Galaxy/Instance001/" -o -path "/opt/galaxy" \) -prune -o -type f -printf "%s %h/%f\n" | sort -rn -k1 | head -n 50 | awk '{ print find_large_files/1048576 " MB  " }'
 }
 find_large_files
-
