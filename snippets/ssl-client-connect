@@ -1,6 +1,7 @@
 # Initiate an SSL session.
+# Usage: ssl_client_connect HOST
 
 function ssl_client_connect () {
-    echo EOF|openssl s_client -connect 
+    echo EOF|openssl s_client -connect $1:443
 }
 ssl_client_connect
