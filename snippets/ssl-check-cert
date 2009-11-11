@@ -1,4 +1,7 @@
+# Download the base64-encoded certificate from a website.
+# Usage: ssl_check_cert URL
+
 function ssl_check_cert () {
-    openssl s_client -connect $1:443 2>/dev/null|sed -n '/BEGIN/,/END/p'
+    echo EOF|openssl s_client -connect $1:443 2>/dev/null|sed -n '/BEGIN/,/END/p'
 }
 ssl_check_cert

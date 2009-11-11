@@ -5,9 +5,9 @@
 
 (define quicksnips-keymap (make-keymap))
 (bind-keys global-keymap
-	   "M-S-s" (lambda () (system "quicksnips &"))
-	   "M-S-p" (lambda () (system "quicksnips -p -s prefabs &"))
-	   "M-S-r" (lambda () (system "quicksnips -s rackspace &"))
+	   "M-S-s" (lambda () (system "quicksnips -i &"))
+	   "M-S-p" (lambda () (system "quicksnips -i -p -s prefabs &"))
+	   "M-S-r" (lambda () (system "quicksnips -i -s rackspace &"))
 	   "C-z" quicksnips-keymap)
 
 (bind-keys quicksnips-keymap "e" (lambda () (system "quicksnips install-emacs &")))

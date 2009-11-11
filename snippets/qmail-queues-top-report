@@ -1,10 +1,12 @@
+# Shows a summary of mail messages in the local and remote qmail queues.
+
 function reportq () {
     for i in "Subject:" "From:" "To:"; do
         echo "Top instances of $i"
         cat "$1"|strings|grep "$i"|sort|uniq -c|sort -n|tail
     done
 }
-function qmailtopreport () {
+function qmail_queues_top_report () {
     if [[ ! -e $(which qmHandle) ]]; then
         yum -y install qmHandle || up2date -i qmHandle
     fi
@@ -24,4 +26,4 @@ function qmailtopreport () {
         rm -f $remoteq
     fi
 }
-qmailtopreport
+qmail_queues_top_report

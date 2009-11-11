@@ -1,3 +1,6 @@
+# Deletes a list of messages, specified by the message ID, using qmHandle
+# Usage: qmail_delete_messages MSGID [MSGID] [...]
+
 function qmail_delete_messages () {
     /etc/init.d/qmail stop
     for i in "$@"; do

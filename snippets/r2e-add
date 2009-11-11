@@ -1,3 +1,5 @@
+# Adds an item to r2e and deletes all rss items up until the current time.
+
 function r2e_add () {
     r2e add "$1" && r2e run --no-send $(r2e list|tail -n1|cut -d: -f1)
 }

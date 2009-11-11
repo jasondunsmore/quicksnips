@@ -1,3 +1,5 @@
+# Runs zcat if file is gzipped, cat otherwise.
+
 function smart_cat () {
     for file in $*; do
         if [ "$( file $file|awk '{ print $2 }' )" == "gzip" ]; then

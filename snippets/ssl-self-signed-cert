@@ -1,3 +1,6 @@
+# Generates a self-signed SSL certificate.
+# Usage: ssl_self_signed_cert KEY CERT
+
 function ssl_self_signed_cert () {
     if [[ $# -ne 2 ]]; then
         echo "Usage: ssl_self_signed_cert KEY CERT"

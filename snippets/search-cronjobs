@@ -1,4 +1,7 @@
+# Search all files where cronjobs could be specified for a string.
+
 function search_cronjobs () {
+    ${1:?A search term is required.}
     egrep -n --color "$1" /etc/cron.* /etc/crontab /etc/cron.d/* /var/spool/cron/*
 }
 search_cronjobs 

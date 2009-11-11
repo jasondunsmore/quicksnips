@@ -1,3 +1,6 @@
+# Add a user to Webmin.
+# Usage: webmin_add_user USER
+
 function webmin_add_user () {
     if [[ $(grep -c $1 /etc/passwd) -eq 0 ]]; then
         echo "$1 is not a system user."

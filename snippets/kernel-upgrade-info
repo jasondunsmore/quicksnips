@@ -1,3 +1,5 @@
+# Shows information handy for kernel upgrades
+
 function kernelinstall () {
     # Get RHEL version or exit with unsupported OS
     if egrep -qi 'Red Hat Enterprise Linux (AS|ES) release 3' /etc/redhat-release; then

@@ -64,8 +64,6 @@ else
     cat $exe | sed '/^[^# ]/,$!d' | perl -pe 'chop if eof' | xclip
 fi
 
-sleep 0.05 # Trying to fix a bug where part of the of the snip is cut off
-
 if [[ $inskey ]]; then
     xdotool key "shift+Insert"
 else

@@ -1,5 +1,6 @@
+# Shows the email addresses that are receiving the most mail from this server
 
 function plesk_qmail_top_remote () {
-    grep "to remote" /usr/local/psa/var/log/maillog |awk '{print }' |sort |uniq -c |sort -rn |head
+    grep "to remote" /usr/local/psa/var/log/maillog | awk '{ print $14 }' | sort | uniq -c | sort -rn | head
 }
 plesk_qmail_top_remote

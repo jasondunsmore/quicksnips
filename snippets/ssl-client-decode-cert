@@ -1,3 +1,6 @@
+# Download's an SSL certificate and decodes it.
+# Usage: ssl_client_decode_cert URL
+
 function ssl_client_decode_cert () {
     if [[ -n $1 ]]; then
         echo EOF|openssl s_client -connect $1:443 2>/dev/null|sed -n '/BEGIN CERTIFICATE/,/END CERTIFICATE/p'|openssl x509 -text
