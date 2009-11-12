@@ -1,0 +1,67 @@
+# Creates a .htaccess file in the DIRECTORY_TO_PROTECT and a .htpasswd file named with a random number in /etc/httpd/conf/
+# Usage: apacheauth DIRECTORY_TO_PROTECT USERNAME 
+
+function apacheauth () {
+
+    if [[ $( whoami ) != "root" ]]; then
+        echo "Please run this script as root."
+        return 1
+    fi
+
+    if [[ -z "$2" ]]; then 
+        echo "Usage: apacheauth DIRECTORY_TO_PROTECT USERNAME"
+    else
+
+        if [[ $( echo $1 | cut -c1 ) != "/" ]]; then
+            echo "Please use an absolute path to the directory."
+            return 1    
+        else
+            suffix="$(echo $RANDOM )";
+        fi
+
+        if [[ ! -e $1 ]]; then
+            echo "This directory doesn't exist."
+            return 1
+        fi
+
+        passwordfile="/etc/httpd/conf/.htpasswd_$suffix"
+
+        htaccess="$1/.htaccess"; 
+
+        if [ ! -e $htaccess ]; then 
+            cat > $htaccess <<EOF
+AuthType Basic
+AuthName "Restricted Access"
+AuthUserFile $passwordfile 
+Require valid-user 
+EOF
+        else
+            echo "A .htaccess file already exists in the directory."
+            return 1
+        fi
+
+        echo $passwordfile
+        if [ ! -e $passwordfile ]; then
+            htpasswd -c $passwordfile $2 
+        else
+            echo "$passwordfile exists already."
+            return 1
+        fi
+
+        echo 
+        echo "Remember to check AllowOverride for 'AuthConfig' or 'All'."
+        echo 
+
+    fi
+} 
+function usagestatement () {
+    echo
+    echo "Usage: apacheauth DIRECTORY_TO_PROTECT USERNAME"
+    echo
+    echo "This snippet creates a .htaccess file in DIRECTORY_TO_PROTECT and creates a .htpasswd file named with a random number suffix in /etc/httpd/conf/."
+    echo 
+    echo "If either the .htaccess file or the password file exist, this script will stop."
+    echo
+}
+usagestatement
+apacheauth
