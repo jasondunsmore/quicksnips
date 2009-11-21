@@ -1,0 +1,8 @@
+# Shows the memory used by each of the httpd processes running
+
+function apache_processes_memory () {
+    for pid in $(pgrep httpd); do
+        echo $pid $(ps -p$pid -ouser|sed '1d') $(pmap -d $pid 2>/dev/null | awk '/private/{print $4}')|sort -nk3
+    done
+}
+apache_processes_memory

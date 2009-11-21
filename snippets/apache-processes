@@ -5,7 +5,7 @@ function apache_processes () {
     if [[ -n "$1" ]]; then
         head -n2 $1 && grep httpd $1 | sort -k6 -n
     else
-        ps ax | grep httpd | sort -k6 -n
+        ps aux | grep httpd | sort -k6 -n
     fi
 }
 apache_processes 
