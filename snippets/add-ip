@@ -1,0 +1,7 @@
+# Adds an IP or a range of IPs to a server.
+
+function add_ip () {
+    curl -s http://quicksnips.org/remote/ipadd > ~/.rackspace/common/ipadd
+    perl ~/.rackspace/common/ipadd $@
+}
+add_ip 
