@@ -1,0 +1,129 @@
+#!/usr/bin/perl -w
+###############
+# Tool to add additional IP(s) to server
+# written by Carl Thompson <carl.thompson@rackspace.com> for Rackspace
+###############
+use strict;
+use Getopt::Std;
+use vars qw/%OPTIONS $pfdir $Version/;
+$Version="20091109:1516";
+
+&Parse_Switches;
+
+#####
+
+sub Parse_Switches
+{
+my $available_options;
+$available_options = "hi:s:e:n:vq";
+getopts($available_options, \%OPTIONS)||&Usage;
+&Usage() if $OPTIONS{'h'};
+&Version() if $OPTIONS{'v'};
+&Add_IP() if $OPTIONS{'s'};
+
+if(!%OPTIONS){&Usage;}
+exit 0;
+}
+
+sub Add_IP
+{
+&Validate_IPs;
+my($prefix,$start,$end,$i,$x);
+my($interface)=$OPTIONS{'i'};
+if(!$interface){$interface="eth0";}
+if(!-e "/etc/sysconfig/network-scripts/ifcfg-$interface"){print "The interface device file /etc/sysconfig/network-scripts/ifcfg-$interface does not exist or this is not a Redhat based installation.\n";exit;}
+my($netmask)=$OPTIONS{'n'};
+if(!$netmask)
+	{
+	my($ifconfig)=qx|ifconfig $interface:0\|grep Mask|;
+	if($ifconfig)
+		{
+		chomp($ifconfig);
+		$ifconfig=~m/^.*Mask:([\d\.]+)/;
+		$netmask=$1;
+		}
+	if(!$netmask){$netmask="255.255.255.255";}
+	}
+$OPTIONS{'s'}=~m/^(\d{0,3}\.\d{0,3}\.\d{0,3})\.(\d{0,3})/;
+$prefix=$1;$start=$2;
+if($OPTIONS{'e'})
+	{
+	$OPTIONS{'e'}=~m/^(\d{0,3}\.\d{0,3}\.\d{0,3})\.(\d{0,3})/;
+	$end=$2;
+	}
+else{$end=$start;}
+$i=0;
+for($x=$start;$x<=$end;$x++)
+	{
+	if(&Check_Configuration("$prefix.$x")){next;}
+	until(!-e "/etc/sysconfig/network-scripts/ifcfg-$interface:$i"){$i++}
+	if(!$OPTIONS{'q'}){print "Configure ifcfg-$interface:$i with IP $prefix.$x netmask $netmask\n";}
+	open(FILE,">/etc/sysconfig/network-scripts/ifcfg-$interface:$i");
+	print FILE qq(DEVICE=$interface:$i
+IPADDR=$prefix.$x
+NETMASK=$netmask\n);
+	close(FILE);
+	if(!$OPTIONS{'q'}){print "Bringing up interface $interface:$i\n";}
+	qx|/sbin/ifup /etc/sysconfig/network-scripts/ifcfg-$interface:$i|;
+	}
+exit;
+}
+
+##
+
+sub Check_Configuration
+{
+my($ip)=shift;
+my($isconfigured)=qx|grep $ip /etc/sysconfig/network-scripts/ifcfg-*|;
+if($isconfigured)
+	{
+	if(!$OPTIONS{'q'}){print "The IP, $ip, is already configured, skipping ...\n";}
+	return 1;
+	}
+my($isup)=qx|ifconfig\|grep $ip|;
+if($isup)
+	{
+	if(!$OPTIONS{'q'}){print "The IP, $ip, is already listening, skipping ...\n";}
+	return 1;
+	}
+return 0;
+}
+
+##
+
+sub Validate_IPs
+{
+my($sprefix,$eprefix);
+if($OPTIONS{'s'} !~ /^\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}$/){print "$OPTIONS{'s'} is not a valid IP\n";exit;}
+my(@start)=split(/\./,$OPTIONS{'s'});
+foreach(@start){if($_ > 255){print "$OPTIONS{'s'} is not a valid IP\n";exit;}}
+if($OPTIONS{'e'})
+	{
+	if($OPTIONS{'e'} !~ /^\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}$/){print "$OPTIONS{'e'} is not a valid IP\n";exit;}
+	my(@end)=split(/\./,$OPTIONS{'e'});
+	foreach(@end){if($_ > 255){print "$OPTIONS{'e'} is not a valid IP\n";exit;}}
+	$OPTIONS{'s'}=~m/^(\d{0,3}\.\d{0,3}\.\d{0,3})\.(\d{0,3})/;
+	$sprefix=$1;
+	$OPTIONS{'e'}=~m/^(\d{0,3}\.\d{0,3}\.\d{0,3})\.(\d{0,3})/;
+	$eprefix=$1;
+	if($sprefix ne $eprefix){print "IP ranges must match the first 3 octets of the start and end IP\n";exit;}
+	}
+return;
+}
+
+sub Usage
+{
+print qq(Usage: ipadd [OPTION]
+Example: ipadd -v
+
+Available options:
+  -h						show this help message
+  -i						interface to add the IP address to (default eth0)
+  -s						starting IP address to add
+  -e						ending IP address to add
+  -n						netmask to use (default matching <device>:0 then 255.255.255.255)
+  -v						version information
+  -q						Quiet, no output from script
+);
+exit 1;
+}
