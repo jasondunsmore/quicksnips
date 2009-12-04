@@ -1,0 +1,3 @@
+# Checks licenses for Plesk
+
+/usr/local/psa/bin/keyinfo -l | grep -e 'lim_dom:' -e 'key_spamassassin' -e 'key_drweb'
