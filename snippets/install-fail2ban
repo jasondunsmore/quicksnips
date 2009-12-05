@@ -3,7 +3,7 @@
 function install_fail2ban () {
     if [[ -n $(egrep "Red Hat Enterprise Linux Server release 5" /etc/issue) ]]; then
         if [[ ! -e /etc/yum.repos.d/epel.repo ]]; then
-            cat >/etc/yum.repos.d/epel.repo<<EOF
+            cat >/etc/yum.repos.d/epel.repo<<'EOF'
 [epel]
 name=Extra Packages for Enterprise Linux 5 - $basearch
 #baseurl=http://mirror.rackspace.com/epel/5/$basearch
