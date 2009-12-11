@@ -64,6 +64,8 @@ else
     cat $exe | sed '/^[^# ]/,$!d' | perl -pe 'chop if eof' | xclip
 fi
 
+sleep 0.1 # Trying to fix a bug where previous x buffer contents are pasted
+
 if [[ $inskey ]]; then
     xdotool key "shift+Insert"
 else
