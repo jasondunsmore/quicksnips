@@ -3,20 +3,23 @@
 
 function sar_actual_memory_usage () {
     date '+%Y-%m-%d'
+    mbprogavail=$(free -m | grep "Mem:" | awk '{print $2}')
+    echo "MB memory available: $mbprogavail"
+    echo
     (
-    echo "time mbused mbbuffers mbcached mbactual"
-    for i in `sar -r | egrep -v "Average|RESTART|swpused|Linux|^$" | awk '{print $4"-"$6"-"$7"-"$1}'`
-    do
-        date=`echo $i | awk -F- '{print $4}'`
-        used=`echo $i | awk -F- '{print $1}'`
-        buffer=`echo $i | awk -F- '{print $2}'`
-        cache=`echo $i | awk -F- '{print $3}'`
-        usedMB=`echo $i | awk -F- '{printf "%.f", $1/1024}'`
-        bufferMB=`echo $i | awk -F- '{printf "%.f", $2/1024}'`
-        cacheMB=`echo $i | awk -F- '{printf "%.f", $3/1024}'`
-        total=`echo "$used - $buffer - $cache" | bc | awk '{printf "%.f", $1/1024}'`
-        echo "$date $usedMB $bufferMB $cacheMB $total"
-    done
-    )|column -t
+        echo "time mbused mbbuffers mbcached mbprogused mbprogfree"
+        for i in $(sar -r | egrep -v "Average|RESTART|swpused|Linux|^$" | awk '{print $4"-"$6"-"$7"-"$1}'); do
+            date=$(echo $i | awk -F- '{print $4}')
+            used=$(echo $i | awk -F- '{print $1}')
+            buffer=$(echo $i | awk -F- '{print $2}')
+            cache=$(echo $i | awk -F- '{print $3}')
+            mbused=$(echo $i | awk -F- '{printf "%.f", $1/1024}')
+            mbbuffers=$(echo $i | awk -F- '{printf "%.f", $2/1024}')
+            mbcached=$(echo $i | awk -F- '{printf "%.f", $3/1024}')
+            mbprogused=$(echo "$used - $buffer - $cache" | bc | awk '{printf "%.f", $1/1024}')
+            mbprogfree=$(echo $mbprogavail - $mbprogused|bc)
+            echo "$date $mbused $mbbuffers $mbcached $mbprogused $mbprogfree"
+        done
+    ) | column -t
 }
 sar_actual_memory_usage
