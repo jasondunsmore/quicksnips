@@ -1,0 +1,6 @@
+# Display MySQL tuning primer report.
+
+function mysql_tuning_primer () {
+    curl -s http://quicksnips.org/remote/tuning-primer.sh > /tmp/tuning-primer.sh && bash /tmp/tuning-primer.sh
+}
+mysql_tuning_primer
