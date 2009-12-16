@@ -2,7 +2,7 @@
 
 function reset_fscks_count_interval () {
     egrep '^/dev/.*ext3.* 1 [0-9]$' /etc/fstab |
-    awk '{ print reset_fscks_count_interval }' |
+    awk '{ print $1 }' |
     while read part; do
         tune2fs -c0 -i0 $part
     done
