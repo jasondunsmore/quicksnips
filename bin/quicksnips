@@ -44,7 +44,7 @@ if [[ "$1" ]]; then
     echo $1 >> $snipdir/.stats
 else
     cd $snipdir
-    exe=$( find . -type f | egrep -v "/\.|~$" | sed 's/^.*\/\(.*$\)/\1/' | sort | dmenu -b ) &&
+    exe=$( find . -type f -o -type l | egrep -v "/\.|~$" | sed 's/^.*\/\(.*$\)/\1/' | sort | dmenu -b ) &&
     echo $exe >> $snipdir/.stats
 fi
 
