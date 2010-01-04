@@ -50,6 +50,7 @@ EOF
             htpasswd -c $passwordfile $2 
         else
             echo "$passwordfile exists already."
+            return 1
         fi
 
         echo 
