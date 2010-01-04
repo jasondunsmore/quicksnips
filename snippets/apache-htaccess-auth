@@ -37,7 +37,12 @@ Require valid-user
 EOF
         else
             echo "A .htaccess file already exists in the directory."
-            return 1
+            echo -e "Add the following to the htaccess file at $htaccess:\n"
+            echo "AuthType Basic"
+            echo "AuthName \"Restricted Access\""
+            echo "AuthUserFile $passwordfile"
+            echo "Require valid-user"
+            echo
         fi
 
         echo $passwordfile
@@ -45,7 +50,6 @@ EOF
             htpasswd -c $passwordfile $2 
         else
             echo "$passwordfile exists already."
-            return 1
         fi
 
         echo 
