@@ -1,0 +1,6 @@
+# Shows passwords for the domains set to bounce or reject mail
+
+function plesk_domain_bounce_settings () {
+    mysql -uadmin -p`cat /etc/psa/.psa.shadow` -e 'SELECT domains.name, Parameters.value FROM domains, Parameters WHERE domains.id=Parameters.id AND Parameters.parameter = "nonexist_mail"' psa
+}
+plesk_domain_bounce_settings
