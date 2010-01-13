@@ -1,0 +1,15 @@
+# Shows the country of every IP that has logged into the server
+
+function last_login_countries () {
+    echo "IP      Country"
+    last|awk '{print $3}'|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'|sort -n|uniq|
+    while read ip; do
+        country=$(whois $ip|grep country|awk '{print $2}'|head -n1)
+        if [[ -n $country ]]; then
+            echo $ip: $country
+        else
+            echo $ip: US
+        fi
+    done
+}
+last_login_countries
