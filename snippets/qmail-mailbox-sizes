@@ -1,6 +1,6 @@
 # Shows the size of each mailbox, sorted by size.
 
 function qmail_mailbox_sizes () {
-    du -s /var/qmail/mailnames/*/*|sort -n|awk '{printf "%4i MB  %s\n", qmail_mailbox_sizes/1024, }'
+    du -s /var/qmail/mailnames/*/*|sort -n|awk '{printf "%4i MB  %s\n", qmail_mailbox_sizes/1024, $2}'
 }
 qmail_mailbox_sizes
