@@ -53,10 +53,6 @@ if [[ ! $exe ]]; then
     exit 0
 fi
 
-# Dump the current contents of the x selection buffer before manipulating it
-dumpfile=$(mktemp)
-xclip -o > $dumpfile
-
 # Paste the script
 if [[ $preserve ]]; then
     cat $exe | xclip
@@ -64,18 +60,12 @@ else
     cat $exe | sed '/^[^# ]/,$!d' | perl -pe 'chop if eof' | xclip
 fi
 
-sleep 0.1 # Trying to fix a bug where previous x buffer contents are pasted
-
 if [[ $inskey ]]; then
     xdotool key "shift+Insert"
 else
     xdotool mousedown 2
     xdotool mouseup 2
 fi
-
-# Restore the original contents of the x selection buffer
-xclip -i $dumpfile
-rm -f $dumpfile
 
 # Show the documentation in Emacs
 if [[ $edoc ]]; then
