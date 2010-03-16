@@ -1,0 +1,195 @@
+#+OPTIONS: toc:nil
+
+* Bugs
+** Fix units in plesk-bandwidth-per-domain
+Returning MB instead of GB?
+** Fix apachebuddy2
+: [root@host ~]# apachebuddy2
+: Apache is configured to use 3145728 kB of memory.
+: Only 4043368 kB of memory are installed.
+: Consider lowering MaxClients from 256 to 329.
+* New features
+** New scripts
+*** Create a snippet for splitting webalizer configs?
+: for vhost in example1.com example2.com; do
+:   sed -e "s/\/var\/log\/httpd\/access_log/\/var\/log\/httpd\/$vhost-access.log/" -e "s/\/var\/www\/html\/usage/\/var\/www\/$vhost-usage/" /etc/webalizer.conf > /etc/webalizer-$vhost.conf
+: done
+*** Create a script to check all ports on a server
+: for port in $( netstat -lpnt 2>/dev/null|awk '{print $4}'|cut -d: -f2|egrep "^[0-9]" ); do echo $port; openssl s_client -connect localhost:$port -ssl2; done
+*** Create a history-since-login snippet
+*** Create a quicksnip to automate checking for successful dict attacks
+: zgrep -E "58.68.72.228|220.181.58.101|64.206.31.69|190.144.126.227|210.243.156.1|210.83.70.203|190.154.136.164|58.254.143.130|219.64.116.203" /var/log/secure* | grep "Accepted password"
+*** Add to qmail log processing script to quicksnips
+: grep Sorry /usr/local/psa/var/log/maillog|cut -d" " -f6|cut -d"." -f1|xargs -I'{}' grep '{}' /usr/local/psa/var/log/maillog|grep "to remote"|cut -d" " -f14|sort|uniq|cut -d"@" -f2|sort|uniq|xargs dig +short mx|cut -d" " -f2|xargs -I'{}' telnet '{}' 25
+*** Go through list of one-liners for ideas for new snips
+http://www.commandlinefu.com/commands/browse/sort-by-votes
+*** Create a snippet to check for a compromise
+*** Create a snippet to check for insecure PHP configuration
+*** Make a quicksnip to send a message via SMTP using Auth
+: perl -MMIME::Base64 -e \
+:      'print
+: encode_base64("john\@example.com\0john\@example.com\0password")';
+
+then:
+
+: telnet <ip> 25
+: auth plain <copied string>
+*** Create a quicksnip for apache-new-vhost
+*** Write a script to change hostname?
+Check mysql binary log name
+*** Write a script to print a specific time range for all logs
+*** Write an ftp-auth-attempts quicksnip
+: grep ftp /var/log/messages*|grep -i failed|awk '{print $6}'|sed 's/://'|sort -n|uniq -c|sort -n
+*** Create a quicksnip to move a database from one domain to another in plesk
+This is for a domain that already exists in Plesk, but needs to be 
+under a different domain.  You don't need to know which domain it's 
+currently assigned to...just change "targetdomain.com" to the new 
+domain, and change "dbname_goes_here" to the name of the database.
+
+mysql psa -e "UPDATE data_bases SET data_bases.dom_id = ( SELECT 
+domains.id FROM domains WHERE displayName = 'targetdomain.com') WHERE 
+data_bases.name = 'dbname_goes_here';"
+*** Create a quicksnip for synflood attacks
+: #!/bin/bash
+: 
+: /sbin/modprobe ip_tables
+: /sbin/modprobe ip_conntrack
+: /sbin/modprobe ip_conntrack_ftp
+: 
+: rm /root/.dyn*
+: 
+: echo "Setting kernel tcp parameters to reduct DoS effects"
+: 
+: #Reduce DoS'ing ability by reducing timeouts
+: 
+: echo 30 > /proc/sys/net/ipv4/tcp_fin_timeout
+: echo 1800 > /proc/sys/net/ipv4/tcp_keepalive_time
+: echo 1 > /proc/sys/net/ipv4/tcp_window_scaling
+: echo 0 > /proc/sys/net/ipv4/tcp_sack
+: echo 1280 > /proc/sys/net/ipv4/tcp_max_syn_backlog
+: 
+: #ANTISPOOFING
+: 
+: for a in /proc/sys/net/ipv4/conf/*/rp_filter;
+: 
+: do
+: echo 1 > $a
+: done
+: 
+: ##
+: 
+: #NO SOURCE ROUTE
+: for z in /proc/sys/net/ipv4/conf/*/accept_source_route;
+: do
+: echo 0 > $z
+: done
+: #SYN COOKIES
+: echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+: echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+: #echo $ICMP_ECHOREPLY_RATE > /proc/sys/net/ipv4/icmp_echoreply_rate
+: echo "1" > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses
+: echo "1" > /proc/sys/net/ipv4/conf/all/accept_redirects
+: echo "1" > /proc/sys/net/ipv4/conf/all/log_martians
+: 
+: 
+: # NUMBER OF CONNECTIONS TO TRACK
+: 
+: echo "65535" > /proc/sys/net/ipv4/ip_conntrack_max
+: 
+: # Set default policies
+: 
+: /sbin/iptables -P INPUT ACCEPT
+: /sbin/iptables -P OUTPUT ACCEPT
+: /sbin/iptables -P FORWARD DROP
+: 
+: 
+: /sbin/iptables -F
+: 
+: /sbin/iptables -F INPUT
+: /sbin/iptables -F OUTPUT
+: /sbin/iptables -F FORWARD
+: /sbin/iptables -F -t mangle
+: /sbin/iptables -X
+: 
+: /sbin/iptables -A INPUT -i lo -j ACCEPT
+: 
+: /sbin/iptables -A INPUT -d 127.0.0.0/8 -j REJECT
+: 
+: /sbin/iptables -A INPUT -i eth0 -j ACCEPT
+: /sbin/iptables -A INPUT -m state --state INVALID -j DROP
+: 
+: ### chains to DROP too many SYN-s ######
+: 
+: /sbin/iptables -N syn-flood
+: /sbin/iptables -A syn-flood -m limit --limit 100/second --limit-burst 150 -j RETURN
+: /sbin/iptables -A syn-flood -j LOG --log-prefix "SYN flood: "
+: /sbin/iptables -A syn-flood -j DROP
+*** Make a quicksnip to find apache-writable directories
+: find / -type d \( \( -user apache -perm /u=w \) -o \( -group apache -perm /g=w \) -o \( -perm /o=w \) \) -ls
+*** Create a log-off routine?
+Show files changed, clean up temp files...
+*** Checking for blacklists, other info background after auto-login?
+** Existing scripts
+*** Use nice in quicksnips
+: nice -n +19 bash -c "cat /var/www/vhosts/duralstores.gr/statistics/logs/error_log|cut -d\" \" -f9-20|sort|uniq -c|sort -n "
+*** Separate out reporting for plesk-bandwidth (total and by service)
+*** Add mysqlbackup check to server-healthcheck
+*** Add up2date --dry-run and yum list updates check in server-healthcheck
+*** Add percentage to sar-memory-usage script
+*** Alternate apache-doc-roots
+: httpd -S 2>&1|egrep "\/.*\/"|sed 's/.*(\(.*\):.*).*/\1/'|sort|uniq|xargs grep -Hni DocumentRoot
+*** Update plesk-email-passwords with Carl's code
+: select domains.name as domain, concat(mail.mail_name,'@',domains.name)
+: as email, password from domains left join mail on
+: domains.id=mail.dom_id left join accounts on account_id=accounts.id
+: where mail.postbox='true';
+** Core functionality
+*** See if it'd be better to use case when parsing CLI arguments
+*** Create a quicksnips history menu
+* QA/Refactoring
+** Ask other quicksnips users if they like every quicksnip in a function
+** Fix the way qmail-mailboxes-per-domain script checks if dir is empty
+http://mywiki.wooledge.org/BashFAQ/004
+** Start using unset at top of scripts that set variables
+** See if there's a way to group arguments by 1000 for xargs
+** Revamp apache-accesses-per-* snippets
+: grep -oE "08/Jun/2009:02:.." /var/log/httpd/access_log|uniq -c
+** Way to reuse code in snips
+Create script to auto-expand bash functions?
+** Use /usr/share/dict/words to find bad passwords
+- plesk-bad-email-passwords
+* Documentation
+** Create a script to automatically generate the summary page
+...using the documentation in the snippet files
+** Put "quickapropos -s" output on quicksnips.org
+** Add installation on Fedora and Slackware to quicksnips docs
+: yum install git
+: yum install xclip
+: yum install xdotool
+: wget http://dl.suckless.org/tools/dmenu-4.0.tar.gz
+: tar xvzf dmenu-4.0.tar.gz
+: cd dmenu-4.0
+: ls -al
+: ./configure
+: make
+: yum install gcc
+: make
+: make clean
+: yum install xorg-x11-server-devel
+: yum install libXinerama
+: yum install libXinerama-devel
+: cd ~/software/dmenu-4.0
+: make install
+: yum install gconf-editor
+: gconf-editor
+** Create a style guide for quicksnips
+** Projects credits page like on http://git-scm.com/about ?
+** Remove "Determine how to..." section
+** Improve Metacity (Gnome) install instructions
+* Misc
+** Write some yasnippets for quicksnips
+** Implement git post-receive-email hook for commits
+example script in /usr/share/doc/git-core/contrib/hooks/post-receive-email
+** Create a quicksnips mailing list?
+** Run git post-update hook in background so push doesn't take so long
+** Put Quicksnips on Freshmeat http://freshmeat.net/projects/new
