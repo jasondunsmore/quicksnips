@@ -1,0 +1,4 @@
+function ls_sort_readable_size () {
+    du -s $1/*|sort -n|awk '{printf "%.2f GB %s\n", $1/1024/1024, $2}'
+}
+ls_sort_readable_size

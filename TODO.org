@@ -10,6 +10,18 @@ Returning MB instead of GB?
 : Consider lowering MaxClients from 256 to 329.
 * New features
 ** New scripts
+*** Write a quicksnip for seeing a logged in user's history
+: $ su -
+: # gdb
+: attach <pid of terminal>
+: call write_history("/root/history.txt")
+: q
+: 
+: # cat /root/history.txt
+
+--or--
+
+: APID=28586 ; gdb -batch --eval "attach $APID" --eval "call write_history(\"/tmp/bash_history-$APID.txt\")" --eval 'detach' --eval 'q'
 *** Create a snippet for splitting webalizer configs?
 : for vhost in example1.com example2.com; do
 :   sed -e "s/\/var\/log\/httpd\/access_log/\/var\/log\/httpd\/$vhost-access.log/" -e "s/\/var\/www\/html\/usage/\/var\/www\/$vhost-usage/" /etc/webalizer.conf > /etc/webalizer-$vhost.conf
