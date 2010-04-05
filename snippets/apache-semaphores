@@ -1,0 +1,17 @@
+# Show Apache semaphores
+
+function apache_semaphores () {
+    echo "Apache semaphores:"
+    ipcs -s | grep apache
+    echo "$(ipcs -s | grep apache | wc -l) total Apache semaphores"
+    echo "Delete apache semaphores?"
+    read answer
+    if [[ $answer == "yes" || $answer == "y" ]]; then
+        ipcs -s | grep apache | perl -e 'while (<STDIN>) { @a=split(/\s+/); print `ipcrm sem $a[1]`}'
+    elif [[ $answer == "no" || $answer == "n" ]]; then
+        echo "Exiting"
+    else
+        echo "Enter yes or no"
+    fi
+}
+apache_semaphores

@@ -1,0 +1,6 @@
+# Generate a 2048 bit CSR
+
+function generate_csr () {
+    openssl req -nodes -newkey rsa:2048 -keyout $1 -out $2
+}
+generate_csr
