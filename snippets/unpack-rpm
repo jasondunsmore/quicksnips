@@ -1,0 +1,14 @@
+# Unpack an RPM file to a directory.
+# Usage: unpack_rpm RPMFILE DESTDIR
+
+function unpack_rpm () {
+    rpm=$PWD/$1
+    if [[ -z $2 ]]; then
+        echo "Usage: unpack_rpm RPMFILE DESTDIR"
+    fi
+    if [[ ! -d $2 ]]; then
+        mkdir $2
+    fi
+    cd $2 && rpm2cpio $rpm | cpio -idv && cd -
+}
+unpack_rpm 
