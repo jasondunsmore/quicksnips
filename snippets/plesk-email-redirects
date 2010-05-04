@@ -1,0 +1,9 @@
+# Show redirects for Plesk email accounts
+
+function plesk_email_redirects () {
+    mysql -u admin -p$(cat /etc/psa/.psa.shadow) -e "use psa; select
+domains.name,mail.mail_name,mail.redir_addr from domains,mail where
+domains.id=mail.dom_id and mail.redir_addr is not NULL and
+mail.redir_addr != '';"
+}
+plesk_email_redirects

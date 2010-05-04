@@ -7,7 +7,7 @@ function io_bound_process_stats () {
     iofile=$(mktemp)
     m=$(($1*10))
     while [[ $n -lt $m ]]; do
-        ps ax | awk '$3 ~ /^D/ { print $5 }'
+        ps ax | awk '$3 ~ /D/ { print $5 }'
         sleep 0.1
         n=$((n+=1))
     done > $iofile
