@@ -2,6 +2,6 @@
 
 function qmail_readable_log () {
     curl -s http://quicksnips.org/remote/qmail.awk > /tmp/qmail.awk
-    awk -f qmail.awk $1
+    awk -f /tmp/qmail.awk $1
 }
 qmail_readable_log /usr/local/psa/var/log/maillog
