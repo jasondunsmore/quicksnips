@@ -1,0 +1,7 @@
+# Reformats the qmail log in a human readable format
+
+function qmail_readable_log () {
+    curl -s http://http://quicksnips.org/remote/qmail.awk > /tmp/qmail.awk
+    awk -f qmail.awk $1
+}
+qmail_readable_log /usr/local/psa/var/log/maillog

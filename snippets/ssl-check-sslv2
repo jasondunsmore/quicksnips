@@ -3,4 +3,4 @@
 function ssl_check_sslv2 () {
     openssl s_client -connect $1:$2 -ssl2
 }
-checksslv2
+ssl_check_sslv2
