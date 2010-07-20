@@ -1,0 +1,4 @@
+function show_system_users () {
+    awk -F: '{ if ($3 > 100) { print $0 } }' /etc/passwd
+}
+show_system_users

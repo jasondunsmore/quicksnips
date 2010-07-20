@@ -1,6 +1,10 @@
 # Shows the number of mailboxes each domain has.
 
 function qmail_mailboxes_per_domain () {
-    for dom in /var/qmail/mailnames/*; do if [[ "$(ls $dom)" ]]; then printf "%4i %s\n" $( ls $dom/|wc -l ) $( basename "$dom" ); fi; done|sort -n
+    for dom in /var/qmail/mailnames/*; do
+        if [[ "$(ls $dom)" ]]; then
+            printf "%4i %s\n" $( ls $dom/|wc -l ) $( basename "$dom" )
+        fi
+    done|sort -n
 }
 qmail_mailboxes_per_domain

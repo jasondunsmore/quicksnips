@@ -6,12 +6,15 @@
 
 function apache_server_status () {
     cat > /etc/httpd/conf.d/serverstatus.conf <<EOF && httpd -t && apachectl graceful && service httpd status && echo -e '\nIf server-status page does not display, you may need to add the following\nto any mod_rewrite rules in their .htaccess file:\n\nRewriteCond %{REQUEST_URI} !=/server-status\n'
+<IfModule !mod_status.c>
+ LoadModule status_module modules/mod_status.so
+</IfModule>
 ExtendedStatus On
 <Location /server-status>
     SetHandler server-status
     Order deny,allow
     Deny from all
-    Allow from localhost
+    Allow from localhost 64.39.0.32/27
 </Location>
 EOF
 }

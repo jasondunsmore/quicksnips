@@ -1,0 +1,5 @@
+# Shows a clean display of the Apache vhost config
+
+function apache_show_vhost_config () {
+    httpd -S 2>&1 | grep namevhost | awk '$4 !~ /^(default-[0-9]|webmail$|lists$|default$)/'
+}
