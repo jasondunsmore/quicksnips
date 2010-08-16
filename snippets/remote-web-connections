@@ -1,0 +1,14 @@
+# Visit a website and then run this script with the IP you're visiting from.
+# Will show remote connections that the Apache process serving your request
+# is making.
+#
+# Usage: remote_web_connections IP
+
+function remote_web_connections () {
+    pid=$(
+        netstat -tunap | grep $1 | grep ESTAB | grep "httpd" | \
+            awk '{print $7}' | cut -d/ -f1
+    )
+    netstat -tunap | grep ${pid}/httpd
+}
+remote_web_connections 
