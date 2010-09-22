@@ -1,0 +1,29 @@
+# Associate an existing database (that was created outside Plesk) with a Plesk
+# domain.  Leave the "mysql 1 plain" alone at the end of the command line
+# unless you know what you're doing.  The DB username/password is the user for
+# that database, not the Plesk admin account, and it should also already exist.
+
+function plesk-associate-database () {
+  MYSQL="mysql -Ns -u admin -p`cat /etc/psa/.psa.shadow`"
+  DOMAIN_ID=`${MYSQL} -e "SELECT id FROM psa.domains WHERE name = '${2}';"`
+  ${MYSQL} -e "INSERT INTO psa.data_bases (name,type,dom_id,db_server_id) VALUES ('${1}','${5}',${DOMAIN_ID},${6});"
+  DATABASE_ID=`${MYSQL} -e "SELECT id FROM psa.data_bases WHERE name = '${1}';"`
+  ${MYSQL} -e "INSERT INTO psa.accounts (type,password) VALUES ('${7}','${4}');"
+  PASSWORD_ID=`${MYSQL} -e "SELECT id FROM psa.accounts WHERE password = '${4}' ORDER BY id DESC LIMIT 1;"`
+  ${MYSQL} -e "INSERT INTO psa.db_users (login,account_id,db_id) VALUES ('${3}','${PASSWORD_ID}','${DATABASE_ID}');"
+}
+function plesk-associate-database-usagestatement () {
+  echo ""
+  echo "Usage: plesk-associate-database name_of_database domain_name db_user_name db_user_pass db_type db_instance password_type"
+  echo ""
+  echo "  name_of_database - The name of the existing database"
+  echo "  domain_name      - The domain name as it exists in Plesk ('domain.com' etc)"
+  echo "  db_user_name     - The user (in the db server) that \"owns\" the database"
+  echo "  db_user_pass     - Password for the database owner user"
+  echo "  db_type          - 'mysql' or 'postgresql'"
+  echo "  db_instance      - Database server instance (set this to '1' unless sure)"
+  echo "  password_type    - 'plain'"
+  echo ""
+}
+plesk-associate-database-usagestatement
+plesk-associate-database name_of_database domain_name db_user_name db_user_pass mysql 1 plain
