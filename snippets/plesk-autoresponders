@@ -1,0 +1,10 @@
+function plesk_autoresponders () {
+    mysql -se "select concat(mail_name,'@',name) from mail,domains where dom_id = domains.id;" psa |
+    while read line; do
+        AUTO=`/usr/local/psa/bin/mail -i $line | grep '^Autoresponders' | awk '{print $2}'`
+        if [ "$AUTO" != "Disabled" ]; then
+            echo "$line: $AUTO"
+        fi
+    done
+}
+plesk_autoresponders

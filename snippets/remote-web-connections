@@ -9,6 +9,11 @@ function remote_web_connections () {
         netstat -tunap | grep $1 | grep ESTAB | grep "httpd" | \
             awk '{print $7}' | cut -d/ -f1
     )
-    netstat -tunap | grep ${pid}/httpd
+    if [[ -n $pid ]]; then
+        netstat -tunap | grep ${pid}/httpd
+    else
+        echo "No ESTABLISHED connections to Apache from $1."
+        return
+    fi
 }
 remote_web_connections 

@@ -2,7 +2,7 @@
 
 function add_epel_repo () {
     if [[ $(grep "Red Hat Enterprise Linux Server release 5" /etc/redhat-release) ]]; then
-        rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm
+        rpm -Uvh rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
     elif [[ $(grep "Red Hat Enterprise Linux ES release 4" /etc/redhat-release) ]]; then
         rpm -Uvh http://download.fedora.redhat.com/pub/epel/4/i386/epel-release-4-9.noarch.rpm
     fi && rpm --import http://mirrors.rit.edu/epel/RPM-GPG-KEY-EPEL
