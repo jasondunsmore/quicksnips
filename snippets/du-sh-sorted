@@ -1,0 +1,8 @@
+# Sorts the output of du -s and makes it human-readable.  Like a sorted du -sh.
+# Usage: du_sh_sorted FILE [...]
+# Example: du_sh_sorted /*
+
+function du_sh_sorted () {
+    du -s $@ | sort -n | awk '{printf "%7.2f GB %s\n", $1/1024/1024, $2}'
+}
+du_sh_sorted 
