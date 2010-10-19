@@ -1,0 +1,21 @@
+## Move a database to a different Plesk domain
+
+function plesk_reassociate_database() {
+  MYSQL="mysql -Ns -u admin -p`cat /etc/psa/.psa.shadow`"
+  TARGET_DOMAIN_ID=`${MYSQL} -e "SELECT id FROM psa.domains WHERE name = '${2}';"`
+  DATABASE_ID=`${MYSQL} -e "SELECT id FROM psa.data_bases WHERE name = '${1}';"`
+  ${MYSQL} -e "UPDATE psa.data_bases SET dom_id = '${TARGET_DOMAIN_ID}' WHERE id = '${DATABASE_ID}';"
+}
+function plesk_reassociate_database_usagestatement() {
+  echo ""
+  echo "Usage: plesk_reassociate_database <database> <target domain>"
+  echo ""
+  echo "  database      - The name of the database"
+  echo "  target domain - The domain to move to ('domain.com' etc)"
+  echo ""
+  echo "It is not necessary to provide the current domain name; the script just"
+  echo "overwrites whatever's there, so it doesn't matter."
+  echo ""
+}
+plesk_reassociate_database_usagestatement
+plesk_reassociate_database name_of_database target_domain_name
