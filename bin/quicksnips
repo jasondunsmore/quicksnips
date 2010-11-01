@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # User variable(s)
-basedir=~/quicksnips                           # Path to quicksnips directory
+basedir=~/code/quicksnips                      # Path to quicksnips directory
 snipdir=snippets                               # Default snipdir
 # End user variable(s)
 
