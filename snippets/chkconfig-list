@@ -1,3 +1,3 @@
 # Checks the runlevel status of commonly used services
 
-chkconfig --list | egrep "syslog|postfix|sendmail|qmail|httpd|mysqld|sshd|ftpd"
+chkconfig --list | egrep "syslog|postfix|sendmail|qmail|httpd|mysqld|sshd|ftpd|atd"
