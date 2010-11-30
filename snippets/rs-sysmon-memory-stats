@@ -1,0 +1,6 @@
+function rs_sysmon_memory_stats () {
+    for file in $(ls -tr /var/log/rs-sysmon/ps.log*); do
+        echo $(basename $file) $(head -n1 $file) $(awk '{ SUM += $6 } END { printf "%6.2f GB", SUM/1024/1024 }' $file)
+    done
+}
+rs_sysmon_memory_stats

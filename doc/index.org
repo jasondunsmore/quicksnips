@@ -95,13 +95,25 @@ is selected using =quicksnips -x=.
 
 ** Bind the quicksnips command to a global keybinding
 *** Gnome (Metacity)
+
 Create a keybinding for the =quicksnips= command by running
 =~/quicksnips/bin/quickconfig=.  For example, run the following to
 bind quicksnips to F1:
 
 : quickconfig F1
 
+*** Compiz
+
+Add a keybinding using the CompizConfig Settings Manager.  It's
+available under:
+
+    : Settings -> Preferences -> CompizConfig Settings Manager
+
+- Set =Command0= to =/path/to/quicksnips/bin/quicksnips=.
+- Set a keybinding to run =Command0=.
+
 *** KDE
+
 Use kmenuedit to create a new menu item which calls the quicksnips
 script and then apply a keyboard shortcut to it.
 
@@ -116,11 +128,13 @@ To use that sawfish configuration, simply add the following to your
 : (load-file "~/quicksnips/conf/quicksnips-keys.jl")
 
 *** Ratpoison
+
 Example configuration:
 
 : bind d exec quicksnips
 
 *** Windowmaker
+
 - Edit ~/GNUstep/Defaults/WMRootMenu
 - Add a line like this:
 
@@ -130,6 +144,7 @@ Example configuration:
   F10.
 
 *** Xmonad
+
 - Edit ~/.xmonad/xmonad.hs
 - Add the following line under the Key bindings section:
 
