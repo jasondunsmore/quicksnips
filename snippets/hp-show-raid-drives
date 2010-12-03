@@ -1,0 +1,8 @@
+# Show physical and logical raid drives for an HP server
+# Usage: hp_show_raid_drives SLOTNUM
+
+function hp_show_raid_drives () {
+    hpacucli ctrl slot=$1 logicaldrive all show status
+    hpacucli ctrl slot=$1 pd all show status
+}
+hp_show_raid_drives 0

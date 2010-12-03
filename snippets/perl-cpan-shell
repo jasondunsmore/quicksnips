@@ -1,0 +1,6 @@
+# Open to the PERL CPAN shell
+
+function perl_cpan_shell () {
+    perl -MCPAN -e 'shell'
+}
+perl_cpan_shell
