@@ -1,0 +1,15 @@
+function sar_week_averages () {
+    for file in /var/log/sa/sa[0-9][0-9]; do
+        sar -q -f $file
+    done | grep Average > /tmp/sar-load-avgs
+    for file in /var/log/sa/sa[0-9][0-9]; do
+        sar -f $file
+    done | grep Average > /tmp/sar-cpu-avgs
+    n=$(cat /tmp/sar-load-avgs|wc -l)
+    load=$(awk -v n=$n '{SUM += $4} END {printf "%.2f", SUM/n}' /tmp/sar-load-avgs)
+    io=$(awk -v n=$n '{SUM += $6} END {printf "%.2f", SUM/n}' /tmp/sar-load-avgs)
+    echo "Days: $n"
+    echo "Average load: $load"
+    echo "Average disk I/O: $io"
+}
+sar_week_averages

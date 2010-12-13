@@ -1,0 +1,4 @@
+function find_php_mailers () {
+    find $1 -name "*.php" -exec grep -l "mail()" '{}' \;
+}
+find_php_mailers /var/www/
