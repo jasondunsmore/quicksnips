@@ -235,7 +235,7 @@ else
     sar -r|sed -e 's/^Average.*//' -e 's/.*RESTART.*//' -e 's/.*kbmemfree.*//' -e '/^$/d'|tail -n$swappts|awk '{ print $10 }' > $swapdat
     if [[ $(cat $swapdat|sed -n '$=') -ge 3 ]]; then
         sdsh=$(mktemp)
-        curl -s http://quicksnips.org/sd.sh > $sdsh
+        curl -s http://quicksnips.dunsmor.com/sd.sh > $sdsh
         swapsd=$(sh $sdsh $swapdat)
         rm -f $swapdat $sdsh
         if [[ ${swapsd/\.*} -gt 5 ]]; then

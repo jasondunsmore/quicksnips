@@ -1,6 +1,6 @@
 # Check on server health and report warnings.
 
 function server_healthcheck () {
-    curl -s http://quicksnips.org/remote/server-healthcheck | bash
+    curl -s http://quicksnips.dunsmor.com/remote/server-healthcheck | bash
 }
 server_healthcheck
