@@ -1,0 +1,10 @@
+rpm_package_vendors () {
+    rpm -qa |
+    while read pkg; do
+        rpm -qi $pkg | egrep -o "Vendor.*" |
+        while read vendor; do
+            printf "%30s %25s\n" "$vendor" "$pkg"
+        done
+    done
+}
+rpm_package_vendors

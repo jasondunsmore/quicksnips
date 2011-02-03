@@ -8,15 +8,12 @@ Optional arguments.
   -h  Print this help message.
   -m  Do a 3-way mail check.
   -s  Examine sar logs from the past week.
-  -u  See if any package updates are available.
-  -v  Print verbose messages about each thing checked.
-      Default is \"no news is good news\"."
+  -u  See if any package updates are available."
 
-while getopts "msuvh" options; do
+while getopts "msuh" options; do
     case $options in
         m ) mailcheck=1;;
         s ) sar=1;;
-        v ) verbose=1;;
         u ) updates=1;;
 	h ) echo "$usage"
 	    exit 1;;
@@ -28,11 +25,7 @@ done
 function warningmsg () { tput setaf 1; echo -e "WARN: $1"; tput sgr0; }
 function infomsg () { tput setaf 2; echo -e "INFO: $1"; tput sgr0; }
 function pmsg () { tput setaf 3; echo -e "$1"; tput sgr0; }
-function vmsg () {
-    if [[ $verbose ]]; then
-        tput setaf 4; echo -e "OKAY: $1"; tput sgr0
-    fi
-}
+function vmsg () { tput setaf 4; echo -e "OKAY: $1"; tput sgr0; }
 
 function printcmdout () {
     # Usage: printcmdout COMMAND WARNINGMSG [TESTCOMMAND]
@@ -173,13 +166,10 @@ else
 fi
 
 # See if HWADDR is in the eth0 and eth1 ifcfg scripts
-hwaddrs=0
-for hw in $(grep -cih HWADDR /etc/sysconfig/network-scripts/ifcfg-eth[0-9]); do
-    let hwaddrs=$hwaddrs+$hw
-done
-if [[ $hwaddrs -n $(grep -i HWADDR /etc/sysconfig/network-scripts/ifcfg-eth{0,1}) ]]; then
-    vmsg "HWADDR is configured in the ifcfg scripts:"
-    grep -i HWADDR /etc/sysconfig/network-scripts/ifcfg-eth{0,1}
+hwaddr=$(grep -l HWADDR /etc/sysconfig/network-scripts/ifcfg-eth[01] 2>/dev/null)
+if [[ -n $hwaddr ]]; then
+    vmsg "HWADDR is configured in the following ifcfg scripts:"
+    echo $hwaddr
 else
     warningmsg "HWADDR is not configured in the ifcfg scripts.  Run add-eth-hwaddr-ifcfg"
 fi
