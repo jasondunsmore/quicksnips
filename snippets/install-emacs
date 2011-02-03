@@ -13,7 +13,7 @@ function install_emacs () {
         fi
     fi
     if [[ ! -e ~/.emacs ]]; then
-        curl -s http://quicksnips.org/remote/.emacs > ~/.emacs
+        curl -s http://quicksnips.dunsmor.com/remote/.emacs > ~/.emacs
     fi
 }
 install_emacs

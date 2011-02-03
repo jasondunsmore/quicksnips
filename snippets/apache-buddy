@@ -10,7 +10,7 @@
 #         (max potential memory usage: 1172.48MB)
 
 function apache_buddy () {
-    curl -L -s http://quicksnips.org/remote/apachebuddy.pl | perl |
+    curl -L -s http://quicksnips.dunsmor.com/remote/apachebuddy.pl | perl |
     sed -n '/Settings considered for this report/,$p'| sed '1d' |
     grep -v -- "------------------------------"
 }

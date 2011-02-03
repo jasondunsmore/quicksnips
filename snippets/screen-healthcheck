@@ -3,7 +3,7 @@
 function new_screen () {
     cat > /tmp/.screenrc <<EOF
 defscrollback 10000
-screen -t healthcheck 0 bash -c 'curl -s http://quicksnips.org/remote/server-healthcheck | bash; bash -l'
+screen -t healthcheck 0 bash -c 'curl -s http://quicksnips.dunsmor.com/remote/server-healthcheck | bash; bash -l'
 screen 1 bash -l
 EOF
     screen -c /tmp/.screenrc

@@ -1,6 +1,6 @@
 # Shows history of system CPU, I/O wait, memory, and swap in a single report
 
 function sar_parsar () {
-    curl -s http://quicksnips.org/remote/parsar | perl
+    curl -s http://quicksnips.dunsmor.com/remote/parsar | perl
 }
 sar_parsar

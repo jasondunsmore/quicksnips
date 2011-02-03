@@ -1,6 +1,6 @@
 # Display MySQL memory usage.
 
 function mysql_memory () {
-    curl -s http://quicksnips.org/remote/tuning-primer.sh > /tmp/tuning-primer.sh && bash /tmp/tuning-primer.sh mem
+    curl -s http://quicksnips.dunsmor.com/remote/tuning-primer.sh > /tmp/tuning-primer.sh && bash /tmp/tuning-primer.sh mem
 }
 mysql_memory
