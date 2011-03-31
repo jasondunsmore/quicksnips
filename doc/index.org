@@ -1,11 +1,12 @@
 #+TITLE: Quicksnips
-#+LINK: qs http://quicksnips.org/
+#+LINK: qs http://quicksnips.dunsmor.com/
 #+OPTIONS: toc:2
 
 * Intro
+
 Quicksnips allows you to have access to a large number of one-liners
 and makes them available for use on remote systems without having to
-cut & paste.  Dmenu is the interface, which makes it easy to manage
+cut and paste.  Dmenu is the interface, which makes it easy to manage
 thousands of menu items quickly, since it dynamically narrows down
 results based on your keystrokes.  Dmenu cats the output of the
 one-liners into xclip, then xdotool mimics the middle mouse button to
@@ -17,13 +18,13 @@ executing it, so that you can modify it before executing.
 * Obtaining quicksnips
 To download the latest development version, use:
 
-: git clone git://quicksnips.org/git/quicksnips
+: git clone git://quicksnips.dunsmor.com/quicksnips.git
 
 You can also browse the repository at:
-http://quicksnips.org/quicksnips/
+http://quicksnips.dunsmor.com/quicksnips/
 
 To browse source-highlighted versions of the snippets, visit:
-http://quicksnips.org/snippets/
+http://quicksnips.dunsmor.com/snippets/
 
 * Project layout
 | Directory | Description                      |
@@ -35,25 +36,33 @@ http://quicksnips.org/snippets/
 | [[qs:remote][remote/]]   | Scripts that are called remotely |
 
 * Demo
+
 Run quicksnips:
-file:demo1.png
+
+[[file:demo1.png]]
 
 ...and a menu will appear with all the quicksnips for you to choose from:
-file:demo2.png
+
+[[file:demo2.png]]
 
 Start typing a word in the quicksnip name and hit Enter:
-file:demo3.png
+
+[[file:demo3.png]]
 
 The quicksnip will appear in the terminal:
-file:demo4.png
+
+[[file:demo4.png]]
+
 * Installation
 ** Requirements
+
 - [[http://www.suckless.org/programs/dmenu.html][dmenu]]
 - [[http://www.semicomplete.com/projects/xdotool/][xdotool]]
 - [[http://sourceforge.net/projects/xclip][xclip]]
 - [[http://git-scm.com/download][git]]
 
 ** Install quicksnips and dependencies
+
 If you're using Debian or Ubuntu, all dependencies can be installed
 with apt-get:
 
@@ -65,7 +74,7 @@ websites.
 Clone the quicksnips git repository:
 
 : cd ~
-: git clone git://quicksnips.org/git/quicksnips
+: git clone git://quicksnips.dunsmor.com/git/quicksnips
 
 Put =~/quicksnips/bin= in your =$PATH=.  For example, your =~./bashrc=
 or =~/.bash_profile= file might contain:
@@ -75,7 +84,7 @@ or =~/.bash_profile= file might contain:
 ** Determine how you will run the quicksnips command
 
 : Usage: ./quicksnips [-e] [-i] [-p] [-x] [-s SNIPDIR] [SNIPPET]...
-:
+: 
 : Optional arguments.
 :   -h  Print this help message.
 :   -e  Show documentation in Emacs.
@@ -85,6 +94,7 @@ or =~/.bash_profile= file might contain:
 :   -x  Show documentation in Xdialog.
 
 *** Displaying documentation
+
 To display documentation in Emacs when a script is selected, use
 =quicksnips -e= and put the following in your .emacs file:
 
@@ -107,7 +117,7 @@ bind quicksnips to F1:
 Add a keybinding using the CompizConfig Settings Manager.  It's
 available under:
 
-    : Settings -> Preferences -> CompizConfig Settings Manager
+: Settings -> Preferences -> CompizConfig Settings Manager
 
 - Set =Command0= to =/path/to/quicksnips/bin/quicksnips=.
 - Set a keybinding to run =Command0=.
@@ -148,13 +158,14 @@ Example configuration:
 - Edit ~/.xmonad/xmonad.hs
 - Add the following line under the Key bindings section:
 
-: -- launch quicksnips        
-: , ((modMask,               xK_s     ), spawn "exe=`~/quicksnips/bin/quicksnips` && eval \"exec $exe\"")
+: -- launch quicksnips
+: , ((modMask,               xK_s     ), spawn "exe=`~/quicksnips/bin/quicksnips`; eval \"exec $exe\"")
 
 - Restart xmonad (mod-q)
 
 ** Configuration for Emacs users
 *** Shell-mode
+
 Since the snippet files don't end in .sh, the following should be
 added to .emacs to enable sh-mode for all buffers visiting snippets
 files.
@@ -164,6 +175,7 @@ files.
 : 		       auto-mode-alist))
 
 *** Emacs-like keybindings
+
 For examples of configuring Emacs-like keybindings for specific
 snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 
@@ -190,140 +202,23 @@ snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 | C-z s m | quicksnips sar-recent-memory  |
 
 ** Cron job for new updates
-: 0 0 * * * cd ~/quicksnips  && git pull
-* Documentation
 
-: add-users                   - Adds multiple users.
-: apache-accesses-per-day     - Shows Apache accesses per day
-: apache-accesses-per-hour    - Shows Apache accesses per hour.
-: apache-accesses-per-ip      - Prints the number of entries in the access log for e...
-: apache-bandwidth-day        - Displays the Apache bandwidth use each day over the ...
-: apache-bandwidth-hour       - Displays bandwidth used by Apache for each hour of t...
-: apache-bandwidth-month      - Displays Apache bandwidth for each day of the curren...
-: apache-buddy                - Run Apache buddy script, which analyzes Apache's mem...
-: apache-doc-roots            - Prints all documentroots being served by Apache
-: apache-large-requests       - Prints any request over 300 bytes long.
-: apache-log-growers          - Displays Apache accesses per vhost based on diffs be...
-: apache-memory-usage         - Shows the amount of resident memory being used by ht...
-: apache-php-memory           - Determines approximate configured max memory usage f...
-: apache-server-status        - Adds the server-status configuration to Apache.
-: apache-show-logfiles        - Displays apache logfiles and their size.
-: apache-status-summary       - Prints out a summary of IPs, virtual hosts, and page...
-: apache-usage-stats          - Prints statistics on Apache's resource usage.
-: apache-vhost-config-files   - Shows all Apache vhost configuration files.
-: apache-vhost-grep           - Grep through all vhosts configured in Apache.
-: apache-vhosts               - List all configured Apache vhosts
-: apt-update-upgrade          - Updates APT package index and upgrades system packag...
-: base64-decode               - Decodes a base64-encoded string
-: base64-encode               - Base64 encodes a string
-: bsd-cpuinfo                 - Like the /proc/cpuinfo file in Linux.
-: cpufreq-ondemand            - Sets the CPU to ondemand power-saving mode.
-: cpufreq-performance         - Turns off CPU power-saving.
-: create-file                 - Creates an empty file. Takes number of MB as argumen...
-: cve-check-rhel4             - Checks a list of CVE codes for PCI scans on a RHEL4 ...
-: cve-check-rhel5             - Checks a list of CVE codes for PCI scans on a RHEL5 ...
-: cve-extract-codes           - Extract CVE codes from PCI compliance scan documents.
-: dag-rhel4                   - Adds DAG repo to a RHEL4 box, installs package, remo...
-: debian-largest-packages     - Shows the largest installed packages on Debian.
-: dpkg-hold                   - Puts a package on hold in Debian.
-: dpkg-unhold                 - Removes a hold on a package in Debian.
-: email-test                  - Sends test message to external account.
-: file-backup                 - Copies and renames a file for backup.
-: file-top                    - Like top, but for files
-: find-broken-symlinks        - Finds broken symlinks in working directory
-: find-large-files            - Finds largest 50 files backed up by CommVault.
-: ftp-bandwidth-day           - Displays the FTP bandwidth use each day over the cur...
-: ftp-bandwidth-month         - Prints the amount of FTP bandwidth used for each day...
-: ftp-new-user                - Adds an FTP user to a server.
-: get-public-ip               - Gets public IP from whatismyip.com.
-: git-commit-push             - Commits all changes and then pushes to origin.
-: horde-show-shares           - Shows the Horde resources that have been shared in P...
-: install-apc                 - Installs APC PHP module.
-: install-emacs               - Installs Emacs.
-: io-bound-processes          - Finds processes causing high iowait
-: ionice-processes            - Changes the I/O nice for a list of processes matchin...
-: ips-check-alive2            - Checks a list of IPs and reports if they are up or d...
-: ips-check-alive             - Checks a list of IPs and reports if they are up or d...
-: iptables-disable            - Disable iptables firewall without getting locked out
-: iptables-drop-ips           - Block incoming IPs.
-: luks-close                  - Closes an open luks partition.
-: luks-open                   - Opens a luks partition.
-: megaraid-config-display     - Shows virtual and physical disk information for Mega...
-: mysql-analyze-slowlog-count - Shows the "slow" queries that ran the most.
-: mysql-analyze-slowlog-time  - Shows the "slow" queries that took the longest to ru...
-: mysql-backup-all-dbs        - Dumps all MySQL databases to a file.
-: mysql-copy-database         - Works like the cp command, but for mysql databases.
-: mysql-memory                - Display MySQL memory usage.
-: mysql-show-users            - Shows all MySQL users and grants.
-: mysql-table-engines         - Shows all tables with storage engine type specified.
-: mysql-top                   - Watches the mysql status summary and process list.
-: network-connections         - Prints non-listening network connections.
-: omreport-pdisk              - Shows all physical storage devices on controller 0 o...
-: omreport-vdisk              - Shows all virtual storage devices on controller 0 on...
-: passwords-batch-reset       - Resets the password for a list of users. Displays ne...
-: php-info                    - Creates a phpinfo() file called test.php if one does...
-: php-mail-script             - Creates mail script called mailtest.php if none exis...
-: plesk-admin-password        - Shows the Plesk admin password.
-: plesk-bad-passwords         - Check for all bad Plesk email passwords
-: plesk-bandwidth-per-domain  - Shows the outgoing bandwidth per domain in Plesk for...
-: plesk-domains               - Shows all domains hosted in Plesk.
-: plesk-email-passwords       - Show passwords for all Plesk email users
-: plesk-enable-submission     - Enables the submission port on Plesk boxes
-: plesk-ftp-passwords         - Shows all Plesk FTP passwords.
-: plesk-list-forwards         - shows email accounts that are forwarding and the add...
-: plesk-mysql-dotmydotcnf     - Creates a .my.cnf file in /root with Plesk MySQL cre...
-: plesk-qmail-top-remote      -
-: plesk-reset-email-passwords - Resets all Plesk email passwords.
-: plesk-reset-ftp-passwords   - Resets all Plesk FTP passwords.
-: plesk-smtp-auth-attempts    - Looks in the Plesk maillog to see where the most smt...
-: plesk-update-statistics     - Updates statistics for one or all domains.
-: plesk-websrvmng             - Creates configuration files for all domains in Plesk.
-: processes-using-files       - Continuously shows processes using files.
-: ps-sort-by-memory           - Sorts processes by highest memory usage.
-: qmail-delivery-tracking     - Tracks Message Delivery by Sender
-: qmail-largest-messages      - Shows the 100 largest messages.
-: qmail-mailboxes-per-domain  - Shows the number of mailboxes each domain has.
-: qmail-mailbox-sizes         - Shows the size of each mailbox, sorted by size.
-: qmail-remote-recipients     - Shows statistics on To: header for messages in the r...
-: qmail-top-subjects          - Lists the top 20 subjects in the Qmail queue.
-: rpm-fix-permissions         - Fixes all RPM permissions on the filesystem
-: sar-before-restarts         - Shows previous hour of sar data before each restart ...
-: sar-max-daily-cpu           - Prints the max daily processor utilization based on ...
-: sar-max-daily-load          - Prints the max daily load based on sar logs
-: sar-max-daily-memory        - Prints out memory usage history (minus the disk cach...
-: sar-net-bandwidth           - Displays recent network throughput on eth0
-: sar-recent-cpu              - Shows recent CPU usage with column titles via sar.
-: sar-recent-load             - Shows recent server load with column titles via sar.
-: sar-recent-memory           - Shows recent memory usage with column titles via sar.
-: sendmail-smtp-auth-attempts - Shows the number of Sendmail SMTP auth attempts per ...
-: server-healthcheck          - Check on server health and reports warnings.
-: server-overview             - Puts the user in top. Upon quitting, the following i...
-: server-qccheck              - Performs a QC check on a server
-: smtp-bandwidth              - Prints the amount of SMTP bandwidth used for each da...
-: ssh-allow-ips               - Uses tcpwrappers to restrict ssh access to certain I...
-: ssh-block-attackers         - Blocks IPs with more than a specified number of logi...
-: ssh-dict-attack             - Displays the IP addresses that have had the most fai...
-: ssl-check-sslv2             - Checks to make sure sslv2 is disabled
-: ssl-client-connect          - Initiate an SSL session.
-: ssl-decode-cert             - Decodes an SSL certificate file.
-: ssl-decode-csr              - Decodes a CSR file.
-: ssl-expiration-date         - Checks expiration of the cert on the IP of the domai...
-: ssl-verify-crt-key          - Verifies the last .crt and .key files that you added...
-: strip-spamassassin-headers  - Prints the spamassassin headers from an mbox-format ...
-: syslog-last-reboot          - Shows entries in /var/log/messages since last reboot...
-: top-quick                   - Prints one iteration of top to stdout.
-: urchin-reset-password       - Resets Urchin Admin Password
-: yum-show-channels           - Shows all repos used by Yum.
+#+begin_example
+0 0 * * * cd ~/quicksnips; git pull
+#+end_example
 
 * Contributing
+
 If you're interested in contributing to quicksnips, email
-file:jason.png
+[[file:jason.png]]
 
 ** Naming convention
+
 Scripts should be named with the most general descriptor
 first. Descriptors should be separated by hyphens.
 
 ** Scripting conventions
+
 Scripts that would be too convoluted as a one-liner should be put in a
 bash function so they will not execute automatically.  Example:
 [[qs:snippets/qmail-queues-top-report.html][qmail-queues-top-report]].
@@ -337,4 +232,5 @@ the script output (when applicable).  Example:
 [[qs:snippets/apache-accesses-per-day.html][apache-accesses-per-day]].
 
 * Feedback
-Send suggestions or bug reports to file:feedback.png
+
+Send suggestions or bug reports to [[file:feedback.png]]
