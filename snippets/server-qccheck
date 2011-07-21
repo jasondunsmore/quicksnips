@@ -17,7 +17,7 @@ function server_qccheck () {
         "fdisk -l"
         "grep name /proc/cpuinfo"
         "cat /proc/scsi/scsi"
-        "ifconfig|grep -A1 eth"
+        "ifconfig|egrep -e eth -e bond -A1"
         "netstat -lpnt|egrep \":21|:22|:25|:80|:110|:143|:443|:993|:995|:3306|:8443\""
         "rpm -q psa"
         "head -n50 /etc/psa/psa.key"
