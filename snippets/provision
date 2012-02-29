@@ -1,1 +1,1 @@
-curl -Ls http://flip-edesign.com/scripts/system_info | bash
+curl -Ls  https://raw.github.com/jness/system_info/master/system_info | bash
