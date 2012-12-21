@@ -1,7 +1,8 @@
 #+TITLE: Quicksnips
+#+EMAIL: nil
 #+LINK: qs http://quicksnips.dunsmor.com/
 #+OPTIONS: toc:2
-
+#+STYLE: <link rel="stylesheet" type="text/css" href="/quicksnips.css" />
 * Intro
 
 Quicksnips allows you to have access to a large number of one-liners
@@ -16,24 +17,26 @@ executing it, so that you can modify it before executing.
 [TABLE-OF-CONTENTS]
 
 * Obtaining quicksnips
+
 To download the latest development version, use:
 
-: git clone git://quicksnips.dunsmor.com/quicksnips.git
+: git clone git://github.com/jasondunsmore/quicksnips.git
 
 You can also browse the repository at:
-http://quicksnips.dunsmor.com/quicksnips/
+https://github.com/jasondunsmore/quicksnips
 
 To browse source-highlighted versions of the snippets, visit:
 http://quicksnips.dunsmor.com/snippets/
 
 * Project layout
+
 | Directory | Description                      |
 |-----------+----------------------------------|
-| [[qs:bin/][bin/]]      | quicksnips scripts               |
-| [[qs:conf/][conf/]]     | quicksnips configuration files   |
-| [[qs:doc/][doc/]]      | quicksnips documentation         |
-| [[qs:snippets/][snippets/]] | Code snippets                    |
-| [[qs:remote][remote/]]   | Scripts that are called remotely |
+| [[https://github.com/jasondunsmore/quicksnips/tree/master/bin][bin/]]      | quicksnips scripts               |
+| [[https://github.com/jasondunsmore/quicksnips/tree/master/conf][conf/]]     | quicksnips configuration files   |
+| [[https://github.com/jasondunsmore/quicksnips/tree/master/doc][doc/]]      | quicksnips documentation         |
+| [[https://github.com/jasondunsmore/quicksnips/tree/master/snippets][snippets/]] | Code snippets                    |
+| [[https://github.com/jasondunsmore/quicksnips/tree/master/remote][remote/]]   | Scripts that are called remotely |
 
 * Demo
 
@@ -66,7 +69,7 @@ The quicksnip will appear in the terminal:
 If you're using Debian or Ubuntu, all dependencies can be installed
 with apt-get:
 
-: apt-get install suckless-tools xdotool xclip git-core
+: apt-get install suckless-tools xdotool xclip git
 
 For Fedora, you may have to download the packages from the project
 websites.
@@ -74,7 +77,7 @@ websites.
 Clone the quicksnips git repository:
 
 : cd ~
-: git clone git://quicksnips.dunsmor.com/git/quicksnips
+: git clone git://github.com/jasondunsmore/quicksnips.git
 
 Put =~/quicksnips/bin= in your =$PATH=.  For example, your =~./bashrc=
 or =~/.bash_profile= file might contain:
@@ -208,10 +211,6 @@ snippets in Sawfish, view [[qs:conf/quicksnips-keys.jl][=quicksnips-keys.jl=]].
 #+end_example
 
 * Contributing
-
-If you're interested in contributing to quicksnips, email
-[[file:jason.png]]
-
 ** Naming convention
 
 Scripts should be named with the most general descriptor
@@ -230,7 +229,3 @@ Example: [[qs:snippets/iptables-drop-ips.html][iptables-drop-ips]].
 Comments should describe what the script does and give an example of
 the script output (when applicable).  Example:
 [[qs:snippets/apache-accesses-per-day.html][apache-accesses-per-day]].
-
-* Feedback
-
-Send suggestions or bug reports to [[file:feedback.png]]
